@@ -1,0 +1,2 @@
+This is the foundation stucture for my new detailing app which has the code base for the entities and their mangers.
+I will try my best to apply all the principls and patterns that I learned during my experience.
