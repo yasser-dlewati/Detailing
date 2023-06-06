@@ -1,5 +1,6 @@
 namespace Detailing
 {
+    ///Base clasee
     public abstract class Person
     {
         public int Id { get; set; }
