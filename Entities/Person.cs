@@ -16,5 +16,7 @@ namespace Detailing.Entities
         public DateTime DOB { get; set; }
 
         public string MobileNumber { get; set; }
+
+        public Address Address { get; set; }
     }
 }
