@@ -24,11 +24,31 @@ public class CustomerController : ControllerBase
         return customers;
     }
 
-    [HttpPost]
-    public static Customer Post(Customer newCustomer)
+    [HttpGet("{customerId:int}")]
+    public ActionResult<Detailer> Get(int customerId)
     {
-        customers.ToList().Add(newCustomer);
-        return newCustomer;
+        var customer = customers.FirstOrDefault(c => c.Id == customerId);
+        if (customer == default)
+        {
+            return NotFound();
+        }
+
+        return Ok(customer);
+    }
+
+
+    [HttpPost]
+    public ActionResult<Customer> Post(Customer newCustomer)
+    {
+        try
+        {
+            customers.ToList().Add(newCustomer);
+            return Created(string.Empty, newCustomer);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
 

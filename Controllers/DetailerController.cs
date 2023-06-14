@@ -35,11 +35,11 @@ public class DetailerController : ControllerBase
             return NotFound();
         }
 
-        return detailer;
+        return Ok(detailer);
     }
 
     [HttpPost]
-    public ActionResult Post(Detailer newDetailer)
+    public ActionResult<Detailer> Post(Detailer newDetailer)
     {
         try
         {
@@ -48,7 +48,7 @@ public class DetailerController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest();
+            return BadRequest(ex.Message);
         }
     }
 }
