@@ -1,7 +1,7 @@
 using Detailing.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace detailing.Controllers;
+namespace Detailing.Controllers;
 
 [ApiController]
 [Route("[controller]")]
