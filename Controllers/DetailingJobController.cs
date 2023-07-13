@@ -1,10 +1,14 @@
+using System.Collections.Generic;
+using Detailing.Entities;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Detailing.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DetailingJobController : ContorllerBase
+    public class DetailingJobController : ControllerBase
     {
-        private IEnumerable<DetailingJobs> jobs = mew List{
+        private IEnumerable<DetailingJob> jobs = new List<DetailingJob>{
             new DetailingJob{
                 Id = 1,
             },
