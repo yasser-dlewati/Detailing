@@ -1,4 +1,5 @@
 using Detailing.Entities;
+using Detailing.Providers;  
 using Microsoft.AspNetCore.Mvc;
 
 namespace Detailing.Controllers;
@@ -10,7 +11,9 @@ public class CarController : ControllerBase
     [HttpGet]
     public IEnumerable<Car> Get()
     {
-        return null;
+        var carProvider = new CarProvider();
+        var cars = carProvider.GetAll();
+        return cars;
     }
 
     [HttpGet("{CarId:int}")]
