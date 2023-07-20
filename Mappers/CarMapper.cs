@@ -17,7 +17,7 @@ namespace Detailing.Mappers
                 Model = row["Model"].ToString(),
                 Year = row["Year"].ToString(),
                 Color = row["Color"].ToString(),
-                LastDetailed = string.IsNullOrEmpty(lastDetailed) ? default : Convert.ToDateTime(lastDetailed),
+                LastDetailed = string.IsNullOrEmpty(lastDetailed) ? null : Convert.ToDateTime(lastDetailed),
             };
             
             return car;

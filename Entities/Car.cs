@@ -14,6 +14,6 @@ namespace Detailing.Entities
 
         public Person Owner { get; set; }
 
-        public DateTime LastDetailed { get; set; }
+        public DateTime? LastDetailed { get; set; }
     }
 }
