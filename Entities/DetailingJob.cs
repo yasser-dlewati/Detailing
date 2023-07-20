@@ -4,7 +4,7 @@ namespace Detailing.Entities
     {
         public int Id { get; set; }
 
-        public Person Detailer { get; set;}
+        public Detailer Detailer { get; set;}
 
         public Person Customer { get; set;}
 
@@ -18,10 +18,7 @@ namespace Detailing.Entities
         { 
             get
             {
-                if (DetailsExterior && Detailer.DetailsExterior)
-                {
-                    return detailingExteriorCost;
-                }
+                return detailingExteriorCost;
             }
             set
             {
@@ -38,10 +35,7 @@ namespace Detailing.Entities
         {
              get
             {
-                if (DetailsInterior && Detailer.DetailsInterior)
-                {
-                    return detailingInteriorCost;
-                }
+                return detailingInteriorCost;
             }
             set
             {
