@@ -1,4 +1,5 @@
 using System.Data;
+using MySql.Data.MySqlClient;
 
 namespace Detailing.Interfaces
 {
@@ -8,6 +9,6 @@ namespace Detailing.Interfaces
 
         T ExecuteScalarQueryStoredProcedure(string storedProcedureName);
 
-        bool ExecuteNonQueryStoredProcedure(string storedProcedureName);
+        void ExecuteNonQueryStoredProcedure(string storedProcedureName, MySqlParameter[] parameters);
     }
 }
