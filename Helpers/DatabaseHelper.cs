@@ -1,14 +1,20 @@
 using System;
 using System.Data;
-using Detailing.Helpers;
+using Detailing.Interfaces;
 using MySql.Data.MySqlClient;
 
 namespace Detailing.Helpers
 {
-    public static class DatabaseHelper
+    public class DatabaseHelper<T> : IDatabaseHelper<T>
     {
         private static string connectionString = "Server=localhost;User ID=root;Password=password;Database=detailing";
-        public static DataTable ExecuteReadStoredProcedure(string storedProcedureName)
+        
+        public bool ExecuteNonQueryStoredProcedure(string storedProcedureName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataTable ExecuteQueryStoredProcedure(string storedProcedureName)
         {
             var dtResult = new DataTable();
             using (var connection = new MySqlConnection(connectionString))
@@ -40,37 +46,12 @@ namespace Detailing.Helpers
             }
 
             return dtResult;
+        
         }
 
-        public static bool ExecuteWriteStoredProcedure(string storedProcedureName)
+        public T ExecuteScalarQueryStoredProcedure(string storedProcedureName)
         {
-            var result = 0;
-            using (var connection = new MySqlConnection(connectionString))
-            {
-
-                using (var command = new MySqlCommand(storedProcedureName, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    try
-                    {
-                        connection.Open();
-                        Console.WriteLine("Openning sql connection");
-                        result = command.ExecuteNonQuery();
-                        return result == 0 ? false : true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error catched: {ex.Message}");
-                    }
-                    finally
-                    {
-                        connection.Close();
-                        Console.WriteLine("Closing sql connection");
-                    }
-                }
-            }
-
-            return false;
+            throw new NotImplementedException();
         }
     }
 }
