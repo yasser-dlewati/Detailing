@@ -2,18 +2,19 @@ using Detailing.Interfaces;
 using Detailing.Entities;
 using Detailing.Helpers;
 using Detailing.Mappers;
-
+using MySql.Data.MySqlClient;
 namespace Detailing.Repositories
 {
     public class CarRepository : IEntityRepository<Car>
     {
+        private readonly DatabaseHelper<Car> dbHelper = new DatabaseHelper<Car>();
+
         public IEnumerable<Car> GetAll()
         {
-            var dbHelper = new DatabaseHelper<Car>();
-           var dtCar = dbHelper.ExecuteQueryStoredProcedure("sp_CarsSelectAll");
+            var dtCar = dbHelper.ExecuteQueryStoredProcedure("sp_CarsSelectAll");
             var cars = new List<Car>();
             var carMapper = new CarMapper();
-            for(var i=0; i<dtCar.Rows.Count; i++)
+            for (var i = 0; i < dtCar.Rows.Count; i++)
             {
                 var car = carMapper.MapToEntity(dtCar.Rows[i]);
                 cars.Add(car);
@@ -26,19 +27,54 @@ namespace Detailing.Repositories
             throw new NotImplementedException();
         }
 
-        public bool TryDelete(Car data)
+        public bool TryDelete(Car car)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryInsert(Car data)
+        public bool TryInsert(Car car)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var spParameters = new MySqlParameter[]
+                {
+                new MySqlParameter("p_Manufacturer", car.Manufacturer),
+                new MySqlParameter("p_Model", car.Model),
+                new MySqlParameter("p_Year", car.Year),
+                new MySqlParameter("p_Color", car.Color),
+                new MySqlParameter("p_OwnerId", car.Owner.Id),
+                new MySqlParameter("p_LastDetailingDate", car.LastDetailed),
+                };
+                dbHelper.ExecuteNonQueryStoredProcedure("sp_car_insert", spParameters);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
-        public bool TryUpdate(Car data)
+        public bool TryUpdate(Car car)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var spParameters = new MySqlParameter[]
+                {
+                new MySqlParameter("p_Id", car.Id),
+                new MySqlParameter("p_Manufacturer", car.Manufacturer),
+                new MySqlParameter("p_Model", car.Model),
+                new MySqlParameter("p_Year", car.Year),
+                new MySqlParameter("p_Color", car.Color),
+                new MySqlParameter("p_OwnerId", car.Owner.Id),
+                new MySqlParameter("p_LastDetailingDate", car.LastDetailed),
+                };
+                dbHelper.ExecuteNonQueryStoredProcedure("sp_car_insert", spParameters);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
