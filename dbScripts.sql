@@ -70,4 +70,29 @@ CREATE TABLE `detailing`.`BusinessDetailers` (
   `BusinessId` INT NOT NULL,
   `DetailerId` INT NOT NULL,
   PRIMARY KEY (`BusinessId`, `DetailerId`));
+
+-- sp_car_insert
+USE `detailing`;
+DROP procedure IF EXISTS `sp_car_insert`;
+
+DELIMITER $$
+USE `detailing`$$
+CREATE PROCEDURE `sp_car_insert` (
+	IN p_Manufacturer NVARCHAR(100),
+    IN p_Model NVARCHAR(100),
+    IN p_Year NVARCHAR(4),
+    IN p_Color NVARCHAR(45),
+    IN p_OwnerId INT,
+    IN p_LastDetailingDate DateTime)
+BEGIN
+	INSERT INTO Car
+    (Manufacturer, Model, Year, Color, OwnerId, LastDetailingDate)
+    VALUES
+    (p_Manufacturer, P_Model, p_Year, p_Color, p_OwnerId, P_LastDetailingDate);
+    SELECT LAST_INSERT_ID();
+END$$
+
+DELIMITER ;
+
+
   
