@@ -1,5 +1,5 @@
 using Detailing.Entities;
-using Detailing.Providers;  
+using Detailing.Repositories;  
 using Microsoft.AspNetCore.Mvc;
 
 namespace Detailing.Controllers;
@@ -11,7 +11,7 @@ public class CarController : ControllerBase
     [HttpGet]
     public IEnumerable<Car> Get()
     {
-        var carProvider = new CarProvider();
+        var carProvider = new CarRepository();
         var cars = carProvider.GetAll();
         return cars;
     }
