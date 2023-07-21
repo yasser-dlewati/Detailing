@@ -1,5 +1,5 @@
 using Detailing.Entities;
-using Detailing.Repositories;  
+using Detailing.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Detailing.Controllers;
@@ -8,11 +8,12 @@ namespace Detailing.Controllers;
 [Route("[controller]")]
 public class CarController : ControllerBase
 {
+    private readonly CarRepository carRepository = new CarRepository();
+    
     [HttpGet]
     public IEnumerable<Car> Get()
     {
-        var carProvider = new CarRepository();
-        var cars = carProvider.GetAll();
+        var cars = carRepository.GetAll();
         return cars;
     }
 
@@ -26,7 +27,8 @@ public class CarController : ControllerBase
     [HttpPost]
     public ActionResult<Car> Post(Car newCar)
     {
-       return null;
+        carRepository.TryInsert(newCar);
+        return Ok(newCar);
     }
 }
 
