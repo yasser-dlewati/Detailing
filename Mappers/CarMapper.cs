@@ -17,6 +17,9 @@ namespace Detailing.Mappers
                 Model = row["Model"].ToString(),
                 Year = row["Year"].ToString(),
                 Color = row["Color"].ToString(),
+                Owner = new Customer{
+                    Id = Convert.ToInt32(row["OwnerId"]),
+                },
                 LastDetailed = string.IsNullOrEmpty(lastDetailed) ? null : Convert.ToDateTime(lastDetailed),
             };
             
