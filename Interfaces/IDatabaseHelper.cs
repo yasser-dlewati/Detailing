@@ -5,9 +5,7 @@ namespace Detailing.Interfaces
 {
     public interface IDatabaseHelper<T>
     {
-        DataTable ExecuteQueryStoredProcedure(string storedProcedureName);
-
-        T? ExecuteScalarQueryStoredProcedure(string storedProcedureName, MySqlParameter parameter);
+        DataTable ExecuteQueryStoredProcedure(string storedProcedureName, MySqlParameter[]? parameters = null);
 
         int ExecuteNonQueryStoredProcedure(string storedProcedureName, MySqlParameter[] parameters);
     }

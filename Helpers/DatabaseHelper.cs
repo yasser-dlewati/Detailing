@@ -39,7 +39,7 @@ namespace Detailing.Helpers
             return -1;
         }
         
-        public DataTable ExecuteQueryStoredProcedure(string storedProcedureName)
+        public DataTable ExecuteQueryStoredProcedure(string storedProcedureName, MySqlParameter[]? parameters = null)
         {
             var dtResult = new DataTable();
             using (var connection = new MySqlConnection(connectionString))
@@ -50,12 +50,18 @@ namespace Detailing.Helpers
                     command.CommandType = CommandType.StoredProcedure;
                     try
                     {
+                        if(parameters!=null && parameters.Any())
+                        {
+                            command.Parameters.AddRange(parameters);
+                        }
+
                         connection.Open();
                         Console.WriteLine("Openning sql connection");
                         using (var reader = command.ExecuteReader())
                         {
-                            Console.WriteLine("Filling Data..");
+                            Console.WriteLine("Filling Data table..");
                             dtResult.Load(reader);
+                            Console.WriteLine($"{storedProcedureName} executed and returned {dtResult.Rows.Count} rows");
                         }
                     }
                     catch (Exception ex)
@@ -71,37 +77,6 @@ namespace Detailing.Helpers
             }
 
             return dtResult;
-
         }
-
-        public T? ExecuteScalarQueryStoredProcedure(string storedProcedureName, MySqlParameter parameter)
-        {
-            using (var connection = new MySqlConnection(connectionString))
-            {
-                using (var command = new MySqlCommand(storedProcedureName, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(parameter);
-                    try
-                    {
-                        Console.WriteLine("Openning sql connection");
-                        connection.Open();
-                        return (T)command.ExecuteScalar();
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Exception thrown: {ex.Message}");
-                    }
-                    finally
-                    {
-                        connection.Close();
-                        Console.WriteLine("Closing sql connection");
-                    }
-                }
-            }
-
-            return default(T);
-        }
-    }
+   }
 }
