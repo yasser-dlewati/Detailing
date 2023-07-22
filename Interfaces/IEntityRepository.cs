@@ -6,7 +6,7 @@ namespace Detailing.Interfaces
 
         T GetSingleById(int id);
 
-        bool TryInsert(T data);
+        bool TryInsert(T data, out int insetedId);
 
         bool TryUpdate(T data);
 

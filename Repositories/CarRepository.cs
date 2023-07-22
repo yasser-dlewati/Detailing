@@ -32,7 +32,7 @@ namespace Detailing.Repositories
             throw new NotImplementedException();
         }
 
-        public bool TryInsert(Car car)
+        public bool TryInsert(Car car, out int insertedId)
         {
             try
             {
@@ -45,13 +45,15 @@ namespace Detailing.Repositories
                 new MySqlParameter("p_OwnerId", car.Owner.Id),
                 new MySqlParameter("p_LastDetailingDate", car.LastDetailed),
                 };
-                dbHelper.ExecuteNonQueryStoredProcedure("sp_car_insert", spParameters);
-                return true;
+                insertedId = dbHelper.ExecuteNonQueryStoredProcedure("sp_car_insert", spParameters);
+                return insertedId > 0;
             }
             catch (Exception ex)
             {
-                return false;
             }
+
+            insertedId = 0;
+            return false;
         }
 
         public bool TryUpdate(Car car)
@@ -68,13 +70,14 @@ namespace Detailing.Repositories
                 new MySqlParameter("p_OwnerId", car.Owner.Id),
                 new MySqlParameter("p_LastDetailingDate", car.LastDetailed),
                 };
-                dbHelper.ExecuteNonQueryStoredProcedure("sp_car_insert", spParameters);
-                return true;
+                var rowsAffectd = dbHelper.ExecuteNonQueryStoredProcedure("sp_car_update", spParameters);
+                return rowsAffectd == 1;
             }
             catch (Exception ex)
             {
-                return false;
             }
+                
+            return false;
         }
     }
 }
