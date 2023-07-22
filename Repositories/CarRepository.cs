@@ -22,14 +22,44 @@ namespace Detailing.Repositories
             return cars;
         }
 
-        public Car GetSingleById(int id)
+        public Car GetSingleById(int carId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (carId > 0)
+                {
+                    var spParameter = new MySqlParameter("p_Id", carId);
+                    var car = dbHelper.ExecuteScalarQueryStoredProcedure("sp_car_select_by_Id", spParameter);
+                    return car;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return null;
         }
 
-        public bool TryDelete(Car car)
+        public bool TryDelete(int carId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if(carId > 0)
+                {
+                    var spParameters = new MySqlParameter[]
+                    {
+                        new MySqlParameter("p_Id", carId),
+                    };
+                    var rowsAffectd = dbHelper.ExecuteNonQueryStoredProcedure("sp_car_select_by_Id", spParameters);
+                    return rowsAffectd == 1;
+                }                
+            }
+            catch (Exception)
+            {
+            }
+
+            return false;
         }
 
         public bool TryInsert(Car car, out int insertedId)
@@ -76,7 +106,7 @@ namespace Detailing.Repositories
             catch (Exception ex)
             {
             }
-                
+
             return false;
         }
     }
