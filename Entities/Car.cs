@@ -12,7 +12,7 @@ namespace Detailing.Entities
 
         public string Color { get; set; }
 
-        public Person Owner { get; set; }
+        public Customer Owner { get; set; }
 
         public DateTime? LastDetailed { get; set; }
     }

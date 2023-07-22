@@ -6,7 +6,7 @@ namespace Detailing.Entities
 
         public Detailer Detailer { get; set;}
 
-        public Person Customer { get; set;}
+        public Customer Customer { get; set;}
 
         public bool DetailsExterior { get; set; }
 
@@ -22,7 +22,7 @@ namespace Detailing.Entities
             }
             set
             {
-                if (DetailsExterior && Detailer.DetailsExterior)
+                if (DetailsExterior && Detailer.DetailsExterior.HasValue && Detailer.DetailsExterior.Value)
                 {
                     detailingExteriorCost = value;
                 }
@@ -39,7 +39,7 @@ namespace Detailing.Entities
             }
             set
             {
-                if (DetailsInterior && Detailer.DetailsInterior)
+                if (DetailsInterior && Detailer.DetailsInterior.HasValue && Detailer.DetailsInterior.Value)
                 {
                     detailingInteriorCost = value;
                 }
