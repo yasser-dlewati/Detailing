@@ -11,7 +11,7 @@ namespace Detailing.Repositories
 
         public IEnumerable<Car> GetAll()
         {
-            var dtCar = dbHelper.ExecuteQueryStoredProcedure("sp_CarsSelectAll");
+            var dtCar = dbHelper.ExecuteQueryStoredProcedure("sp_car_select_all");
             var cars = new List<Car>();
             var carMapper = new CarMapper();
             for (var i = 0; i < dtCar.Rows.Count; i++)
