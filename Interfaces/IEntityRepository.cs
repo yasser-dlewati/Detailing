@@ -10,6 +10,6 @@ namespace Detailing.Interfaces
 
         bool TryUpdate(T data);
 
-        bool TryDelete(T data);
+        bool TryDelete(int id);
     }
 }
