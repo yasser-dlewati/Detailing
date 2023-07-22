@@ -20,8 +20,9 @@ namespace Detailing.Helpers
                     {
                         Console.WriteLine("Openning sql connection");
                         connection.Open();
-                        return (int)(Int64)command.ExecuteScalar();
-
+                        var result = Convert.ToInt32(command.ExecuteScalar());
+                        Console.WriteLine($"Command `{storedProcedureName}` executed and returned {result}");
+                        return result;
                     }
                     catch (Exception ex)
                     {
