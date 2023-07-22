@@ -56,7 +56,7 @@ namespace Detailing.Repositories
                     {
                         new MySqlParameter("p_Id", carId),
                     };
-                    var rowsAffectd = dbHelper.ExecuteNonQueryStoredProcedure("sp_car_select_by_Id", spParameters);
+                    var rowsAffectd = dbHelper.ExecuteNonQueryStoredProcedure("sp_car_delete_by_Id", spParameters);
                     return rowsAffectd == 1;
                 }                
             }
