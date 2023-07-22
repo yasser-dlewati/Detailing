@@ -8,12 +8,12 @@ namespace Detailing.Repositories
     public class CarRepository : IEntityRepository<Car>
     {
         private readonly DatabaseHelper<Car> dbHelper = new DatabaseHelper<Car>();
+        private readonly CarMapper carMapper = new CarMapper();
 
         public IEnumerable<Car> GetAll()
         {
             var dtCar = dbHelper.ExecuteQueryStoredProcedure("sp_car_select_all");
             var cars = new List<Car>();
-            var carMapper = new CarMapper();
             for (var i = 0; i < dtCar.Rows.Count; i++)
             {
                 var car = carMapper.MapToEntity(dtCar.Rows[i]);
@@ -28,8 +28,13 @@ namespace Detailing.Repositories
             {
                 if (carId > 0)
                 {
-                    var spParameter = new MySqlParameter("p_Id", carId);
-                    var car = dbHelper.ExecuteScalarQueryStoredProcedure("sp_car_select_by_Id", spParameter);
+                    var spParameters = new MySqlParameter[]
+                    {
+                        new MySqlParameter("p_Id", carId),
+                    };
+
+                    var dtcar = dbHelper.ExecuteQueryStoredProcedure("sp_car_select_by_Id", spParameters);
+                    var car = carMapper.MapToEntity(dtcar.Rows[0]);
                     return car;
                 }
             }
