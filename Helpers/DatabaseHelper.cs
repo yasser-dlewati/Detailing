@@ -1,4 +1,3 @@
-using System;
 using System.Data;
 using Detailing.Interfaces;
 using MySql.Data.MySqlClient;
@@ -9,7 +8,7 @@ namespace Detailing.Helpers
     {
         private static string connectionString = "Server=localhost;User ID=root;Password=password;Database=detailing";
 
-        public void ExecuteNonQueryStoredProcedure(string storedProcedureName, MySqlParameter[] parameters)
+        public int ExecuteNonQueryStoredProcedure(string storedProcedureName, MySqlParameter[] parameters)
         {
             using (var connection = new MySqlConnection(connectionString))
             {
@@ -21,7 +20,7 @@ namespace Detailing.Helpers
                     {
                         Console.WriteLine("Openning sql connection");
                         connection.Open();
-                        command.ExecuteNonQuery();
+                        return (int)(Int64)command.ExecuteScalar();
 
                     }
                     catch (Exception ex)
@@ -35,6 +34,8 @@ namespace Detailing.Helpers
                     }
                 }
             }
+
+            return -1;
         }
         
         public DataTable ExecuteQueryStoredProcedure(string storedProcedureName)
@@ -72,9 +73,34 @@ namespace Detailing.Helpers
 
         }
 
-        public T ExecuteScalarQueryStoredProcedure(string storedProcedureName)
+        public T? ExecuteScalarQueryStoredProcedure(string storedProcedureName, MySqlParameter parameter)
         {
-            throw new NotImplementedException();
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                using (var command = new MySqlCommand(storedProcedureName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(parameter);
+                    try
+                    {
+                        Console.WriteLine("Openning sql connection");
+                        connection.Open();
+                        return (T)command.ExecuteScalar();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Exception thrown: {ex.Message}");
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        Console.WriteLine("Closing sql connection");
+                    }
+                }
+            }
+
+            return default(T);
         }
     }
 }

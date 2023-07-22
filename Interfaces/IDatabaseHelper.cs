@@ -7,8 +7,8 @@ namespace Detailing.Interfaces
     {
         DataTable ExecuteQueryStoredProcedure(string storedProcedureName);
 
-        T ExecuteScalarQueryStoredProcedure(string storedProcedureName);
+        T? ExecuteScalarQueryStoredProcedure(string storedProcedureName, MySqlParameter parameter);
 
-        void ExecuteNonQueryStoredProcedure(string storedProcedureName, MySqlParameter[] parameters);
+        int ExecuteNonQueryStoredProcedure(string storedProcedureName, MySqlParameter[] parameters);
     }
 }
