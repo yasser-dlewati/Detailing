@@ -1,6 +1,7 @@
 using Detailing.Entities;
 using Detailing.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Detailing.Interfaces;
 
 namespace Detailing.Controllers;
 
@@ -8,7 +9,13 @@ namespace Detailing.Controllers;
 [Route("[controller]")]
 public class CarController : ControllerBase
 {
-    private readonly CarRepository carRepository = new CarRepository();
+    private readonly CarRepository carRepository;
+
+    public CarController(IConfiguration config, IDatabaseService dbService)
+    {
+        dbService.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
+        carRepository = new CarRepository(dbService);
+    }
 
     [HttpGet]
     public IActionResult Get()

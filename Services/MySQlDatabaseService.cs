@@ -1,16 +1,17 @@
+using System.Data.Common;
 using System.Data;
 using Detailing.Interfaces;
 using MySql.Data.MySqlClient;
 
-namespace Detailing.Helpers
+namespace Detailing.Services
 {
-    public class DatabaseHelper<T> : IDatabaseHelper<T>
+    public class MySqlDatabaseService : IDatabaseService
     {
-        private static string connectionString = "Server=localhost;User ID=root;Password=password;Database=detailing";
+        public string ConnectionString { get; set; }
 
-        public int ExecuteNonQueryStoredProcedure(string storedProcedureName, MySqlParameter[] parameters)
+        public int ExecuteNonQueryStoredProcedure(string storedProcedureName, DbParameter[] parameters)
         {
-            using (var connection = new MySqlConnection(connectionString))
+            using (var connection = new MySqlConnection(ConnectionString))
             {
                 using (var command = new MySqlCommand(storedProcedureName, connection))
                 {
@@ -38,11 +39,11 @@ namespace Detailing.Helpers
 
             return -1;
         }
-        
-        public DataTable ExecuteQueryStoredProcedure(string storedProcedureName, MySqlParameter[]? parameters = null)
+
+        public DataTable ExecuteQueryStoredProcedure(string storedProcedureName, DbParameter[]? parameters = null)
         {
             var dtResult = new DataTable();
-            using (var connection = new MySqlConnection(connectionString))
+            using (var connection = new MySqlConnection(ConnectionString))
             {
 
                 using (var command = new MySqlCommand(storedProcedureName, connection))
@@ -50,7 +51,7 @@ namespace Detailing.Helpers
                     command.CommandType = CommandType.StoredProcedure;
                     try
                     {
-                        if(parameters!=null && parameters.Any())
+                        if (parameters != null && parameters.Any())
                         {
                             command.Parameters.AddRange(parameters);
                         }
@@ -78,5 +79,5 @@ namespace Detailing.Helpers
 
             return dtResult;
         }
-   }
+    }
 }
