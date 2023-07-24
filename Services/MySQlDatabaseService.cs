@@ -9,7 +9,7 @@ namespace Detailing.Services
     {
         public string ConnectionString { get; set; }
 
-        public int ExecuteNonQueryStoredProcedure(string storedProcedureName, DbParameter[] parameters)
+        public int ExecuteNonQueryStoredProcedure(string storedProcedureName, IDbDataParameter[] parameters)
         {
             using (var connection = new MySqlConnection(ConnectionString))
             {
@@ -40,7 +40,7 @@ namespace Detailing.Services
             return -1;
         }
 
-        public DataTable ExecuteQueryStoredProcedure(string storedProcedureName, DbParameter[]? parameters = null)
+        public DataTable ExecuteQueryStoredProcedure(string storedProcedureName, IDbDataParameter[]? parameters = null)
         {
             var dtResult = new DataTable();
             using (var connection = new MySqlConnection(ConnectionString))
