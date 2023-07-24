@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Detailing.Entities;
+using Detailing.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Detailing.Controllers

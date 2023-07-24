@@ -1,13 +1,12 @@
-using System;
 using System.Data;
 using Detailing.Interfaces;
-using Detailing.Entities;
+using Detailing.Models;
 
 namespace Detailing.Mappers
 {
     public class CarMapper : IDataMapper<Car>
     {
-        public Car MapToEntity(DataRow row)
+        public Car MapToModel(DataRow row)
         {
             var lastDetailed = row["LastDetailingDate"].ToString();
             var car =  new Car

@@ -1,4 +1,4 @@
-using Detailing.Entities;
+using Detailing.Models;
 using Detailing.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Detailing.Interfaces;

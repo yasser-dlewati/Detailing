@@ -1,4 +1,4 @@
-namespace Detailing.Entities
+namespace Detailing.Models
 {
     ///Base clasee
     public abstract class Person

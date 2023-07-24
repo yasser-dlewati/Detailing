@@ -1,4 +1,4 @@
-using Detailing.Entities;
+using Detailing.Models;
 
 namespace Detailing.Interfaces
 {
