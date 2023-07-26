@@ -1,6 +1,6 @@
 namespace Detailing.Models
 {
-    public class Detailer : Person
+    public class Detailer : User
     {
         public bool? HasBusiness { get; set; }
 

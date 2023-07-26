@@ -1,6 +1,6 @@
 namespace Detailing.Models
 {
-    public class Customer : Person
+    public class Customer : User
     {
         public IEnumerable<Car> Cars { get; set; }
 
