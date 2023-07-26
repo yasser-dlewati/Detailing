@@ -1,5 +1,5 @@
 using Detailing.Interfaces;
-using Detailing.Entities;
+using Detailing.Models;
 using Detailing.Mappers;
 using MySql.Data.MySqlClient;
 
@@ -21,7 +21,7 @@ namespace Detailing.Repositories
             var cars = new List<Car>();
             for (var i = 0; i < dtCar.Rows.Count; i++)
             {
-                var car = carMapper.MapToEntity(dtCar.Rows[i]);
+                var car = carMapper.MapToModel(dtCar.Rows[i]);
                 cars.Add(car);
             }
             return cars;
@@ -39,7 +39,7 @@ namespace Detailing.Repositories
                     };
 
                     var dtcar = _dbService.ExecuteQueryStoredProcedure("sp_car_select_by_Id", spParameters);
-                    var car = carMapper.MapToEntity(dtcar.Rows[0]);
+                    var car = carMapper.MapToModel(dtcar.Rows[0]);
                     return car;
                 }
             }
