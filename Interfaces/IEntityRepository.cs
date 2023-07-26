@@ -1,10 +1,11 @@
+using System.Data.Common;
 namespace Detailing.Interfaces
 {
     public interface IEntityRepository<T>
     {
         IEnumerable<T> GetAll();
 
-        T GetSingleById(int id);
+        IModel GetById(int id);
 
         bool TryInsert(T data, out int insetedId);
 
