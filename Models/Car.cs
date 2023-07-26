@@ -1,6 +1,8 @@
+using Detailing.Interfaces;
+
 namespace Detailing.Models
 {
-    public class Car
+    public class Car: IModel
     {
         public int Id { get; set; }
 

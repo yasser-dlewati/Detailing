@@ -1,6 +1,8 @@
+using Detailing.Interfaces;
+
 namespace Detailing.Models
 {
-    public class DetailingJob
+    public class DetailingJob : IModel
     {
         public int Id { get; set; }
 

@@ -1,6 +1,8 @@
+using Detailing.Interfaces;
+
 namespace Detailing.Models
 {
-    public class Address
+    public class Address : IModel
     {
         public int Id { get; set; }
         public string Line1 { get; set; }

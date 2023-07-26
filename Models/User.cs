@@ -1,7 +1,9 @@
+using Detailing.Interfaces;
+
 namespace Detailing.Models
 {
     ///Base clasee
-    public abstract class Person
+    public class User : IModel
     {
         public int Id { get; set; }
 
@@ -18,5 +20,7 @@ namespace Detailing.Models
         public string MobileNumber { get; set; }
 
         public Address Address { get; set; }
+        
+        public DateTime CreatedAt { get; internal set; }
     }
 }
