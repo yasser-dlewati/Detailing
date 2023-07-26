@@ -1,7 +1,7 @@
 using System.Data;
 using MySql.Data.MySqlClient;
 
-namespace Detailing.Models
+namespace Detailing.Extensions
 {
     public static class DatabaseParameterExtensions
     {

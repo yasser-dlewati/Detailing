@@ -1,4 +1,5 @@
 using System.Data;
+using Detailing.Extensions;
 using Detailing.Interfaces;
 using Detailing.Models;
 using MySql.Data.MySqlClient;
