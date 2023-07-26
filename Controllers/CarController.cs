@@ -5,29 +5,25 @@ using Detailing.Interfaces;
 
 namespace Detailing.Controllers;
 
-[ApiController]
 [Route("[controller]")]
-public class CarController : ControllerBase
+public class CarController : DetailingControllerBase<Car>
 {
-    private readonly CarRepository carRepository;
-
-    public CarController(IConfiguration config, IDatabaseService dbService)
+    public CarController(IConfiguration config, IDatabaseService dbService) : base(config, dbService)
     {
-        dbService.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
-        carRepository = new CarRepository(dbService);
+        _repoService = new CarRepository(dbService);
     }
 
     [HttpGet]
     public IActionResult Get()
     {
-        var cars = carRepository.GetAll();
+        var cars = _repoService.GetAll();
         return Ok(cars);
     }
 
     [HttpGet("{CarId:int}")]
     public IActionResult Get(int CarId)
     {
-        var car = carRepository.GetSingleById(CarId);
+        var car = _repoService.GetSingleById(CarId);
         return car != null ? Ok(car) : NotFound();
     }
 
@@ -35,7 +31,7 @@ public class CarController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] Car newCar)
     {
-        var isCarInserted = carRepository.TryInsert(newCar, out var carId);
+        var isCarInserted = _repoService.TryInsert(newCar, out var carId);
         newCar.Id = carId;
         return isCarInserted ? CreatedAtAction(nameof(Get), newCar) : BadRequest();
     }
@@ -43,14 +39,14 @@ public class CarController : ControllerBase
     [HttpPut]
     public IActionResult Put([FromBody] Car carToUpdate)
     {
-        var isCarUpdated = carRepository.TryUpdate(carToUpdate);
+        var isCarUpdated = _repoService.TryUpdate(carToUpdate);
         return isCarUpdated ? Ok(carToUpdate) : BadRequest();
     }
 
-     [HttpDelete("{carId:int}")]
+    [HttpDelete("{carId:int}")]
     public IActionResult Delete(int carId)
     {
-        var isCarDeleted = carRepository.TryDelete(carId);
+        var isCarDeleted = _repoService.TryDelete(carId);
         return isCarDeleted ? NoContent() : BadRequest();
     }
 }
