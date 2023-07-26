@@ -1,7 +1,7 @@
+using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
 using Detailing.Mappers;
-using MySql.Data.MySqlClient;
 
 namespace Detailing.Repositories
 {
@@ -33,9 +33,9 @@ namespace Detailing.Repositories
             {
                 if (carId > 0)
                 {
-                    var spParameters = new MySqlParameter[]
+                    var spParameters = new IDbDataParameter[]
                     {
-                        new MySqlParameter("p_Id", carId),
+                        new DatabaseParameter("Id", carId),
                     };
 
                     var dtcar = _dbService.ExecuteQueryStoredProcedure("sp_car_select_by_Id", spParameters);
@@ -57,9 +57,9 @@ namespace Detailing.Repositories
             {
                 if (carId > 0)
                 {
-                    var spParameters = new MySqlParameter[]
+                    var spParameters = new IDbDataParameter[]
                     {
-                        new MySqlParameter("p_Id", carId),
+                        new DatabaseParameter("Id", carId),
                     };
                     var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure("sp_car_delete_by_Id", spParameters);
                     return rowsAffectd == 1;
@@ -76,14 +76,14 @@ namespace Detailing.Repositories
         {
             try
             {
-                var spParameters = new MySqlParameter[]
+                var spParameters = new IDbDataParameter[]
                 {
-                new MySqlParameter("p_Manufacturer", car.Manufacturer),
-                new MySqlParameter("p_Model", car.Model),
-                new MySqlParameter("p_Year", car.Year),
-                new MySqlParameter("p_Color", car.Color),
-                new MySqlParameter("p_OwnerId", car.Owner.Id),
-                new MySqlParameter("p_LastDetailingDate", car.LastDetailed),
+                new DatabaseParameter("Manufacturer", car.Manufacturer),
+                new DatabaseParameter("Model", car.Model),
+                new DatabaseParameter("Year", car.Year),
+                new DatabaseParameter("Color", car.Color),
+                new DatabaseParameter("OwnerId", car.Owner.Id),
+                new DatabaseParameter("LastDetailingDate", car.LastDetailed),
                 };
                 insertedId = _dbService.ExecuteNonQueryStoredProcedure("sp_car_insert", spParameters);
                 return insertedId > 0;
@@ -100,15 +100,15 @@ namespace Detailing.Repositories
         {
             try
             {
-                var spParameters = new MySqlParameter[]
+                var spParameters = new IDbDataParameter[]
                 {
-                new MySqlParameter("p_Id", car.Id),
-                new MySqlParameter("p_Manufacturer", car.Manufacturer),
-                new MySqlParameter("p_Model", car.Model),
-                new MySqlParameter("p_Year", car.Year),
-                new MySqlParameter("p_Color", car.Color),
-                new MySqlParameter("p_OwnerId", car.Owner.Id),
-                new MySqlParameter("p_LastDetailingDate", car.LastDetailed),
+                new DatabaseParameter("Id", car.Id),
+                new DatabaseParameter("Manufacturer", car.Manufacturer),
+                new DatabaseParameter("Model", car.Model),
+                new DatabaseParameter("Year", car.Year),
+                new DatabaseParameter("Color", car.Color),
+                new DatabaseParameter("OwnerId", car.Owner.Id),
+                new DatabaseParameter("LastDetailingDate", car.LastDetailed),
                 };
                 var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure("sp_car_update", spParameters);
                 return rowsAffectd == 1;
