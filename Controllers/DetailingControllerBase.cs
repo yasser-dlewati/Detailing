@@ -28,7 +28,7 @@ namespace Detailing.Controllers
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
-            var model = _repoService.GetSingleById(id);
+            var model = _repoService.GetById(id);
             return model != null ? Ok(model) : NotFound();
         }
 
