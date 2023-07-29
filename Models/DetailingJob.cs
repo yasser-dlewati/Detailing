@@ -10,6 +10,10 @@ namespace Detailing.Models
 
         public Customer Customer { get; set;}
 
+        public Car DetailedCar { get; set; }
+
+        public DateTime DetailingTime { get; set; }
+
         public bool DetailsExterior { get; set; }
 
         public bool DetailsInterior { get; set; }
