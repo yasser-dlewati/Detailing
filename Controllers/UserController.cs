@@ -5,12 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Detailing.Controllers;
 
-[Route("[controller]")]
 public class UserController : DetailingControllerBase<User>
 {
-    public UserController(IConfiguration config, IDatabaseService dbService) : base(config, dbService)
+    public UserController(IConfiguration config, IDatabaseService dbService, IEntityRepository<User> repoService) : base(config, dbService, repoService)
     {
-        _repoService = new UserRepository(dbService, new UserMapper());
+        //_repoService = new UserRepository(dbService, new UserMapper());
     }
 
    

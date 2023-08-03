@@ -6,11 +6,9 @@ using Detailing.Mappers;
 
 namespace Detailing.Controllers;
 
-[Route("[controller]")]
 public class CarController : DetailingControllerBase<Car>
 {
-    public CarController(IConfiguration config, IDatabaseService dbService) : base(config, dbService)
+    public CarController(IConfiguration config, IDatabaseService dbService, IEntityRepository<Car> repoService) : base(config, dbService, repoService)
     {
-        _repoService = new CarRepository(dbService, new CarMapper());
     }
 }

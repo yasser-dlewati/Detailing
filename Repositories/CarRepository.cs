@@ -9,7 +9,7 @@ namespace Detailing.Repositories
 {
     public class CarRepository : RepositorySerivce<Car>
     {
-        public CarRepository(IDatabaseService dbService, CarMapper carMapper) : base (dbService, carMapper)
+        public CarRepository(IDatabaseService dbService, IDataMapper<Car> carMapper) : base (dbService, carMapper)
         {
             
         }

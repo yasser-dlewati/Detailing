@@ -8,7 +8,7 @@ namespace Detailing.Repositories
 {
     public class BusinessRepository : RepositorySerivce<Business>
     {
-        public BusinessRepository(IDatabaseService dbService, BusinessMapper businessMapper) : base(dbService, businessMapper)
+        public BusinessRepository(IDatabaseService dbService, IDataMapper<Business> businessMapper) : base(dbService, businessMapper)
         {
         }
 

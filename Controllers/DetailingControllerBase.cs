@@ -5,17 +5,19 @@ namespace Detailing.Controllers
 {
 
     [ApiController]
+    [Route("api/[controller]")]
     public abstract class DetailingControllerBase<T> : ControllerBase where T : IModel
     {
         private readonly IConfiguration _config;
         private IDatabaseService _dbservice;
         protected IEntityRepository<T> _repoService { get; set; }
 
-        public DetailingControllerBase(IConfiguration config, IDatabaseService dbservice)
+        public DetailingControllerBase(IConfiguration config, IDatabaseService dbservice, IEntityRepository<T> repoService)
         {
             _config = config;
             dbservice.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
             _dbservice = dbservice;
+            _repoService = repoService;
         }
 
         [HttpGet]
