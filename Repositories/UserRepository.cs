@@ -8,13 +8,19 @@ namespace Detailing.Repositories
 {
     internal class UserRepository : BaseRepositoryService<User>
     {
+        private readonly IDatabaseService _dbService;
+        private readonly IDataMapper<User> _dataMapper;
         public UserRepository(IDatabaseService dbService, IDataMapper<User> userMapper) : base(dbService, userMapper)
         {
+            _dbService = dbService;
+            _dataMapper = userMapper;
         }
 
         public override string SelectAllStoredProcedureName => "sp_User_Select_all";
 
         public override string SelectByIdStoredProcedureName => "sp_User_Select_by_Id ";
+
+        private string SelectByEmaillPasswordStoredProcedureName => "sp_user_sel_by_email_password ";
 
         public override string InsertStoredProcedureName => "sp_User_insert";
 
@@ -37,6 +43,32 @@ namespace Detailing.Repositories
                 };
 
                 return dbParamerters;
+        }
+
+        public User GetByLoginCredentials(UserLogin userLogin){
+           
+           try
+            {
+                if (userLogin is not null)
+                {
+                    var spParameters = new IDbDataParameter[]
+                    {
+                        new DatabaseParameter("email", userLogin.Email),
+                        new DatabaseParameter("password", userLogin.Password),
+                    };
+
+                    var dt = _dbService.ExecuteQueryStoredProcedure(SelectByEmaillPasswordStoredProcedureName, spParameters);
+                    var model = _dataMapper.MapToModel(dt.Rows[0]);
+                    return model;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return null;
+      
         }
     }
 }
