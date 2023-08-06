@@ -21,6 +21,7 @@ builder.Services.AddScoped<IRepositoryService<Business>, BusinessRepository>();
 builder.Services.AddScoped<IDataMapper<User>, UserMapper>();
 builder.Services.AddScoped<IDataMapper<Car>, CarMapper>();
 builder.Services.AddScoped<IDataMapper<Business>, BusinessMapper>();
+builder.Services.AddScoped<IAuthenticationService, JwtAuthenticationService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
