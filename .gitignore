@@ -18,3 +18,5 @@ obj/detailing.csproj.nuget.g.targets
 obj/project.assets.json
 obj/project.nuget.cache
 obj/staticwebassets.pack.sentinel
+*.sln
+/.vscode
