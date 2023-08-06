@@ -7,22 +7,22 @@ using System.Data.Common;
 
 namespace Detailing.Repositories
 {
-    public class CarRepository : RepositorySerivce<Car>
+    public class CarRepository : BaseRepositoryService<Car>
     {
         public CarRepository(IDatabaseService dbService, IDataMapper<Car> carMapper) : base (dbService, carMapper)
         {
             
         }
 
-        protected override string SelectAllStoredProcedureName => "sp_car_select_all";
+        public override string SelectAllStoredProcedureName => "sp_car_select_all";
 
-        protected override string SelectByIdStoredProcedureName => "sp_car_select_by_Id";
+        public override string SelectByIdStoredProcedureName => "sp_car_select_by_Id";
 
-        protected override string InsertStoredProcedureName => "sp_car_insert";
+        public override string InsertStoredProcedureName => "sp_car_insert";
 
-        protected override string UpdateStoredProcedureName => "sp_car_update";
+        public override string UpdateStoredProcedureName => "sp_car_update";
 
-        protected override string DeleteByIdStoredProcedureName => "sp_car_delete_by_Id";
+        public override string DeleteByIdStoredProcedureName => "sp_car_delete_by_Id";
 
         public override IDbDataParameter[] GetDbParameters(Car car)
         {

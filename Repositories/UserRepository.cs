@@ -6,21 +6,21 @@ using Detailing.Services;
 
 namespace Detailing.Repositories
 {
-    internal class UserRepository : RepositorySerivce<User>
+    internal class UserRepository : BaseRepositoryService<User>
     {
         public UserRepository(IDatabaseService dbService, IDataMapper<User> userMapper) : base(dbService, userMapper)
         {
         }
 
-        protected override string SelectAllStoredProcedureName => "sp_User_Select_all";
+        public override string SelectAllStoredProcedureName => "sp_User_Select_all";
 
-        protected override string SelectByIdStoredProcedureName => "sp_User_Select_by_Id ";
+        public override string SelectByIdStoredProcedureName => "sp_User_Select_by_Id ";
 
-        protected override string InsertStoredProcedureName => "sp_User_insert";
+        public override string InsertStoredProcedureName => "sp_User_insert";
 
-        protected override string UpdateStoredProcedureName => "sp_User_update";
+        public override string UpdateStoredProcedureName => "sp_User_update";
 
-        protected override string DeleteByIdStoredProcedureName => "sp_User_delete_by_Id";
+        public override string DeleteByIdStoredProcedureName => "sp_User_delete_by_Id";
 
         public override IDbDataParameter[] GetDbParameters(User user)
         {

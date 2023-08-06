@@ -15,9 +15,9 @@ builder.Services.AddSwaggerGen();
 
 // Registering Services
 builder.Services.AddScoped<IDatabaseService, MySqlDatabaseService>();
-builder.Services.AddScoped<IEntityRepository<User>, UserRepository>();
-builder.Services.AddScoped<IEntityRepository<Car>, CarRepository>();
-builder.Services.AddScoped<IEntityRepository<Business>, BusinessRepository>();
+builder.Services.AddScoped<IRepositoryService<User>, UserRepository>();
+builder.Services.AddScoped<IRepositoryService<Car>, CarRepository>();
+builder.Services.AddScoped<IRepositoryService<Business>, BusinessRepository>();
 builder.Services.AddScoped<IDataMapper<User>, UserMapper>();
 builder.Services.AddScoped<IDataMapper<Car>, CarMapper>();
 builder.Services.AddScoped<IDataMapper<Business>, BusinessMapper>();

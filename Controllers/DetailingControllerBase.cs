@@ -3,16 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Detailing.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public abstract class DetailingControllerBase<T> : ControllerBase where T : IModel
     {
         private readonly IConfiguration _config;
         private IDatabaseService _dbservice;
-        protected IEntityRepository<T> _repoService { get; set; }
+        private IRepositoryService<T> _repoService { get; set; }
 
-        public DetailingControllerBase(IConfiguration config, IDatabaseService dbservice, IEntityRepository<T> repoService)
+        public DetailingControllerBase(IConfiguration config, IDatabaseService dbservice, IRepositoryService<T> repoService)
         {
             _config = config;
             dbservice.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
