@@ -8,28 +8,28 @@ namespace Detailing.Controllers
     public abstract class DetailingControllerBase<T> : ControllerBase where T : IModel
     {
         private readonly IConfiguration _config;
-        private IDatabaseService _dbservice;
-        private IRepositoryService<T> _repoService { get; set; }
+        private readonly IDatabaseService _dbservice;
+        private readonly IModelManager<T> _manager;
 
-        public DetailingControllerBase(IConfiguration config, IDatabaseService dbservice, IRepositoryService<T> repoService)
+        public DetailingControllerBase(IConfiguration config, IDatabaseService dbservice, IModelManager<T> manager)
         {
             _config = config;
             dbservice.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
             _dbservice = dbservice;
-            _repoService = repoService;
+            _manager = manager;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var modelsList = _repoService.GetAll();
+            var modelsList = _manager.GetAll();
             return Ok(modelsList);
         }
 
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
-            var model = _repoService.GetById(id);
+            var model = _manager.GetById(id);
             return model != null ? Ok(model) : NotFound();
         }
 
@@ -37,7 +37,7 @@ namespace Detailing.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] T newModel)
         {
-            var isModelInserted = _repoService.TryInsert(newModel, out var id);
+            var isModelInserted = _manager.TryInsert(newModel, out var id);
             newModel.Id = id;
             return isModelInserted ? CreatedAtAction(nameof(Get), newModel) : BadRequest();
         }
@@ -45,14 +45,14 @@ namespace Detailing.Controllers
         [HttpPut]
         public IActionResult Put([FromBody] T modelToUpdate)
         {
-            var isModelUpdated = _repoService.TryUpdate(modelToUpdate);
+            var isModelUpdated = _manager.TryUpdate(modelToUpdate);
             return isModelUpdated ? Ok(modelToUpdate) : BadRequest();
         }
 
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
-            var isModelDeleted = _repoService.TryDelete(id);
+            var isModelDeleted = _manager.TryDelete(id);
             return isModelDeleted ? NoContent() : BadRequest();
         }
 

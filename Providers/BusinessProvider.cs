@@ -4,11 +4,11 @@ using Detailing.Models;
 using Detailing.Services;
 using Detailing.Mappers;
 
-namespace Detailing.Repositories
+namespace Detailing.Providers
 {
-    public class BusinessRepository : BaseRepositoryService<Business>
+    public class BusinessProvider : BaseProvider<Business>
     {
-        public BusinessRepository(IDatabaseService dbService, IDataMapper<Business> businessMapper) : base(dbService, businessMapper)
+        public BusinessProvider(IDatabaseService dbService, IDataMapper<Business> businessMapper) : base(dbService, businessMapper)
         {
         }
 

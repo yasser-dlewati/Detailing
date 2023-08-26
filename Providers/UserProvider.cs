@@ -4,13 +4,13 @@ using Detailing.Mappers;
 using System.Data;
 using Detailing.Services;
 
-namespace Detailing.Repositories
+namespace Detailing.Providers
 {
-    internal class UserRepository : BaseRepositoryService<User>
+    internal class UserProvider : BaseProvider<User>
     {
         private readonly IDatabaseService _dbService;
         private readonly IDataMapper<User> _dataMapper;
-        public UserRepository(IDatabaseService dbService, IDataMapper<User> userMapper) : base(dbService, userMapper)
+        public UserProvider(IDatabaseService dbService, IDataMapper<User> userMapper) : base(dbService, userMapper)
         {
             _dbService = dbService;
             _dataMapper = userMapper;

@@ -1,6 +1,6 @@
 namespace Detailing.Interfaces
 {
-    public interface IRepositoryService<T>
+    public interface IModelProvider<T>
     {
         abstract string SelectAllStoredProcedureName {get;}
 
@@ -16,7 +16,7 @@ namespace Detailing.Interfaces
 
         T GetById(int id);
 
-        bool TryInsert(T data, out int insetedId);
+        bool TryInsert(T data, out int insertedId);
 
         bool TryUpdate(T data);
 
