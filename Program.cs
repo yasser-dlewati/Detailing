@@ -33,10 +33,13 @@ builder.Services.AddAuthorization();
 
 // Registering Services
 builder.Services.AddScoped<IDatabaseService, MySqlDatabaseService>();
-builder.Services.AddScoped<IRepositoryService<User>, UserRepository>();
-builder.Services.AddScoped<IRepositoryService<Car>, CarRepository>();
-builder.Services.AddScoped<IRepositoryService<Business>, BusinessRepository>();
+builder.Services.AddScoped<IModelProvider<User>, UserProvider>();
+builder.Services.AddScoped<IModelProvider<Car>, CarProvider>();
+builder.Services.AddScoped<IModelProvider<Business>, BusinessProvider>();
+builder.Services.AddScoped<IUserTypeProvider<Customer>, CustomerProvider>();
+builder.Services.AddScoped<IUserTypeProvider<Detailer>, DetailerProvider>();
 builder.Services.AddScoped<IDataMapper<User>, UserMapper>();
+builder.Services.AddScoped<IDataMapper<Customer>, CustomerMapper>();
 builder.Services.AddScoped<IDataMapper<Car>, CarMapper>();
 builder.Services.AddScoped<IDataMapper<Business>, BusinessMapper>();
 builder.Services.AddScoped<IAuthenticationService, JwtAuthenticationService>();
