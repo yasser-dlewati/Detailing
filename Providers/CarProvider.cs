@@ -5,11 +5,11 @@ using Detailing.Mappers;
 using Detailing.Services;
 using System.Data.Common;
 
-namespace Detailing.Repositories
+namespace Detailing.Providers
 {
-    public class CarRepository : BaseRepositoryService<Car>
+    public class CarProvider : BaseProvider<Car>
     {
-        public CarRepository(IDatabaseService dbService, IDataMapper<Car> carMapper) : base (dbService, carMapper)
+        public CarProvider(IDatabaseService dbService, IDataMapper<Car> carMapper) : base (dbService, carMapper)
         {
             
         }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Detailing.Interfaces;
 using Detailing.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,38 +7,10 @@ namespace Detailing.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DetailingJobController : ControllerBase
+    public class DetailingJobController : DetailingControllerBase<DetailingJob>
     {
-        private IEnumerable<DetailingJob> jobs = new List<DetailingJob>{
-            new DetailingJob{
-                Id = 1,
-            },
-        };
-
-        [HttpGet("{customerId:int}")]
-        public ActionResult<DetailingJob> Get(int jobId)
+        public DetailingJobController(IConfiguration config, IDatabaseService dbservice, IModelManager<DetailingJob> manager) : base(config, dbservice, manager)
         {
-            var job = jobs.FirstOrDefault(j => j.Id == jobId);
-            if (job == default)
-            {
-                return NotFound();
-            }
-
-            return Ok(job);
-        }
-        
-        [HttpPost]
-        public ActionResult<DetailingJob> Post(DetailingJob newJob)
-        {
-            try
-            {
-                jobs.ToList().Add(newJob);
-                return Created(string.Empty, newJob);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
     }
 }

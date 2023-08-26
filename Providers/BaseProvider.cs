@@ -1,11 +1,10 @@
 using System.Data;
-using System.Data.Common;
 using Detailing.Interfaces;
 using Detailing.Models;
 
-namespace Detailing.Services
+namespace Detailing.Providers
 {
-    public abstract class BaseRepositoryService<T> : IRepositoryService<T> where T : IModel
+    public abstract class BaseProvider<T> : IModelProvider<T> where T : IModel
     {
         private readonly IDatabaseService _dbService;
         private readonly IDataMapper<T> _dataMapper;
@@ -20,7 +19,7 @@ namespace Detailing.Services
 
         public abstract string DeleteByIdStoredProcedureName {get;}
 
-        public BaseRepositoryService(IDatabaseService dbService, IDataMapper<T> dataMapper)
+        public BaseProvider(IDatabaseService dbService, IDataMapper<T> dataMapper)
         {
             _dbService = dbService;
             _dataMapper = dataMapper;
