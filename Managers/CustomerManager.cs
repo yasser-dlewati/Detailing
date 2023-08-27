@@ -23,16 +23,16 @@ public class CustomerManager : IModelManager<Customer>
 
     public bool TryDelete(int id)
     {
-        throw new NotImplementedException();
+        return _provider.TryDelete(id);
     }
 
     public bool TryInsert(Customer data, out int insertedId)
     {
-        throw new NotImplementedException();
+        return _provider.TryInsert(data, out insertedId);
     }
 
     public bool TryUpdate(Customer data)
     {
-        throw new NotImplementedException();
+        return _provider.TryUpdate(data);
     }
 }

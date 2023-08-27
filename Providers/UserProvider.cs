@@ -1,8 +1,6 @@
 using Detailing.Interfaces;
 using Detailing.Models;
-using Detailing.Mappers;
 using System.Data;
-using Detailing.Services;
 
 namespace Detailing.Providers
 {

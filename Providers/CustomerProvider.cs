@@ -1,5 +1,6 @@
 using System.Data;
 using Detailing.Interfaces;
+using Detailing.Mappers;
 using Detailing.Models;
 
 namespace Detailing.Providers;
@@ -60,7 +61,7 @@ public class CustomerProvider : IModelProvider<Customer>
         {
 
             var currentRecord = _mapper.MapToModel(dt.Rows[i]);
-            (model.Cars as List<Car> ).Add(currentRecord.Cars.ElementAt(0));
+            (model.Cars as List<Car>).Add(currentRecord.Cars.ElementAt(0));
         }
 
         return model;
@@ -68,21 +69,78 @@ public class CustomerProvider : IModelProvider<Customer>
 
     public IDbDataParameter[] GetDbParameters(Customer data)
     {
-        throw new NotImplementedException();
+        var dbParamerters = new IDbDataParameter[]
+        {
+        new DatabaseParameter("UserId", data.Id),
+        new DatabaseParameter("FirstName", data.FirstName),
+        new DatabaseParameter("MiddleName", data.MiddleName),
+        new DatabaseParameter("LastName", data.LastName),
+        new DatabaseParameter("PreferredName", data.PreferredName),
+        new DatabaseParameter("DOB", data.DOB),
+        new DatabaseParameter("MobileNumber", data.MobileNumber),
+        new DatabaseParameter("AddressId", data.Address.Id),
+        new DatabaseParameter("CarId", data.Cars.ElementAt(0).Id),
+        new DatabaseParameter("Manufacturer", data.Cars.ElementAt(0).Manufacturer),
+        new DatabaseParameter("Model", data.Cars.ElementAt(0).Model),
+        new DatabaseParameter("Year", data.Cars.ElementAt(0).Year),
+        new DatabaseParameter("Color", data.Cars.ElementAt(0).Color),
+        new DatabaseParameter("LastDetailingDate", data.Cars.ElementAt(0).LastDetailed),
+        new DatabaseParameter("OwnerId", data.Id),
+        };
+
+        return dbParamerters;
     }
 
     public bool TryDelete(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            if (id > 0)
+            {
+                var spParameters = new IDbDataParameter[]
+                {
+                        new DatabaseParameter("Id", id),
+                };
+                var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure(DeleteByIdStoredProcedureName, spParameters);
+                return rowsAffectd > 1;
+            }
+        }
+        catch (Exception)
+        {
+        }
+
+        return false;
     }
 
     public bool TryInsert(Customer data, out int insertedId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var spParameters = GetDbParameters(data);
+            insertedId = _dbService.ExecuteNonQueryStoredProcedure(InsertStoredProcedureName, spParameters);
+            return insertedId > 0;
+        }
+        catch (Exception ex)
+        {
+        }
+
+        insertedId = 0;
+        return false;
+
     }
 
     public bool TryUpdate(Customer data)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var spParameters = GetDbParameters(data);
+            var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure(UpdateStoredProcedureName, spParameters);
+            return rowsAffectd == 1;
+        }
+        catch (Exception ex)
+        {
+        }
+
+        return false;
     }
 }
