@@ -10,25 +10,27 @@ public class CustomerController : ControllerBase
 {
     private readonly IConfiguration _config;
     private readonly IDatabaseService _dbService;
-    private readonly IModelProvider<Customer> _provider;
-    
-    public CustomerController(IConfiguration config, IDatabaseService dbService, IModelProvider<Customer> provider)
+    private readonly IModelManager<Customer> _manager;
+
+    public CustomerController(IConfiguration config, IDatabaseService dbService, IModelManager<Customer> manager)
     {
         _config = config;
         dbService.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
         _dbService = dbService;
-        _provider = provider;
+        _manager = manager;
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public IActionResult Get()
     {
-        return Ok(_provider.GetAll());
+        var customers = _manager.GetAll();
+        return customers.Count() > 0 ? Ok(customers) : NotFound();
     }
 
     [HttpGet("{id:int}")]
-    public IActionResult GetById(int id)
+    public IActionResult Get(int id)
     {
-        return Ok(_provider.GetById(id));
+        var customer = _manager.GetById(id);
+        return customer != null ? Ok(customer) : NotFound();
     }
 }

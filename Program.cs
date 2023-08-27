@@ -6,6 +6,7 @@ using Detailing.Models;
 using Detailing.Mappers;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Detailing.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IDataMapper<User>, UserMapper>();
 builder.Services.AddScoped<IDataMapper<Customer>, CustomerMapper>();
 builder.Services.AddScoped<IDataMapper<Car>, CarMapper>();
 builder.Services.AddScoped<IDataMapper<Business>, BusinessMapper>();
+builder.Services.AddScoped<IModelManager<Customer>, CustomerManager>();
 builder.Services.AddScoped<IAuthenticationService, JwtAuthenticationService>();
 var app = builder.Build();
 

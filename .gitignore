@@ -20,3 +20,6 @@ obj/project.nuget.cache
 obj/staticwebassets.pack.sentinel
 *.sln
 /.vscode
+/Debug
+/obj
+*.dll
