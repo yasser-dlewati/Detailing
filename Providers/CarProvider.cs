@@ -33,7 +33,7 @@ namespace Detailing.Providers
                 new DatabaseParameter("Model", car.Model),
                 new DatabaseParameter("Year", car.Year),
                 new DatabaseParameter("Color", car.Color),
-                new DatabaseParameter("OwnerId", car.Owner.Id),
+                new DatabaseParameter("OwnerId", car.OwnerId),
                 new DatabaseParameter("LastDetailingDate", car.LastDetailed),
                 };
 

@@ -6,7 +6,7 @@ using Detailing.Services;
 
 namespace Detailing.Providers
 {
-    internal class UserProvider : BaseProvider<User>
+    public class UserProvider : BaseProvider<User>
     {
         private readonly IDatabaseService _dbService;
         private readonly IDataMapper<User> _dataMapper;

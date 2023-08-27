@@ -10,18 +10,25 @@ public class CustomerController : ControllerBase
 {
     private readonly IConfiguration _config;
     private readonly IDatabaseService _dbService;
-    private readonly IUserTypeProvider<Customer> _provider;
-    public CustomerController(IConfiguration config, IDatabaseService dbService, IUserTypeProvider<Customer> provider)
+    private readonly IModelProvider<Customer> _provider;
+    
+    public CustomerController(IConfiguration config, IDatabaseService dbService, IModelProvider<Customer> provider)
     {
-_config = config;
-dbService.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
-_dbService = dbService;
-_provider = provider;
+        _config = config;
+        dbService.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
+        _dbService = dbService;
+        _provider = provider;
     }
 
-[HttpGet]
+    [HttpGet]
     public IActionResult GetAll()
     {
-        return Ok(_provider.GetUsersOfType());
+        return Ok(_provider.GetAll());
+    }
+
+    [HttpGet("{id:int}")]
+    public IActionResult GetById(int id)
+    {
+        return Ok(_provider.GetById(id));
     }
 }

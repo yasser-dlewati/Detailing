@@ -33,6 +33,7 @@ namespace Detailing.Mappers
                 Model = row["Model"].ToString(),
                 Year = row["Year"].ToString(),
                 Color = row["Color"].ToString(),
+                OwnerId = customer.Id,
             };
 
             car.LastDetailed = hasDate ? lastTimeDetailed : null;

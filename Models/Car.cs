@@ -14,7 +14,7 @@ namespace Detailing.Models
 
         public string Color { get; set; }
 
-        public Customer Owner { get; set; }
+        public int OwnerId { get; set; }
 
         public DateTime? LastDetailed { get; set; }
     }

@@ -1,3 +1,5 @@
+using System.Data;
+
 namespace Detailing.Interfaces
 {
     public interface IModelProvider<T>
@@ -11,6 +13,8 @@ namespace Detailing.Interfaces
         abstract string UpdateStoredProcedureName {get;}
 
         abstract string DeleteByIdStoredProcedureName {get;}
+
+        abstract IDbDataParameter[] GetDbParameters(T data);
 
         IEnumerable<T> GetAll();
 
