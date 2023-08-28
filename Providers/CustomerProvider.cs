@@ -1,32 +1,31 @@
 using System.Data;
 using Detailing.Interfaces;
-using Detailing.Mappers;
 using Detailing.Models;
 
 namespace Detailing.Providers;
 
-public class CustomerProvider : IModelProvider<Customer>
+public class CustomerProvider : BaseProvider<Customer>
 {
 
     private readonly IDatabaseService _dbService;
     private readonly IDataMapper<Customer> _mapper;
-    public CustomerProvider(IDatabaseService dbService, IDataMapper<Customer> mapper)
+    public CustomerProvider(IDatabaseService dbService, IDataMapper<Customer> mapper):base(dbService, mapper)
     {
         _dbService = dbService;
         _mapper = mapper;
     }
 
-    public string SelectAllStoredProcedureName => "sp_User_select_by_Type_Customer";
+    public override string SelectAllStoredProcedureName => "sp_User_select_by_Type_Customer";
 
-    public string SelectByIdStoredProcedureName => "sp_User_select_by_Type_Customer_Id";
+    public override string SelectByIdStoredProcedureName => "sp_User_select_by_Type_Customer_Id";
 
-    public string InsertStoredProcedureName => "sp_User_insert_Customer";
+    public override string InsertStoredProcedureName => "sp_User_insert_Customer";
 
-    public string UpdateStoredProcedureName => "sp_User_update_Customer";
+    public override string UpdateStoredProcedureName => "sp_User_update_Customer";
 
-    public string DeleteByIdStoredProcedureName => "sp_User_delete_Customer";
+    public override string DeleteByIdStoredProcedureName => "sp_User_delete_Customer";
 
-    public IEnumerable<Customer> GetAll()
+    public override IEnumerable<Customer> GetAll()
     {
         var dt = _dbService.ExecuteQueryStoredProcedure(SelectAllStoredProcedureName);
         var models = new List<Customer>();
@@ -48,7 +47,7 @@ public class CustomerProvider : IModelProvider<Customer>
         return models;
     }
 
-    public Customer GetById(int id)
+    public override Customer GetById(int id)
     {
         var spParameters = new IDbDataParameter[]
         {
@@ -67,7 +66,7 @@ public class CustomerProvider : IModelProvider<Customer>
         return model;
     }
 
-    public IDbDataParameter[] GetDbParameters(Customer data)
+    public override IDbDataParameter[] GetDbParameters(Customer data)
     {
         var dbParamerters = new IDbDataParameter[]
         {
@@ -91,7 +90,7 @@ public class CustomerProvider : IModelProvider<Customer>
         return dbParamerters;
     }
 
-    public bool TryDelete(int id)
+    public override bool TryDelete(int id)
     {
         try
         {
@@ -112,7 +111,7 @@ public class CustomerProvider : IModelProvider<Customer>
         return false;
     }
 
-    public bool TryInsert(Customer data, out int insertedId)
+    public override bool TryInsert(Customer data, out int insertedId)
     {
         try
         {
@@ -129,7 +128,7 @@ public class CustomerProvider : IModelProvider<Customer>
 
     }
 
-    public bool TryUpdate(Customer data)
+    public override bool TryUpdate(Customer data)
     {
         try
         {

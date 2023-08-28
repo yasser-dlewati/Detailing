@@ -25,7 +25,7 @@ namespace Detailing.Providers
             _dataMapper = dataMapper;
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             var dt = _dbService.ExecuteQueryStoredProcedure(SelectAllStoredProcedureName);
             var models = new List<T>();
@@ -37,7 +37,7 @@ namespace Detailing.Providers
             return models;
         }
 
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
            try
             {
@@ -61,7 +61,7 @@ namespace Detailing.Providers
             return default(T);
         }
 
-        public bool TryDelete(int id)
+        public virtual bool TryDelete(int id)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace Detailing.Providers
 
         public abstract IDbDataParameter[] GetDbParameters(T data);
 
-        public bool TryInsert(T model, out int insertedId)
+        public virtual bool TryInsert(T model, out int insertedId)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace Detailing.Providers
             return false;
         }
 
-        public bool TryUpdate(T model)
+        public virtual bool TryUpdate(T model)
         {
             try
             {

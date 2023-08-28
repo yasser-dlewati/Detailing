@@ -1,6 +1,5 @@
 using Detailing.Interfaces;
 using Detailing.Models;
-using Detailing.Providers;
 
 namespace Detailing.Managers
 {
