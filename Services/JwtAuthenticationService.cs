@@ -21,15 +21,16 @@ namespace Detailing.Services
 
         }
 
-        public string GenerateToken(UserLogin userLogin)
+        public string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_secretKey);
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, userLogin.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             };
-
+            
             var token = new JwtSecurityToken
             (
                 issuer: _issuer,

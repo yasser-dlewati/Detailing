@@ -30,7 +30,7 @@ namespace detailing.Controllers
                 var user = UserProvider.GetByLoginCredentials(userLogin);
                 if(user != null)
                 {
-                    var token = _authService.GenerateToken(userLogin);
+                    var token = _authService.GenerateToken(user);
                     return Ok(token);
                 }
             }

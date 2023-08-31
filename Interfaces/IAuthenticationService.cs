@@ -4,6 +4,6 @@ namespace Detailing.Interfaces
 {
     public interface IAuthenticationService
     {
-        string GenerateToken(UserLogin userLogin);
+        string GenerateToken(User user);
     }
 }
