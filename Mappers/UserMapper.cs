@@ -1,4 +1,5 @@
 using System.Data;
+using Detailing.Consts;
 using Detailing.Interfaces;
 using Detailing.Models;
 
@@ -21,6 +22,9 @@ namespace Detailing.Mappers
                     Id = int.Parse(row["AddressId"].ToString()),
                 },
                 CreatedAt = DateTime.Parse(row["CreationDate"].ToString()),
+                Email = row["Email"].ToString(),
+                Password = row["Password"].ToString(),
+                Role = (UserType)int.Parse(row["Type"].ToString()),
             };
             
             return user;
