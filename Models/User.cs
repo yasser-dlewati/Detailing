@@ -1,3 +1,4 @@
+using Detailing.Consts;
 using Detailing.Interfaces;
 
 namespace Detailing.Models
@@ -19,12 +20,14 @@ namespace Detailing.Models
 
         public string MobileNumber { get; set; }
 
-        public string Emaill { get; set; }
+        public string Email { get; set; }
 
         public string Password { get; set; }
 
         public Address Address { get; set; }
         
         public DateTime CreatedAt { get; internal set; }
+
+        public virtual UserType Role { get; set; }
     }
 }

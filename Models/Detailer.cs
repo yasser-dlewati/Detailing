@@ -1,3 +1,6 @@
+using Detailing.Consts;
+using Detailing.Interfaces;
+
 namespace Detailing.Models
 {
     public class Detailer : User
@@ -9,5 +12,7 @@ namespace Detailing.Models
         public bool? DetailsInterior { get; set; }
 
         public bool? IsMobile { get; set; }
+
+        public override UserType Role => UserType.Detailer;
     }
 }
