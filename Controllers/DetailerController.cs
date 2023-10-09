@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Detailing.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/user/[controller]")]
 public class DetailerController : DetailingControllerBase<Detailer>
 {
     public DetailerController(IConfiguration config, IDatabaseService dbservice, IModelManager<Detailer> manager) : base(config, dbservice, manager)

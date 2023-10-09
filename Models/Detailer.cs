@@ -1,10 +1,11 @@
 using Detailing.Consts;
-using Detailing.Interfaces;
 
 namespace Detailing.Models
 {
     public class Detailer : User
     {
+        public int DetailerId {get; set;}
+
         public bool? HasBusiness { get; set; }
 
         public bool? DetailsExterior { get; set; }
