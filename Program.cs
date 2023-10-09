@@ -33,18 +33,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 // Registering Services
-builder.Services.AddScoped<IDatabaseService, MySqlDatabaseService>();
+builder.Services.AddSingleton<IDatabaseService, MySqlDatabaseService>();
 builder.Services.AddScoped<IModelProvider<User>, UserProvider>();
 builder.Services.AddScoped<IModelProvider<Car>, CarProvider>();
 builder.Services.AddScoped<IModelProvider<Business>, BusinessProvider>();
 builder.Services.AddScoped<IModelProvider<Customer>, CustomerProvider>();
-builder.Services.AddScoped<IUserTypeProvider<Detailer>, DetailerProvider>();
+builder.Services.AddScoped<IModelProvider<Detailer>, DetailerProvider>();
 builder.Services.AddScoped<IDataMapper<User>, UserMapper>();
 builder.Services.AddScoped<IDataMapper<Customer>, CustomerMapper>();
+builder.Services.AddScoped<IDataMapper<Detailer>, DetailerMapper>();
 builder.Services.AddScoped<IDataMapper<Car>, CarMapper>();
 builder.Services.AddScoped<IDataMapper<Business>, BusinessMapper>();
 builder.Services.AddScoped<IModelManager<Customer>, CustomerManager>();
 builder.Services.AddScoped<IModelManager<User>, UserManager>();
+builder.Services.AddScoped<IModelManager<Detailer>, DetailerManager>();
+builder.Services.AddScoped<IModelManager<Car>, CarManager>();
 builder.Services.AddScoped<IAuthenticationService, JwtAuthenticationService>();
 var app = builder.Build();
 
