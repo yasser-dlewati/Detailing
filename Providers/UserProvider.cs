@@ -38,14 +38,21 @@ namespace Detailing.Providers
                 new DatabaseParameter("DOB", user.DOB),
                 new DatabaseParameter("MobileNumber", user.MobileNumber),
                 new DatabaseParameter("AddressId", user.Address.Id),
+                new DatabaseParameter("Line1", user.Address.Line1),
+                new DatabaseParameter("Line2", user.Address.Line2),
+                new DatabaseParameter("City", user.Address.City),
+                new DatabaseParameter("ZipCode", user.Address.ZipCode),
+                new DatabaseParameter("StateId", user.Address.StateId),
+                new DatabaseParameter("CountryId", user.Address.CountryId),
                 };
 
-                return dbParamerters;
+            return dbParamerters;
         }
 
-        public User GetByLoginCredentials(UserLogin userLogin){
-           
-           try
+        public User GetByLoginCredentials(UserLogin userLogin)
+        {
+
+            try
             {
                 if (userLogin is not null)
                 {
@@ -66,7 +73,7 @@ namespace Detailing.Providers
             }
 
             return null;
-      
+
         }
     }
 }

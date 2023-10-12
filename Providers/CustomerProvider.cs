@@ -23,7 +23,7 @@ public class CustomerProvider : BaseProvider<Customer>
 
     public override string UpdateStoredProcedureName => "sp_User_update_Customer";
 
-    public override string DeleteByIdStoredProcedureName => "sp_User_delete_Customer";
+    public override string DeleteByIdStoredProcedureName => "sp_User_delete_Customer_by_Id";
 
     public override IEnumerable<Customer> GetAll()
     {
@@ -78,6 +78,12 @@ public class CustomerProvider : BaseProvider<Customer>
         new DatabaseParameter("DOB", data.DOB),
         new DatabaseParameter("MobileNumber", data.MobileNumber),
         new DatabaseParameter("AddressId", data.Address.Id),
+        new DatabaseParameter("Line1", data.Address.Line1),
+        new DatabaseParameter("Line2", data.Address.Line2),
+        new DatabaseParameter("City", data.Address.City),
+        new DatabaseParameter("ZipCode", data.Address.ZipCode),
+        new DatabaseParameter("StateId", data.Address.StateId),
+        new DatabaseParameter("CountryId", data.Address.CountryId),
         new DatabaseParameter("CarId", data.Cars.ElementAt(0).Id),
         new DatabaseParameter("Manufacturer", data.Cars.ElementAt(0).Manufacturer),
         new DatabaseParameter("Model", data.Cars.ElementAt(0).Model),

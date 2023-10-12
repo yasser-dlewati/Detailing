@@ -19,11 +19,11 @@ public class DetailerProvider : BaseProvider<Detailer>
 
     public override string SelectByIdStoredProcedureName => "sp_User_select_by_Type_Detailer_Id";
 
-    public override string InsertStoredProcedureName => throw new NotImplementedException();
+    public override string InsertStoredProcedureName => "sp_User_insert_Detailer";
 
-    public override string UpdateStoredProcedureName => throw new NotImplementedException();
+    public override string UpdateStoredProcedureName => "sp_User_update_Detailer";
 
-    public override string DeleteByIdStoredProcedureName => throw new NotImplementedException();
+    public override string DeleteByIdStoredProcedureName => "sp_User_delete_Detailer_by_Id";
 
     public override IDbDataParameter[] GetDbParameters(Detailer data)
     {
@@ -36,12 +36,19 @@ public class DetailerProvider : BaseProvider<Detailer>
         new DatabaseParameter("PreferredName", data.PreferredName),
         new DatabaseParameter("DOB", data.DOB),
         new DatabaseParameter("MobileNumber", data.MobileNumber),
-        new DatabaseParameter("AddressId", data.Address.Id),
         new DatabaseParameter("Email", data.Email),
+        new DatabaseParameter("Password", data.Password),
         new DatabaseParameter("HasBusiness", data.HasBusiness),
         new DatabaseParameter("DetailsExterior", data.DetailsExterior),
         new DatabaseParameter("DetailsInterior", data.DetailsInterior),
         new DatabaseParameter("IsMobile", data.IsMobile),       
+        new DatabaseParameter("AddressId", data.Address.Id),
+        new DatabaseParameter("Line1", data.Address.Line1),
+        new DatabaseParameter("Line2", data.Address.Line2),
+        new DatabaseParameter("City", data.Address.City),
+        new DatabaseParameter("ZipCode", data.Address.ZipCode),
+        new DatabaseParameter("StateId", data.Address.StateId),
+        new DatabaseParameter("CountryId", data.Address.CountryId),
         };
 
         return dbParamerters;
