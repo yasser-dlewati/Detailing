@@ -5,7 +5,7 @@ namespace Detailing.Controllers;
 
 public class CarController : DetailingControllerBase<Car>
 {
-    public CarController(IConfiguration config, IDatabaseService dbService, IModelManager<Car> manager) : base(config, dbService, manager)
+    public CarController(IServiceProvider provider) : base(provider)
     {
     }
 }

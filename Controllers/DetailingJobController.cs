@@ -9,7 +9,7 @@ namespace Detailing.Controllers
     [Route("[controller]")]
     public class DetailingJobController : DetailingControllerBase<DetailingJob>
     {
-        public DetailingJobController(IConfiguration config, IDatabaseService dbservice, IModelManager<DetailingJob> manager) : base(config, dbservice, manager)
+        public DetailingJobController(IServiceProvider provider) : base(provider)
         {
         }
     }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "hkL7Txa8ple+TXATk+xx84owuAvweYBWDpHp9unXeyLI1KRD/OSa6OHCAS3XKKxgeIz3IAysyL20xwacyf4FQA==",
+  "dgSpecHash": "L0uZteRhfzibLfx1S/9KIl40u23CFOmdzCRD4l5wIyLVhUmaQ3bnnyYzZHyveDfvnn9GPrs8xoUI55+mTY6NTg==",
   "success": true,
   "projectFilePath": "/home/yasdle/myCode/detailing/detailing.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "/home/yasdle/.nuget/packages/k4os.compression.lz4.streams/1.3.5/k4os.compression.lz4.streams.1.3.5.nupkg.sha512",
     "/home/yasdle/.nuget/packages/k4os.hash.xxhash/1.0.8/k4os.hash.xxhash.1.0.8.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/6.0.4/microsoft.aspnetcore.authentication.jwtbearer.6.0.4.nupkg.sha512",
+    "/home/yasdle/.nuget/packages/microsoft.aspnetcore.mvc.versioning/5.1.0/microsoft.aspnetcore.mvc.versioning.5.1.0.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.identitymodel/7.0.0/microsoft.identitymodel.7.0.0.nupkg.sha512",

@@ -62,3 +62,4 @@
 /home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.IdentityModel.Tokens.dll
 /home/yasdle/myCode/detailing/bin/Debug/net6.0/System.IdentityModel.Tokens.Jwt.dll
+/home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.AspNetCore.Mvc.Versioning.dll

@@ -8,7 +8,7 @@ namespace Detailing.Controllers;
 [Route("api/user/[controller]")]
 public class CustomerController : DetailingControllerBase<Customer>
 {
-    public CustomerController(IConfiguration config, IDatabaseService dbService, IModelManager<Customer> manager) : base(config, dbService, manager)
+    public CustomerController(IServiceProvider provider) : base(provider)
     {
         
     }

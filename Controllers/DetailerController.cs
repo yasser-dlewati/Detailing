@@ -8,7 +8,7 @@ namespace Detailing.Controllers;
 [Route("api/user/[controller]")]
 public class DetailerController : DetailingControllerBase<Detailer>
 {
-    public DetailerController(IConfiguration config, IDatabaseService dbservice, IModelManager<Detailer> manager) : base(config, dbservice, manager)
+    public DetailerController(IServiceProvider provider) : base(provider)
     {
     }
 }
