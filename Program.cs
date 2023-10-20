@@ -7,6 +7,8 @@ using Detailing.Mappers;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Detailing.Managers;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     };
                 });
 builder.Services.AddAuthorization();
+
+builder.Services.AddApiVersioning(options=>{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+});
 
 // Registering Services
 builder.Services.AddSingleton<IDatabaseService, MySqlDatabaseService>();

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Detailing.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public abstract class DetailingControllerBase<T> : ControllerBase where T : IModel
     {
         private readonly IConfiguration _config;
