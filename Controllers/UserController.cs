@@ -1,5 +1,4 @@
 using Detailing.Models;
-using Detailing.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Detailing.Controllers;

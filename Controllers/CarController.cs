@@ -1,5 +1,4 @@
 using Detailing.Models;
-using Detailing.Interfaces;
 
 namespace Detailing.Controllers;
 

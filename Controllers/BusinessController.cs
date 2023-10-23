@@ -1,4 +1,3 @@
-using Detailing.Interfaces;
 using Detailing.Models;
 
 namespace Detailing.Controllers
