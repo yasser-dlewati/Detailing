@@ -14,21 +14,22 @@ namespace detailing.Controllers
         private readonly IAuthenticationService _authService;
         private readonly UserProvider UserProvider;
 
-        public AuthenticationController(IConfiguration config, IDatabaseService dbService, IAuthenticationService authService)
+        public AuthenticationController(IServiceProvider serviceProvider)
         {
-            dbService.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
-            _dbService = dbService;
-            _authService = authService;
+            var config = serviceProvider.GetService<IConfiguration>() ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _dbService = serviceProvider.GetService<IDatabaseService>() ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _dbService.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
+            _authService = serviceProvider.GetService<IAuthenticationService>() ?? throw new ArgumentNullException(nameof(serviceProvider));
             UserProvider = new UserProvider(_dbService, new UserMapper());
-        } 
+        }
 
         [HttpPost]
         public IActionResult Login(UserLogin userLogin)
         {
-            if(userLogin !=null && !string.IsNullOrEmpty(userLogin.Email) && !string.IsNullOrEmpty(userLogin.Password))
+            if (userLogin != null && !string.IsNullOrEmpty(userLogin.Email) && !string.IsNullOrEmpty(userLogin.Password))
             {
                 var user = UserProvider.GetByLoginCredentials(userLogin);
-                if(user != null)
+                if (user != null)
                 {
                     var token = _authService.GenerateToken(user);
                     return Ok(token);
