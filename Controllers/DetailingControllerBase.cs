@@ -11,13 +11,13 @@ namespace Detailing.Controllers
         private readonly IDatabaseService _dbservice;
         private readonly IModelManager<T> _manager;
 
-        public DetailingControllerBase(IServiceProvider provider)
+        public DetailingControllerBase(IServiceProvider serviceProvider)
         {
-            _config = provider.GetService<IConfiguration>() ?? throw new ArgumentNullException();
-            var dbservice = provider.GetService<IDatabaseService>() ?? throw new ArgumentException();
+            _config = serviceProvider.GetService<IConfiguration>() ?? throw new ArgumentNullException(nameof(serviceProvider));
+            var dbservice = serviceProvider.GetService<IDatabaseService>() ?? throw new ArgumentNullException(nameof(serviceProvider));
             dbservice.ConnectionString = _config.GetConnectionString("localMysqlConnectionstring");
             _dbservice = dbservice;
-            _manager = provider.GetService<IModelManager<T>>() ?? throw new ArgumentException();
+            _manager = serviceProvider.GetService<IModelManager<T>>() ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         [HttpGet]
