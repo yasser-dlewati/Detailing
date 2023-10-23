@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageReference Include="Microsoft.IdentityModel" Version="6.32.1" />
     <PackageReference Include="MySql.Data" Version="8.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />

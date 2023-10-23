@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Detailing.Controllers;
 
 [ApiController]
-[Route("api/user/[controller]")]
+[Route("api/v{version:apiVersion}/user/[controller]")]
 public class CustomerController : DetailingControllerBase<Customer>
 {
     public CustomerController(IServiceProvider provider) : base(provider)
