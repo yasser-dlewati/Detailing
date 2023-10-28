@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
@@ -82,7 +83,19 @@ namespace Detailing.Providers
             return false;
         }
 
-        public abstract IDbDataParameter[] GetDbParameters(T data);
+        public virtual IDbDataParameter[] GetDbParameters(T data)
+        {
+             var properties = data.GetType().GetProperties();
+            var dbParamerters = new IDbDataParameter[properties.Count()];
+            for (var i = 0; i< properties.Count(); i++)
+            {
+                var prop = properties[i];
+                var columnName = (prop.GetCustomAttributes(true).Where(a => a is ColumnAttribute).FirstOrDefault() as ColumnAttribute).Name;
+                dbParamerters[i]= new DatabaseParameter(columnName, data.GetType().GetProperty(prop.Name).GetValue(data));
+            }
+
+            return dbParamerters;
+        }
 
         public virtual bool TryInsert(T model, out int insertedId)
         {
