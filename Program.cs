@@ -29,7 +29,7 @@ builder.Services.AddSwaggerGen(options =>
         {
             Name = "Yasser Dlewati",
             Email= "yasdle@outlook.com",
-            Url = new Uri("yasser-dlewati.github.io/me"),
+            Url = new Uri("https://yasser-dlewati.github.io/me"),
         }
     });
 
@@ -40,6 +40,20 @@ builder.Services.AddSwaggerGen(options =>
         Description = "To be developed",
     });
 });
+
+ builder.Services.AddApiVersioning(options =>
+    {
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+        options.ReportApiVersions = true;
+        options.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader());
+    });
+
+    builder.Services.AddVersionedApiExplorer(o =>
+    {
+        o.GroupNameFormat = "'v'VVV";
+        o.SubstituteApiVersionInUrl = true;
+    });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -80,20 +94,6 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-
-    builder.Services.AddApiVersioning(options =>
-    {
-        options.AssumeDefaultVersionWhenUnspecified = true;
-        options.DefaultApiVersion = new ApiVersion(1, 0);
-        options.ReportApiVersions = true;
-        options.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader());
-    });
-
-    builder.Services.AddVersionedApiExplorer(o =>
-    {
-        o.GroupNameFormat = "'v'VVV";
-        o.SubstituteApiVersionInUrl = true;
-    });
 
     // Show versions in UI dropdown
     app.UseSwaggerUI(x =>
