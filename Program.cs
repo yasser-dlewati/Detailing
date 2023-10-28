@@ -95,11 +95,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
 
-    // Show versions in UI dropdown
     app.UseSwaggerUI(x =>
     {
+        // Show versions in UI dropdown
         x.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
         x.SwaggerEndpoint("/swagger/v2/swagger.json", "v2");
+
+        // Set swagger page to be the start page.
+        x.RoutePrefix = string.Empty;
     });
 }
 
