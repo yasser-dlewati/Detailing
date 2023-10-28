@@ -1,8 +1,6 @@
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
-using Detailing.Services;
-using Detailing.Mappers;
 
 namespace Detailing.Providers
 {
@@ -12,19 +10,41 @@ namespace Detailing.Providers
         {
         }
 
-        public override string SelectAllStoredProcedureName => throw new NotImplementedException();
+        public override string SelectAllStoredProcedureName => "sp_Business_select_all";
 
-        public override string SelectByIdStoredProcedureName => throw new NotImplementedException();
+        public override string SelectByIdStoredProcedureName => "sp_Business_select_by_Id";
 
-        public override string InsertStoredProcedureName => throw new NotImplementedException();
+        public override string InsertStoredProcedureName => "sp_Business_insert";
 
-        public override string UpdateStoredProcedureName => throw new NotImplementedException();
+        public override string UpdateStoredProcedureName => "sp_Business_update";
 
-        public override string DeleteByIdStoredProcedureName => throw new NotImplementedException();
+        public override string DeleteByIdStoredProcedureName => "sp_Business_delete_by_Id";
 
-        public override IDbDataParameter[] GetDbParameters(Business data)
+        public override IDbDataParameter[] GetDbParameters(Business business)
         {
-            throw new NotImplementedException();
+            var dbParamerters = new IDbDataParameter[]
+                {
+                new DatabaseParameter("BusinessId", business.Id),
+                new DatabaseParameter("DetailerId", business.OwnerId),
+                new DatabaseParameter("AddressId", business.Address.Id),
+                new DatabaseParameter("BusinessName", business.BusinessName),
+                new DatabaseParameter("Description", business.Description),
+                new DatabaseParameter("Established", business.Established),
+                new DatabaseParameter("Phone", business.Phone),
+                new DatabaseParameter("Website", business.Website),
+                new DatabaseParameter("SocialMedia", business.SocialMedia),
+                new DatabaseParameter("Email", business.Email),
+                new DatabaseParameter("Line1", business.Address.Line1),
+                new DatabaseParameter("Line2", business.Address.Line2),
+                new DatabaseParameter("ZipCode", business.Address.ZipCode),
+                new DatabaseParameter("City", business.Address.City),
+                new DatabaseParameter("StateId", business.Address.StateId),
+                new DatabaseParameter("CountryId", business.Address.CountryId),
+                new DatabaseParameter("Longitude", business.Address.Longitude),
+                new DatabaseParameter("Latitude", business.Address.Latitude),
+                };
+
+                return dbParamerters;
         }
     }
 }
