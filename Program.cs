@@ -55,6 +55,7 @@ builder.Services.AddScoped<IModelManager<Customer>, CustomerManager>();
 builder.Services.AddScoped<IModelManager<User>, UserManager>();
 builder.Services.AddScoped<IModelManager<Detailer>, DetailerManager>();
 builder.Services.AddScoped<IModelManager<Car>, CarManager>();
+builder.Services.AddScoped<IModelManager<Business>, BusinessManager>();
 builder.Services.AddScoped<IAuthenticationService, JwtAuthenticationService>();
 var app = builder.Build();
 
