@@ -21,14 +21,14 @@ namespace Detailing.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public virtual IActionResult Get()
         {
             var modelsList = _manager.GetAll();
             return Ok(modelsList);
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult Get(int id)
+        public virtual IActionResult Get(int id)
         {
             var model = _manager.GetById(id);
             return model != null ? Ok(model) : NotFound();
@@ -36,7 +36,7 @@ namespace Detailing.Controllers
 
 
         [HttpPost]
-        public IActionResult Post([FromBody] T newModel)
+        public virtual IActionResult Post([FromBody] T newModel)
         {
             var isModelInserted = _manager.TryInsert(newModel, out var id);
             newModel.Id = id;
@@ -44,18 +44,17 @@ namespace Detailing.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] T modelToUpdate)
+        public virtual IActionResult Put([FromBody] T modelToUpdate)
         {
             var isModelUpdated = _manager.TryUpdate(modelToUpdate);
             return isModelUpdated ? Ok(modelToUpdate) : BadRequest();
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult Delete(int id)
+        public virtual IActionResult Delete(int id)
         {
             var isModelDeleted = _manager.TryDelete(id);
             return isModelDeleted ? NoContent() : BadRequest();
         }
-
     }
 }
