@@ -73,4 +73,14 @@ public class DetailerProvider : BaseProvider<Detailer>
 
         return detailers;
     }
+    
+    public override IDbDataParameter[] GetIdDataParameter(int id)
+    {
+        var parameters = new IDbDataParameter[]
+            {
+                new DatabaseParameter("UserId", id),
+            };
+
+            return parameters;
+    }
 }

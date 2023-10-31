@@ -44,7 +44,17 @@ namespace Detailing.Providers
                 new DatabaseParameter("Latitude", business.Address.Latitude),
                 };
 
-                return dbParamerters;
+            return dbParamerters;
+        }
+
+        public override IDbDataParameter[] GetIdDataParameter(int id)
+        {
+            var parameters = new IDbDataParameter[]
+            {
+                new DatabaseParameter("BusinessId", id),
+            };
+
+            return parameters;
         }
     }
 }
