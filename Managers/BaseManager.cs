@@ -18,12 +18,12 @@ namespace Detailing.Managers
 
         public T GetById(int id)
         {
-           return _provider.GetById(id);
+            return _provider.GetById(id);
         }
 
         public bool TryDelete(int id)
         {
-           return _provider.TryDelete(id);
+            return _provider.TryDelete(id);
         }
 
         public bool TryInsert(T data, out int insertedId)

@@ -10,15 +10,15 @@ namespace Detailing.Providers
         private readonly IDatabaseService _dbService;
         private readonly IDataMapper<T> _dataMapper;
 
-        public abstract string SelectAllStoredProcedureName {get;}
+        public abstract string SelectAllStoredProcedureName { get; }
 
-        public abstract string SelectByIdStoredProcedureName {get;}
+        public abstract string SelectByIdStoredProcedureName { get; }
 
-        public abstract string InsertStoredProcedureName {get;}
+        public abstract string InsertStoredProcedureName { get; }
 
-        public abstract string UpdateStoredProcedureName {get;}
+        public abstract string UpdateStoredProcedureName { get; }
 
-        public abstract string DeleteByIdStoredProcedureName {get;}
+        public abstract string DeleteByIdStoredProcedureName { get; }
 
         public BaseProvider(IDatabaseService dbService, IDataMapper<T> dataMapper)
         {
@@ -38,21 +38,16 @@ namespace Detailing.Providers
             return models;
         }
 
+        public abstract IDbDataParameter[] GetIdDataParameter(int id);
+
         public virtual T GetById(int id)
         {
-           try
+            try
             {
-                if (id > 0)
-                {
-                    var spParameters = new IDbDataParameter[]
-                    {
-                        new DatabaseParameter("Id", id),
-                    };
-
-                    var dt = _dbService.ExecuteQueryStoredProcedure(SelectByIdStoredProcedureName, spParameters);
-                    var model = _dataMapper.MapToModel(dt.Rows[0]);
-                    return model;
-                }
+                var idParameter = GetIdDataParameter(id);
+                var dt = _dbService.ExecuteQueryStoredProcedure(SelectByIdStoredProcedureName, idParameter);
+                var model = _dataMapper.MapToModel(dt.Rows[0]);
+                return model;
             }
             catch (Exception)
             {
@@ -66,15 +61,9 @@ namespace Detailing.Providers
         {
             try
             {
-                if (id > 0)
-                {
-                    var spParameters = new IDbDataParameter[]
-                    {
-                        new DatabaseParameter("Id", id),
-                    };
-                    var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure(DeleteByIdStoredProcedureName, spParameters);
-                    return rowsAffectd == 1;
-                }
+                var idParameter = GetIdDataParameter(id);
+                var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure(DeleteByIdStoredProcedureName, idParameter);
+                return rowsAffectd == 1;
             }
             catch (Exception)
             {
@@ -85,13 +74,13 @@ namespace Detailing.Providers
 
         public virtual IDbDataParameter[] GetDbParameters(T data)
         {
-             var properties = data.GetType().GetProperties();
+            var properties = data.GetType().GetProperties();
             var dbParamerters = new IDbDataParameter[properties.Count()];
-            for (var i = 0; i< properties.Count(); i++)
+            for (var i = 0; i < properties.Count(); i++)
             {
                 var prop = properties[i];
                 var columnName = (prop.GetCustomAttributes(true).Where(a => a is ColumnAttribute).FirstOrDefault() as ColumnAttribute).Name;
-                dbParamerters[i]= new DatabaseParameter(columnName, data.GetType().GetProperty(prop.Name).GetValue(data));
+                dbParamerters[i] = new DatabaseParameter(columnName, data.GetType().GetProperty(prop.Name).GetValue(data));
             }
 
             return dbParamerters;

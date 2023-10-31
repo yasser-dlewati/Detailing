@@ -9,7 +9,7 @@ public class CustomerProvider : BaseProvider<Customer>
 
     private readonly IDatabaseService _dbService;
     private readonly IDataMapper<Customer> _mapper;
-    public CustomerProvider(IDatabaseService dbService, IDataMapper<Customer> mapper):base(dbService, mapper)
+    public CustomerProvider(IDatabaseService dbService, IDataMapper<Customer> mapper) : base(dbService, mapper)
     {
         _dbService = dbService;
         _mapper = mapper;
@@ -84,16 +84,19 @@ public class CustomerProvider : BaseProvider<Customer>
         new DatabaseParameter("ZipCode", data.Address.ZipCode),
         new DatabaseParameter("StateId", data.Address.StateId),
         new DatabaseParameter("CountryId", data.Address.CountryId),
-        new DatabaseParameter("CarId", data.Cars.ElementAt(0).Id),
-        new DatabaseParameter("Manufacturer", data.Cars.ElementAt(0).Manufacturer),
-        new DatabaseParameter("Model", data.Cars.ElementAt(0).Model),
-        new DatabaseParameter("Year", data.Cars.ElementAt(0).Year),
-        new DatabaseParameter("Color", data.Cars.ElementAt(0).Color),
-        new DatabaseParameter("LastDetailingDate", data.Cars.ElementAt(0).LastDetailed),
-        new DatabaseParameter("OwnerId", data.Id),
         };
 
         return dbParamerters;
+    }
+
+    public override IDbDataParameter[] GetIdDataParameter(int id)
+    {
+        var parameters = new IDbDataParameter[]
+            {
+                new DatabaseParameter("UserId", id),
+            };
+
+        return parameters;
     }
 
     public override bool TryDelete(int id)

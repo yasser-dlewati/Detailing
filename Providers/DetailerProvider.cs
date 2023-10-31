@@ -53,4 +53,32 @@ public class DetailerProvider : BaseProvider<Detailer>
 
         return dbParamerters;
     }
+
+    public IList<Detailer> GetCrew(int businessId)
+    {
+         var spParameters = new IDbDataParameter[]
+        {
+            new DatabaseParameter("BusinessId", businessId),
+        };
+
+        var dt = _dbService.ExecuteQueryStoredProcedure(SelectBusinessCrewStoredProcedureName, spParameters);
+        var detailers = new List<Detailer>();
+        for (var i = 0; i < dt.Rows.Count; i++)
+        {
+            var model = _dataMapper.MapToModel(dt.Rows[i]);
+            detailers.Add(model);
+        }
+
+        return detailers;
+    }
+
+    public override IDbDataParameter[] GetIdDataParameter(int id)
+    {
+        var parameters = new IDbDataParameter[]
+            {
+                new DatabaseParameter("UserId", id),
+            };
+
+            return parameters;
+    }
 }
