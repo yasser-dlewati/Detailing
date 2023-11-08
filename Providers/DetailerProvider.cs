@@ -27,6 +27,8 @@ public class DetailerProvider : BaseProvider<Detailer>
 
     public string SelectBusinessCrewStoredProcedureName => "sp_User_select_by_BusinessId";
 
+    public string SelectJobDetailerStoredProcedureName => "sp_User_select_by_JobId";
+
     public override IDbDataParameter[] GetDbParameters(Detailer data)
     {
         var dbParamerters = new IDbDataParameter[]
@@ -82,5 +84,17 @@ public class DetailerProvider : BaseProvider<Detailer>
             };
 
             return parameters;
+    }
+
+    public Detailer GetJobDetailer(int jobId)
+    {
+         var spParameters = new IDbDataParameter[]
+        {
+            new DatabaseParameter("JobId", jobId),
+        };
+
+        var dt = _dbService.ExecuteQueryStoredProcedure(SelectJobDetailerStoredProcedureName, spParameters);
+        var detailer = _dataMapper.MapToModel(dt.Rows[0]);
+        return detailer;
     }
 }
