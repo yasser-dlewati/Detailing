@@ -17,4 +17,10 @@ public class DetailerManager : BaseManager<Detailer>
         var crew = provider.GetCrew(businessId);
         return crew;
     }
+
+    public Detailer GetJobDetailer(int jobId){
+        DetailerProvider provider = _provider as DetailerProvider;
+        var detailer = provider.GetJobDetailer(jobId);
+        return detailer;
+    }
 }

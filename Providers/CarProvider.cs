@@ -29,6 +29,8 @@ public class CarProvider : BaseProvider<Car>
 
     public string DeleteByCustomerIdStoredProcedureName = "sp_car_delete_by_Id_UserId";
 
+    public string SelectByJobIdStoredProcedureName = "sp_Car_select_by_JobId";
+
     public override IDbDataParameter[] GetIdDataParameter(int id)
     {
         var parameters = new IDbDataParameter[]
@@ -75,5 +77,22 @@ public class CarProvider : BaseProvider<Car>
         }
 
         return false;
+    }
+
+    public Car GetCarByJobId(int jobId)
+    {
+        var spParameters = new IDbDataParameter[]
+       {
+            new DatabaseParameter("JobId", jobId),
+       };
+
+        var dt = _dbService.ExecuteQueryStoredProcedure(SelectByJobIdStoredProcedureName, spParameters);
+        if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
+        {
+            var car = _carMapper.MapToModel(dt.Rows[0]);
+            return car;
+        }
+
+        return null;
     }
 }
