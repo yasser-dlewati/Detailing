@@ -17,44 +17,39 @@ public class CustomerController : DetailingControllerBase<Customer>
     }
 
     [HttpGet("{customerId:int}/car")]
-    public IActionResult GetCars(int customerId)
+    public async Task<IActionResult> GetCarsAsync(int customerId)
     {
-        var carManager = _carManager as CarManager;
-        var cars = carManager.GetByCustomerId(customerId);
+        var cars = await (_carManager as CarManager).GetByCustomerIdAsync(customerId);
         return Ok(cars);
     }
 
     [HttpGet("{customerId:int}/cars/{carId:int}")]
-    public IActionResult GetCarById(int customerId, int carId)
+    public async Task<IActionResult> GetCarByIdAsync(int customerId, int carId)
     {
-        var carManager = _carManager as CarManager;
-        var car = carManager.GetById(carId);
+        var car = await (_carManager as CarManager).GetByIdAsync(carId);
         return car != null && car.OwnerId == customerId ? Ok(car) : NotFound();
     }
 
     [HttpPost("{customerId:int}/cars")]
-    public IActionResult CreateCar(int customerId, Car car)
+    public async Task<IActionResult> CreateCarAsync(int customerId, Car car)
     {
         car.OwnerId = customerId;
-        var carManager = _carManager as CarManager;
-        var isInserted = carManager.TryInsert(car, out int carId);
+        var isInserted = (_carManager as CarManager).TryInsert(car, out int carId);
         car.Id = carId;
-        return isInserted ? CreatedAtAction(nameof(Get), car) : BadRequest();
+        return isInserted ? CreatedAtAction(nameof(GetAsync), car) : BadRequest();
     }
 
     [HttpPut("{customerId:int}/cars/{carId:int}")]
-    public IActionResult UpdateCar(int customerId, int carId, Car car)
+    public async Task<IActionResult> UpdateCarAsync(int customerId, int carId, Car car)
     {
-        var carManager = _carManager as CarManager;
-        var isUpdated = carManager.TryUpdateCustomerCar(customerId, carId, car);
+        var isUpdated = await (_carManager as CarManager).TryUpdateCustomerCarAsync(customerId, carId, car);
         return isUpdated ? Ok(car) : BadRequest();
     }
 
     [HttpDelete("{customerId:int}/cars/{carId:int}")]
-    public IActionResult DeleteCar(int customerId, int carId)
+    public async Task<IActionResult> DeleteCarAsync(int customerId, int carId)
     {
-        var carManager = _carManager as CarManager;
-        var isDeleted = carManager.TryDeleteCustomerCar(customerId, carId);
+        var isDeleted = await (_carManager as CarManager).TryDeleteCustomerCarAsync(customerId, carId);
         return isDeleted ? NoContent() : BadRequest();
     }
 }

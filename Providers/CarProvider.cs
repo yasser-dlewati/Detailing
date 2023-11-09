@@ -41,14 +41,14 @@ public class CarProvider : BaseProvider<Car>
         return parameters;
     }
 
-    public IEnumerable<Car> GetByCustomerId(int customerId)
+    public async Task<IEnumerable<Car>> GetByCustomerIdAsync(int customerId)
     {
         var spParameters = new IDbDataParameter[]
         {
             new DatabaseParameter("UserId", customerId),
         };
 
-        var dt = _dbService.ExecuteQueryStoredProcedure(SelectByCustomerIdStoredProcedureName, spParameters);
+        var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByCustomerIdStoredProcedureName, spParameters);
         var cars = new List<Car>();
         for (var i = 0; i < dt.Rows.Count; i++)
         {
@@ -59,7 +59,7 @@ public class CarProvider : BaseProvider<Car>
         return cars;
     }
 
-    public bool TryDeleteCustomerCar(int customerId, int carId)
+    public async Task<bool> TryDeleteCustomerCarAsync(int customerId, int carId)
     {
         try
         {
@@ -68,7 +68,7 @@ public class CarProvider : BaseProvider<Car>
                 new DatabaseParameter("CarId", carId),
                 new DatabaseParameter("UserId", customerId),
             };
-            var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure(DeleteByIdStoredProcedureName, spParameters);
+            var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(DeleteByIdStoredProcedureName, spParameters);
             return rowsAffectd == 1;
 
         }
@@ -79,14 +79,14 @@ public class CarProvider : BaseProvider<Car>
         return false;
     }
 
-    public Car GetCarByJobId(int jobId)
+    public async Task<Car> GetCarByJobIdAsync(int jobId)
     {
         var spParameters = new IDbDataParameter[]
        {
             new DatabaseParameter("JobId", jobId),
        };
 
-        var dt = _dbService.ExecuteQueryStoredProcedure(SelectByJobIdStoredProcedureName, spParameters);
+        var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByJobIdStoredProcedureName, spParameters);
         if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
         {
             var car = _carMapper.MapToModel(dt.Rows[0]);

@@ -21,39 +21,39 @@ namespace Detailing.Controllers
         }
 
         [HttpGet]
-        public virtual IActionResult Get()
+        public virtual async Task<IActionResult> GetAsync()
         {
-            var modelsList = _manager.GetAll();
+            var modelsList = await _manager.GetAllAsync();
             return Ok(modelsList);
         }
 
         [HttpGet("{id:int}")]
-        public virtual IActionResult Get(int id)
+        public virtual async Task<IActionResult> GetAsync(int id)
         {
-            var model = _manager.GetById(id);
+            var model = await _manager.GetByIdAsync(id);
             return model != null ? Ok(model) : NotFound();
         }
 
 
         [HttpPost]
-        public virtual IActionResult Post([FromBody] T newModel)
+        public virtual async Task<IActionResult> PostAsync([FromBody] T newModel)
         {
             var isModelInserted = _manager.TryInsert(newModel, out var id);
             newModel.Id = id;
-            return isModelInserted ? CreatedAtAction(nameof(Get), newModel) : BadRequest();
+            return isModelInserted ? CreatedAtAction(nameof(GetAsync), newModel) : BadRequest();
         }
 
         [HttpPut]
-        public virtual IActionResult Put([FromBody] T modelToUpdate)
+        public virtual async Task<IActionResult> PutAsync([FromBody] T modelToUpdate)
         {
-            var isModelUpdated = _manager.TryUpdate(modelToUpdate);
+            var isModelUpdated = await _manager.TryUpdateAsync(modelToUpdate);
             return isModelUpdated ? Ok(modelToUpdate) : BadRequest();
         }
 
         [HttpDelete("{id:int}")]
-        public virtual IActionResult Delete(int id)
+        public virtual async Task<IActionResult> DeleteAsync(int id)
         {
-            var isModelDeleted = _manager.TryDelete(id);
+            var isModelDeleted = await _manager.TryDeleteAsync(id);
             return isModelDeleted ? NoContent() : BadRequest();
         }
     }

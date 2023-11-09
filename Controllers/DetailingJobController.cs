@@ -21,24 +21,24 @@ namespace Detailing.Controllers
         }
 
         [HttpGet("/{jobId:int}/Detailer")]
-        public IActionResult GetDetailer(int jobId)
+        public async Task<IActionResult> GetDetailerAsync(int jobId)
         {
-            var detailer = (_detailerManager as DetailerManager).GetJobDetailer(jobId);
+            var detailer = await (_detailerManager as DetailerManager).GetJobDetailerAsync(jobId);
             return detailer is null ? NotFound() : Ok(detailer);
         }
 
-        
+
         [HttpGet("/{jobId:int}/Car")]
-        public IActionResult GetCar(int jobId)
+        public async Task<IActionResult> GetCarAsync(int jobId)
         {
-            var detailer = (_carManager as CarManager).GetCarByJobId(jobId);
+            var detailer = await (_carManager as CarManager).GetCarByJobIdAsync(jobId);
             return detailer is null ? NotFound() : Ok(detailer);
         }
 
         [HttpGet("/{jobId:int}/Business")]
-        public IActionResult GetBusiness(int jobId)
+        public async Task<IActionResult> GetBusiness(int jobId)
         {
-            var business = (_businessManager as BusinessManager).GetBusinessByJobId(jobId);
+            var business = await (_businessManager as BusinessManager).GetBusinessByJobIdAsync(jobId);
             return business is null ? NotFound() : Ok(business);
         }
     }

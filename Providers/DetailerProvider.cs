@@ -58,14 +58,14 @@ public class DetailerProvider : BaseProvider<Detailer>
         return dbParamerters;
     }
 
-    public IList<Detailer> GetCrew(int businessId)
+    public async Task<IList<Detailer>> GetCrewAsync(int businessId)
     {
         var spParameters = new IDbDataParameter[]
        {
             new DatabaseParameter("BusinessId", businessId),
        };
 
-        var dt = _dbService.ExecuteQueryStoredProcedure(SelectBusinessCrewStoredProcedureName, spParameters);
+        var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectBusinessCrewStoredProcedureName, spParameters);
         var detailers = new List<Detailer>();
         for (var i = 0; i < dt.Rows.Count; i++)
         {
@@ -86,14 +86,14 @@ public class DetailerProvider : BaseProvider<Detailer>
         return parameters;
     }
 
-    public Detailer GetJobDetailer(int jobId)
+    public async Task<Detailer> GetJobDetailerAsync(int jobId)
     {
         var spParameters = new IDbDataParameter[]
        {
             new DatabaseParameter("JobId", jobId),
        };
 
-        var dt = _dbService.ExecuteQueryStoredProcedure(SelectJobDetailerStoredProcedureName, spParameters);
+        var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectJobDetailerStoredProcedureName, spParameters);
         if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
         {
             var detailer = _dataMapper.MapToModel(dt.Rows[0]);

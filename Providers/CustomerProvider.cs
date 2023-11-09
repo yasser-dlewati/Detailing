@@ -25,9 +25,9 @@ public class CustomerProvider : BaseProvider<Customer>
 
     public override string DeleteByIdStoredProcedureName => "sp_User_delete_Customer_by_Id";
 
-    public override IEnumerable<Customer> GetAll()
+    public override async Task<IEnumerable<Customer>> GetAllAsync()
     {
-        var dt = _dbService.ExecuteQueryStoredProcedure(SelectAllStoredProcedureName);
+        var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectAllStoredProcedureName);
         var models = new List<Customer>();
         for (var i = 0; i < dt.Rows.Count; i++)
         {
@@ -47,14 +47,14 @@ public class CustomerProvider : BaseProvider<Customer>
         return models;
     }
 
-    public override Customer GetById(int id)
+    public override async Task<Customer> GetByIdAsync(int id)
     {
         var spParameters = new IDbDataParameter[]
         {
             new DatabaseParameter("Id", id),
         };
 
-        var dt = _dbService.ExecuteQueryStoredProcedure(SelectByIdStoredProcedureName, spParameters);
+        var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByIdStoredProcedureName, spParameters);
         if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
         {
             var model = _mapper.MapToModel(dt.Rows[0]);
@@ -88,6 +88,10 @@ public class CustomerProvider : BaseProvider<Customer>
         new DatabaseParameter("ZipCode", data.Address.ZipCode),
         new DatabaseParameter("StateId", data.Address.StateId),
         new DatabaseParameter("CountryId", data.Address.CountryId),
+        new DatabaseParameter("Longitude", data.Address.Longitude),
+        new DatabaseParameter("Latitude", data.Address.Latitude),
+        new DatabaseParameter("Email", data.Email),
+        new DatabaseParameter("Password", data.Password),
         };
 
         return dbParamerters;
@@ -103,7 +107,7 @@ public class CustomerProvider : BaseProvider<Customer>
         return parameters;
     }
 
-    public override bool TryDelete(int id)
+    public override async Task<bool> TryDeleteAsync(int id)
     {
         try
         {
@@ -113,7 +117,7 @@ public class CustomerProvider : BaseProvider<Customer>
                 {
                         new DatabaseParameter("Id", id),
                 };
-                var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure(DeleteByIdStoredProcedureName, spParameters);
+                var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(DeleteByIdStoredProcedureName, spParameters);
                 return rowsAffectd > 1;
             }
         }
@@ -129,7 +133,7 @@ public class CustomerProvider : BaseProvider<Customer>
         try
         {
             var spParameters = GetDbParameters(data);
-            insertedId = _dbService.ExecuteNonQueryStoredProcedure(InsertStoredProcedureName, spParameters);
+            insertedId = _dbService.ExecuteNonQueryStoredProcedureAsync(InsertStoredProcedureName, spParameters).Result;
             return insertedId > 0;
         }
         catch (Exception ex)
@@ -141,12 +145,12 @@ public class CustomerProvider : BaseProvider<Customer>
 
     }
 
-    public override bool TryUpdate(Customer data)
+    public override async Task<bool> TryUpdateAsync(Customer data)
     {
         try
         {
             var spParameters = GetDbParameters(data);
-            var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure(UpdateStoredProcedureName, spParameters);
+            var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(UpdateStoredProcedureName, spParameters);
             return rowsAffectd == 1;
         }
         catch (Exception ex)

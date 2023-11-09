@@ -12,15 +12,15 @@ public class DetailerManager : BaseManager<Detailer>
         _provider = provider;
     }
 
-    public IEnumerable<Detailer> GetCrew(int businessId){
-        DetailerProvider provider = _provider as DetailerProvider;
-        var crew = provider.GetCrew(businessId);
+    public async Task<IEnumerable<Detailer>> GetCrewAsync(int businessId)
+    {
+        var crew = await (_provider as DetailerProvider).GetCrewAsync(businessId);
         return crew;
     }
 
-    public Detailer GetJobDetailer(int jobId){
-        DetailerProvider provider = _provider as DetailerProvider;
-        var detailer = provider.GetJobDetailer(jobId);
+    public async Task<Detailer> GetJobDetailerAsync(int jobId)
+    {
+        var detailer = await (_provider as DetailerProvider).GetJobDetailerAsync(jobId);
         return detailer;
     }
 }

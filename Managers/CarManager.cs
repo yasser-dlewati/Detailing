@@ -13,32 +13,30 @@ public class CarManager : BaseManager<Car>
         _provider = provider;
     }
 
-    public IEnumerable<Car> GetByCustomerId(int customerId)
+    public async Task<IEnumerable<Car>> GetByCustomerIdAsync(int customerId)
     {
-        var provider = _provider as CarProvider;
-        var cars = provider.GetByCustomerId(customerId);
+        var cars = await (_provider as CarProvider).GetByCustomerIdAsync(customerId);
         return cars;
     }
 
-    public Car GetCarByJobId(int jobId)
+    public async Task<Car> GetCarByJobIdAsync(int jobId)
     {
-        var car = (_provider as CarProvider).GetCarByJobId(jobId);
+        var car = await (_provider as CarProvider).GetCarByJobIdAsync(jobId);
         return car;
     }
 
-    public bool TryDeleteCustomerCar(int customerId, int carId)
+    public async Task<bool> TryDeleteCustomerCarAsync(int customerId, int carId)
     {
-        var provider = _provider as CarProvider;
-        var isDeleted = provider.TryDeleteCustomerCar(customerId, carId);
+        var isDeleted = await (_provider as CarProvider).TryDeleteCustomerCarAsync(customerId, carId);
         return isDeleted;
     }
 
-    public bool TryUpdateCustomerCar(int customerId, int carId, Car car)
+    public async Task<bool> TryUpdateCustomerCarAsync(int customerId, int carId, Car car)
     {
         car.Id = carId;
         car.OwnerId = customerId;
         var provider = _provider as CarProvider;
-        var isUpdated = provider.TryUpdate(car);
+        var isUpdated = await provider.TryUpdateAsync(car);
         return isUpdated;
     }
 }

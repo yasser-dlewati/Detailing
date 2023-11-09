@@ -12,9 +12,9 @@ public class BusinessManager : BaseManager<Business>
         _provider = provider;
     }
 
-    public Business GetBusinessByJobId(int jobId)
+    public async Task<Business> GetBusinessByJobIdAsync(int jobId)
     {
-        var business = (_provider as BusinessProvider).GetBusinessByJobId(jobId);
+        var business = await (_provider as BusinessProvider).GetBusinessByJobIdAsync(jobId);
         return business;
     }
 }

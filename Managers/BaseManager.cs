@@ -11,19 +11,19 @@ namespace Detailing.Managers
             _provider = provider;
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return _provider.GetAll();
+            return await _provider.GetAllAsync();
         }
 
-        public T GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            return _provider.GetById(id);
+            return await _provider.GetByIdAsync(id);
         }
 
-        public bool TryDelete(int id)
+        public async Task<bool> TryDeleteAsync(int id)
         {
-            return _provider.TryDelete(id);
+            return await _provider.TryDeleteAsync(id);
         }
 
         public bool TryInsert(T data, out int insertedId)
@@ -31,9 +31,9 @@ namespace Detailing.Managers
             return _provider.TryInsert(data, out insertedId);
         }
 
-        public bool TryUpdate(T data)
+        public async Task<bool> TryUpdateAsync(T data)
         {
-            return _provider.TryUpdate(data);
+            return await _provider.TryUpdateAsync(data);
         }
     }
 }

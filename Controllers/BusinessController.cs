@@ -15,10 +15,9 @@ public class BusinessController : DetailingControllerBase<Business>
 
     [HttpGet]
     [Route("{businessId}/crew")]
-    public IActionResult GetCrew(int businessId)
+    public async Task<IActionResult> GetCrewAsync(int businessId)
     {
-        DetailerManager detailerManager = _detailerManager as DetailerManager;
-        var crew = detailerManager.GetCrew(businessId);
+        var crew = await (_detailerManager as DetailerManager).GetCrewAsync(businessId);
         return Ok(crew);
     }
 }

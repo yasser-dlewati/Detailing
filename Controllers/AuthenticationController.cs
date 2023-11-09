@@ -24,11 +24,11 @@ namespace detailing.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(UserLogin userLogin)
+        public async Task<IActionResult> LoginAsync(UserLogin userLogin)
         {
             if (userLogin != null && !string.IsNullOrEmpty(userLogin.Email) && !string.IsNullOrEmpty(userLogin.Password))
             {
-                var user = UserProvider.GetByLoginCredentials(userLogin);
+                var user = await UserProvider.GetByLoginCredentialsAsync(userLogin);
                 if (user != null)
                 {
                     var token = _authService.GenerateToken(user);

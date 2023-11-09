@@ -63,14 +63,14 @@ namespace Detailing.Providers
             return parameters;
         }
 
-        public Business GetBusinessByJobId(int jobId)
+        public async Task<Business> GetBusinessByJobIdAsync(int jobId)
         {
             var parameter = new IDbDataParameter[]
             {
                 new DatabaseParameter("JobId", jobId),
             };
 
-            var dt = _dbService.ExecuteQueryStoredProcedure(SelectByJobIdStoredProcedureName, parameter);
+            var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByJobIdStoredProcedureName, parameter);
             if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
             {
                 var business = _businessMapper.MapToModel(dt.Rows[0]);

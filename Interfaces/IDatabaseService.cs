@@ -6,8 +6,8 @@ namespace Detailing.Interfaces
     {
         string ConnectionString { get; set; }
 
-        DataTable ExecuteQueryStoredProcedure(string storedProcedureName, IDbDataParameter[]? parameters = null);
+        Task<DataTable> ExecuteQueryStoredProcedureAsync(string storedProcedureName, IDbDataParameter[]? parameters = null);
 
-        int ExecuteNonQueryStoredProcedure(string storedProcedureName, IDbDataParameter[] parameters);
+        Task<int> ExecuteNonQueryStoredProcedureAsync(string storedProcedureName, IDbDataParameter[] parameters);
     }
 }

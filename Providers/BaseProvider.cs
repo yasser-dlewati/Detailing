@@ -26,9 +26,9 @@ namespace Detailing.Providers
             _dataMapper = dataMapper;
         }
 
-        public virtual IEnumerable<T> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-            var dt = _dbService.ExecuteQueryStoredProcedure(SelectAllStoredProcedureName);
+            var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectAllStoredProcedureName);
             var models = new List<T>();
             for (var i = 0; i < dt.Rows.Count; i++)
             {
@@ -40,12 +40,12 @@ namespace Detailing.Providers
 
         public abstract IDbDataParameter[] GetIdDataParameter(int id);
 
-        public virtual T GetById(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             try
             {
                 var idParameter = GetIdDataParameter(id);
-                var dt = _dbService.ExecuteQueryStoredProcedure(SelectByIdStoredProcedureName, idParameter);
+                var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByIdStoredProcedureName, idParameter);
                 if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
                 {
                     var model = _dataMapper.MapToModel(dt.Rows[0]);
@@ -60,12 +60,12 @@ namespace Detailing.Providers
             return default(T);
         }
 
-        public virtual bool TryDelete(int id)
+        public virtual async Task<bool> TryDeleteAsync(int id)
         {
             try
             {
                 var idParameter = GetIdDataParameter(id);
-                var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure(DeleteByIdStoredProcedureName, idParameter);
+                var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(DeleteByIdStoredProcedureName, idParameter);
                 return rowsAffectd == 1;
             }
             catch (Exception)
@@ -94,7 +94,7 @@ namespace Detailing.Providers
             try
             {
                 var spParameters = GetDbParameters(model);
-                insertedId = _dbService.ExecuteNonQueryStoredProcedure(InsertStoredProcedureName, spParameters);
+                insertedId = _dbService.ExecuteNonQueryStoredProcedureAsync(InsertStoredProcedureName, spParameters).Result;
                 return insertedId > 0;
             }
             catch (Exception ex)
@@ -105,12 +105,12 @@ namespace Detailing.Providers
             return false;
         }
 
-        public virtual bool TryUpdate(T model)
+        public virtual async Task<bool> TryUpdateAsync(T model)
         {
             try
             {
                 var spParameters = GetDbParameters(model);
-                var rowsAffectd = _dbService.ExecuteNonQueryStoredProcedure(UpdateStoredProcedureName, spParameters);
+                var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(UpdateStoredProcedureName, spParameters);
                 return rowsAffectd == 1;
             }
             catch (Exception ex)

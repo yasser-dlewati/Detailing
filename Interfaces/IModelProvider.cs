@@ -1,29 +1,27 @@
 using System.Data;
 
-namespace Detailing.Interfaces
+namespace Detailing.Interfaces;
+public interface IModelProvider<T>
 {
-    public interface IModelProvider<T>
-    {
-        abstract string SelectAllStoredProcedureName {get;}
+    abstract string SelectAllStoredProcedureName { get; }
 
-        abstract string SelectByIdStoredProcedureName {get;}
+    abstract string SelectByIdStoredProcedureName { get; }
 
-        abstract string InsertStoredProcedureName {get;}
+    abstract string InsertStoredProcedureName { get; }
 
-        abstract string UpdateStoredProcedureName {get;}
+    abstract string UpdateStoredProcedureName { get; }
 
-        abstract string DeleteByIdStoredProcedureName {get;}
+    abstract string DeleteByIdStoredProcedureName { get; }
 
-        abstract IDbDataParameter[] GetDbParameters(T data);
+    abstract IDbDataParameter[] GetDbParameters(T data);
 
-        IEnumerable<T> GetAll();
+    Task<IEnumerable<T>> GetAllAsync();
 
-        T GetById(int id);
+    Task<T> GetByIdAsync(int id);
 
-        bool TryInsert(T data, out int insertedId);
+    bool TryInsert(T data, out int insertedId);
 
-        bool TryUpdate(T data);
+    Task<bool> TryUpdateAsync(T data);
 
-        bool TryDelete(int id);
-    }
+    Task<bool> TryDeleteAsync(int id);
 }

@@ -1,6 +1,5 @@
 using System.Data;
 using Detailing.Interfaces;
-using System.Data.Common;
 
 namespace Detailing.Services
 {
@@ -12,15 +11,15 @@ namespace Detailing.Services
         {
             _databaseService = databaseService;
         }
-        
-        public int ExecuteNonQueryStoredProcedure(string storedProcedureName, IDbDataParameter[] parameters)
+
+        public async Task<int> ExecuteNonQueryStoredProcedureAsync(string storedProcedureName, IDbDataParameter[] parameters)
         {
-           return _databaseService.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
+            return await _databaseService.ExecuteNonQueryStoredProcedureAsync(storedProcedureName, parameters);
         }
-        
-        public DataTable ExecuteQueryStoredProcedure(string storedProcedureName, IDbDataParameter[]? parameters = null)
+
+        public async Task<DataTable> ExecuteQueryStoredProcedureAsync(string storedProcedureName, IDbDataParameter[]? parameters = null)
         {
-                return _databaseService.ExecuteQueryStoredProcedure(storedProcedureName, parameters);
+            return await _databaseService.ExecuteQueryStoredProcedureAsync(storedProcedureName, parameters);
         }
-   }
+    }
 }

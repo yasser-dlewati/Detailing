@@ -49,7 +49,7 @@ namespace Detailing.Providers
             return dbParamerters;
         }
 
-        public User GetByLoginCredentials(UserLogin userLogin)
+        public async Task<User> GetByLoginCredentialsAsync(UserLogin userLogin)
         {
 
             try
@@ -62,7 +62,7 @@ namespace Detailing.Providers
                         new DatabaseParameter("password", userLogin.Password),
                     };
 
-                    var dt = _dbService.ExecuteQueryStoredProcedure(SelectByEmaillPasswordStoredProcedureName, spParameters);
+                    var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByEmaillPasswordStoredProcedureName, spParameters);
                     var model = _dataMapper.MapToModel(dt.Rows[0]);
                     return model;
                 }
