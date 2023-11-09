@@ -63,7 +63,7 @@ namespace Detailing.Providers
             return parameters;
         }
 
-        internal Business GetBusinessByJobId(int jobId)
+        public Business GetBusinessByJobId(int jobId)
         {
             var parameter = new IDbDataParameter[]
             {
