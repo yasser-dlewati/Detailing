@@ -6,8 +6,12 @@ namespace Detailing.Providers
 {
     public class BusinessProvider : BaseProvider<Business>
     {
+        private readonly IDatabaseService _dbService;
+        private readonly IDataMapper<Business> _businessMapper;
         public BusinessProvider(IDatabaseService dbService, IDataMapper<Business> businessMapper) : base(dbService, businessMapper)
         {
+            _dbService = dbService;
+            _businessMapper = businessMapper;
         }
 
         public override string SelectAllStoredProcedureName => "sp_Business_select_all";
@@ -19,6 +23,8 @@ namespace Detailing.Providers
         public override string UpdateStoredProcedureName => "sp_Business_update";
 
         public override string DeleteByIdStoredProcedureName => "sp_Business_delete_by_Id";
+        
+        public string SelectByJobIdStoredProcedureName => "sp_Business_select_by_JobId";
 
         public override IDbDataParameter[] GetDbParameters(Business business)
         {
@@ -55,6 +61,23 @@ namespace Detailing.Providers
             };
 
             return parameters;
+        }
+
+        internal Business GetBusinessByJobId(int jobId)
+        {
+            var parameter = new IDbDataParameter[]
+            {
+                new DatabaseParameter("JobId", jobId),
+            };
+
+            var dt = _dbService.ExecuteQueryStoredProcedure(SelectByJobIdStoredProcedureName, parameter);
+            if(dt!=null && dt.Rows!=null && dt.Rows.Count>0)
+            {
+                var business = _businessMapper.MapToModel(dt.Rows[0]);
+                return business;
+            }
+
+            return null;
         }
     }
 }

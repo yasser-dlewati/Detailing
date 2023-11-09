@@ -11,10 +11,13 @@ namespace Detailing.Controllers
     {
         private readonly IModelManager<Detailer> _detailerManager;
         private readonly IModelManager<Car> _carManager;
+        private readonly IModelManager<Business> _businessManager;
+
         public DetailingJobController(IServiceProvider provider) : base(provider)
         {
             _detailerManager = provider.GetRequiredService<IModelManager<Detailer>>();
             _carManager = provider.GetRequiredService<IModelManager<Car>>();
+            _businessManager = provider.GetRequiredService<IModelManager<Business>>();
         }
 
         [HttpGet("/{jobId:int}/Detailer")]
@@ -30,6 +33,13 @@ namespace Detailing.Controllers
         {
             var detailer = (_carManager as CarManager).GetCarByJobId(jobId);
             return detailer is null ? NotFound() : Ok(detailer);
+        }
+
+        [HttpGet("/{jobId:int}/Business")]
+        public IActionResult GetBusiness(int jobId)
+        {
+            var business = (_businessManager as BusinessManager).GetBusinessByJobId(jobId);
+            return business is null ? NotFound() : Ok(business);
         }
     }
 }
