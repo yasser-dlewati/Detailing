@@ -46,8 +46,11 @@ namespace Detailing.Providers
             {
                 var idParameter = GetIdDataParameter(id);
                 var dt = _dbService.ExecuteQueryStoredProcedure(SelectByIdStoredProcedureName, idParameter);
-                var model = _dataMapper.MapToModel(dt.Rows[0]);
-                return model;
+                if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
+                {
+                    var model = _dataMapper.MapToModel(dt.Rows[0]);
+                    return model;
+                }
             }
             catch (Exception)
             {
