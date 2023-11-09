@@ -20,14 +20,20 @@ public class CarManager : BaseManager<Car>
         return cars;
     }
 
-    internal bool TryDeleteCustomerCar(int customerId, int carId)
+    public Car GetCarByJobId(int jobId)
+    {
+        var car = (_provider as CarProvider).GetCarByJobId(jobId);
+        return car;
+    }
+
+    public bool TryDeleteCustomerCar(int customerId, int carId)
     {
         var provider = _provider as CarProvider;
         var isDeleted = provider.TryDeleteCustomerCar(customerId, carId);
         return isDeleted;
     }
 
-    internal bool TryUpdateCustomerCar(int customerId, int carId, Car car)
+    public bool TryUpdateCustomerCar(int customerId, int carId, Car car)
     {
         car.Id = carId;
         car.OwnerId = customerId;

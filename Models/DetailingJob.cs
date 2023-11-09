@@ -12,6 +12,8 @@ namespace Detailing.Models
 
         public Car DetailedCar { get; set; }
 
+        public Business Business { get; set; }
+
         public DateTime DetailingTime { get; set; }
 
         public bool DetailsExterior { get; set; }
