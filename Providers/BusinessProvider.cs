@@ -23,7 +23,7 @@ namespace Detailing.Providers
         public override string UpdateStoredProcedureName => "sp_Business_update";
 
         public override string DeleteByIdStoredProcedureName => "sp_Business_delete_by_Id";
-        
+
         public string SelectByJobIdStoredProcedureName => "sp_Business_select_by_JobId";
 
         public override IDbDataParameter[] GetDbParameters(Business business)
@@ -71,7 +71,7 @@ namespace Detailing.Providers
             };
 
             var dt = _dbService.ExecuteQueryStoredProcedure(SelectByJobIdStoredProcedureName, parameter);
-            if(dt!=null && dt.Rows!=null && dt.Rows.Count>0)
+            if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
             {
                 var business = _businessMapper.MapToModel(dt.Rows[0]);
                 return business;

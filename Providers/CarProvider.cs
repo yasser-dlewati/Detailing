@@ -81,13 +81,18 @@ public class CarProvider : BaseProvider<Car>
 
     public Car GetCarByJobId(int jobId)
     {
-         var spParameters = new IDbDataParameter[]
-        {
+        var spParameters = new IDbDataParameter[]
+       {
             new DatabaseParameter("JobId", jobId),
-        };
+       };
 
         var dt = _dbService.ExecuteQueryStoredProcedure(SelectByJobIdStoredProcedureName, spParameters);
-        var car = _carMapper.MapToModel(dt.Rows[0]);
-        return car;
+        if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
+        {
+            var car = _carMapper.MapToModel(dt.Rows[0]);
+            return car;
+        }
+
+        return null;
     }
 }

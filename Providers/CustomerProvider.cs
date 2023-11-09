@@ -55,15 +55,19 @@ public class CustomerProvider : BaseProvider<Customer>
         };
 
         var dt = _dbService.ExecuteQueryStoredProcedure(SelectByIdStoredProcedureName, spParameters);
-        var model = _mapper.MapToModel(dt.Rows[0]);
-        for (var i = 1; i < dt.Rows.Count; i++)
+        if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
         {
+            var model = _mapper.MapToModel(dt.Rows[0]);
+            for (var i = 1; i < dt.Rows.Count; i++)
+            {
+                var currentRecord = _mapper.MapToModel(dt.Rows[i]);
+                (model.Cars as List<Car>).Add(currentRecord.Cars.ElementAt(0));
+            }
 
-            var currentRecord = _mapper.MapToModel(dt.Rows[i]);
-            (model.Cars as List<Car>).Add(currentRecord.Cars.ElementAt(0));
+            return model;
         }
 
-        return model;
+        return null;
     }
 
     public override IDbDataParameter[] GetDbParameters(Customer data)
