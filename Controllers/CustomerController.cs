@@ -34,8 +34,7 @@ public class CustomerController : DetailingControllerBase<Customer>
     public async Task<IActionResult> CreateCarAsync(int customerId, Car car)
     {
         car.OwnerId = customerId;
-        var isInserted = (_carManager as CarManager).TryInsert(car, out int carId);
-        car.Id = carId;
+        var isInserted = (_carManager as CarManager).TryInsert(ref car);
         return isInserted ? CreatedAtAction(nameof(GetAsync), car) : BadRequest();
     }
 

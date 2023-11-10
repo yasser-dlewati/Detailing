@@ -63,7 +63,16 @@ namespace Detailing.Services
                         using (var reader = await command.ExecuteReaderAsync())
                         {
                             Console.WriteLine("Filling Data table..");
-                            dtResult.Load(reader);
+                            do 
+                            {
+                                if(reader.FieldCount >1)
+                                {
+                                    dtResult.Load(reader);
+                                    break;
+                                }
+                            }
+                            while(reader.NextResult());
+                            
                             Console.WriteLine($"{storedProcedureName} executed and returned {dtResult.Rows.Count} rows");
                         }
                     }

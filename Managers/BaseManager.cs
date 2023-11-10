@@ -26,9 +26,9 @@ namespace Detailing.Managers
             return await _provider.TryDeleteAsync(id);
         }
 
-        public bool TryInsert(T data, out int insertedId)
+        public bool TryInsert(ref T data)
         {
-            return _provider.TryInsert(data, out insertedId);
+            return _provider.TryInsert(ref data);
         }
 
         public async Task<bool> TryUpdateAsync(T data)

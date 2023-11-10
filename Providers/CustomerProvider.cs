@@ -128,19 +128,23 @@ public class CustomerProvider : BaseProvider<Customer>
         return false;
     }
 
-    public override bool TryInsert(Customer data, out int insertedId)
+    public override bool TryInsert(ref Customer data)
     {
         try
         {
             var spParameters = GetDbParameters(data);
-            insertedId = _dbService.ExecuteNonQueryStoredProcedureAsync(InsertStoredProcedureName, spParameters).Result;
-            return insertedId > 0;
+            var dt = _dbService.ExecuteQueryStoredProcedureAsync(InsertStoredProcedureName, spParameters).Result;
+            if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
+            {
+                data = _mapper.MapToModel(dt.Rows[0]);
+                return true;
+            }
         }
         catch (Exception ex)
         {
+            Console.WriteLine(ex.Message);
         }
 
-        insertedId = 0;
         return false;
 
     }

@@ -38,8 +38,7 @@ namespace Detailing.Controllers
         [HttpPost]
         public virtual async Task<IActionResult> PostAsync([FromBody] T newModel)
         {
-            var isModelInserted = _manager.TryInsert(newModel, out var id);
-            newModel.Id = id;
+            var isModelInserted = _manager.TryInsert(ref newModel);
             return isModelInserted ? CreatedAtAction(nameof(GetAsync), newModel) : BadRequest();
         }
 

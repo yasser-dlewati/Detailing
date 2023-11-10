@@ -19,7 +19,7 @@ public interface IModelProvider<T>
 
     Task<T> GetByIdAsync(int id);
 
-    bool TryInsert(T data, out int insertedId);
+    bool TryInsert(ref T data);
 
     Task<bool> TryUpdateAsync(T data);
 

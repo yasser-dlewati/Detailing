@@ -10,7 +10,7 @@ namespace Detailing.Mappers
         {
             var customer = new Customer
             {
-                Id = int.Parse(row["UserId"].ToString()),
+                Id = int.Parse(row["Id"].ToString()),
                 FirstName = row["FirstName"].ToString(),
                 MiddleName = row["MiddleName"].ToString(),
                 LastName = row["LastName"].ToString(),
@@ -24,20 +24,22 @@ namespace Detailing.Mappers
                 CreatedAt = DateTime.Parse(row["CreationDate"].ToString()),
                 Cars = new List<Car>(),
             };
-
-            var hasDate = DateTime.TryParse(row["LastDetailingDate"].ToString(), out var lastTimeDetailed);
-            var car = new Car
+            if (!string.IsNullOrEmpty(row["CarId"].ToString()))
             {
-                Id = int.Parse(row["CarId"].ToString()),
-                Manufacturer = row["Manufacturer"].ToString(),
-                Model = row["Model"].ToString(),
-                Year = row["Year"].ToString(),
-                Color = row["Color"].ToString(),
-                OwnerId = customer.Id,
-            };
+                var hasDate = DateTime.TryParse(row["LastDetailingDate"].ToString(), out var lastTimeDetailed);
+                var car = new Car
+                {
+                    Id = int.Parse(row["CarId"].ToString()),
+                    Manufacturer = row["Manufacturer"].ToString(),
+                    Model = row["Model"].ToString(),
+                    Year = row["Year"].ToString(),
+                    Color = row["Color"].ToString(),
+                    OwnerId = customer.Id,
+                };
 
-            car.LastDetailed = hasDate ? lastTimeDetailed : null;
-            (customer.Cars as List<Car>).Add(car);
+                car.LastDetailed = hasDate ? lastTimeDetailed : null;
+                (customer.Cars as List<Car>).Add(car);
+            }
             return customer;
         }
     }

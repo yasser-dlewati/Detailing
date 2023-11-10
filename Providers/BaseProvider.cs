@@ -89,19 +89,22 @@ namespace Detailing.Providers
             return dbParamerters;
         }
 
-        public virtual bool TryInsert(T model, out int insertedId)
+        public virtual bool TryInsert(ref T model)
         {
             try
             {
                 var spParameters = GetDbParameters(model);
-                insertedId = _dbService.ExecuteNonQueryStoredProcedureAsync(InsertStoredProcedureName, spParameters).Result;
-                return insertedId > 0;
+                var dt = _dbService.ExecuteQueryStoredProcedureAsync(InsertStoredProcedureName, spParameters).Result;
+                if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
+                {
+                    model = _dataMapper.MapToModel(dt.Rows[0]);
+                    return true;
+                }
             }
             catch (Exception ex)
             {
             }
 
-            insertedId = 0;
             return false;
         }
 
