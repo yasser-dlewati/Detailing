@@ -12,6 +12,7 @@ public class BusinessMapper : IDataMapper<Business>
         var business = new Business
         {
             Id = Convert.ToInt32(row["BusinessId"]),
+            BusinessName = row["BusinessName"].ToString(),
             Address = address,
             Description = row["Description"].ToString(),
             Established = DateTime.Parse(row["Established"].ToString()),
@@ -19,6 +20,7 @@ public class BusinessMapper : IDataMapper<Business>
             OwnerId = Convert.ToInt32(row["DetailerId"]),
             SocialMedia = row["SocialMedia"].ToString(),
             Website = row["Website"].ToString(),
+            Email = row["Email"].ToString(),
         };
 
         return business;

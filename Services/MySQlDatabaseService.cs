@@ -28,7 +28,7 @@ namespace Detailing.Services
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Exception thrown: {ex.Message}");
+                        Console.WriteLine($"Exception thrown while executing {storedProcedureName}: {ex.Message}");
                     }
                     finally
                     {
@@ -78,7 +78,7 @@ namespace Detailing.Services
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Exception thrown: {ex.Message}\n {ex.StackTrace}");
+                        Console.WriteLine($"Exception thrown while executing {storedProcedureName}: {ex.Message}\n {ex.StackTrace}");
                     }
                     finally
                     {
