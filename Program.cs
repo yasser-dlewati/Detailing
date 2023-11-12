@@ -10,6 +10,7 @@ using Detailing.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,7 +72,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>{
+    options.AddPolicy("CarOwner", policy => 
+    {
+        policy.RequireClaim(ClaimTypes.Email);
+    });
+});
 
 // Registering Services
 builder.Services.AddSingleton<IDatabaseService, MySqlDatabaseService>();
