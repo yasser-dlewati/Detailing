@@ -15,19 +15,19 @@ public class CarProvider : BaseProvider<Car>
         _carMapper = carMapper;
     }
 
-    public override string SelectAllStoredProcedureName => "sp_car_select_all";
+    public override string SelectAllStoredProcedureName => "sp_Car_select_all";
 
-    public override string SelectByIdStoredProcedureName => "sp_car_select_by_Id";
+    public override string SelectByIdStoredProcedureName => "sp_Car_select_by_Id";
 
-    public override string InsertStoredProcedureName => "sp_car_insert";
+    public override string InsertStoredProcedureName => "sp_Car_insert";
 
-    public override string UpdateStoredProcedureName => "sp_car_update";
+    public override string UpdateStoredProcedureName => "sp_Car_update";
 
-    public override string DeleteByIdStoredProcedureName => "sp_car_delete_by_Id";
+    public override string DeleteByIdStoredProcedureName => "sp_Car_delete_by_Id";
 
     public string SelectByCustomerIdStoredProcedureName = "sp_Car_select_by_UserId";
 
-    public string DeleteByCustomerIdStoredProcedureName = "sp_car_delete_by_Id_UserId";
+    public string DeleteByCustomerIdStoredProcedureName = "sp_Car_delete_by_Id_UserId";
 
     public string SelectByJobIdStoredProcedureName = "sp_Car_select_by_JobId";
 
