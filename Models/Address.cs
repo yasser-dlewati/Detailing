@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Detailing.Interfaces;
 
 namespace Detailing.Models
@@ -20,11 +21,9 @@ namespace Detailing.Models
         [Column("City")]
         public string City { get; set; }
 
-        [Column("StateId")]
-        public int StateId { get; set; }
+        public State State { get; set; }
 
-        [Column("CountryId")]
-        public int CountryId { get; set; }
+        public Country Country { get; set; }
 
         [Column("Longitude")]
         public double Longitude {get; set;}

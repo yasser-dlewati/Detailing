@@ -16,8 +16,16 @@ public class AddressMapper : IDataMapper<Address>
             Line2 = row["Line2"].ToString(),
             ZipCode = row["ZipCode"].ToString(),
             City = row["City"].ToString(),
-            StateId = Convert.ToInt32(row["StateId"]),
-            CountryId = Convert.ToInt32(row["CountryId"]),
+            State = new State 
+            {
+                Id = Convert.ToInt32(row["StateId"]),
+                Name = row["StateName"].ToString(),
+            },
+            Country = new Country 
+            {
+                Id = Convert.ToInt32(row["CountryId"]),
+                Name = row["CountryName"].ToString(),
+            },
             Longitude = Convert.ToDouble(row["Longitude"]),
             Latitude = Convert.ToDouble(row["Latitude"]),            
         };
