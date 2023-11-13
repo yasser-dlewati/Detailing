@@ -42,8 +42,8 @@ namespace Detailing.Providers
                 new DatabaseParameter("Line2", user.Address.Line2),
                 new DatabaseParameter("City", user.Address.City),
                 new DatabaseParameter("ZipCode", user.Address.ZipCode),
-                new DatabaseParameter("StateId", user.Address.StateId),
-                new DatabaseParameter("CountryId", user.Address.CountryId),
+                new DatabaseParameter("StateId", user.Address.State.Id),
+                new DatabaseParameter("CountryId", user.Address.Country.Id),
                 };
 
             return dbParamerters;

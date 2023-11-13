@@ -10,7 +10,7 @@ namespace Detailing.Mappers
         {
             var customer = new Customer
             {
-                Id = int.Parse(row["Id"].ToString()),
+                Id = int.Parse(row["UserId"].ToString()),
                 FirstName = row["FirstName"].ToString(),
                 MiddleName = row["MiddleName"].ToString(),
                 LastName = row["LastName"].ToString(),
@@ -20,10 +20,27 @@ namespace Detailing.Mappers
                 Address = new Address
                 {
                     Id = int.Parse(row["AddressId"].ToString()),
+                    Line1 = row["Line1"].ToString(),
+                    Line2 = row["Line2"].ToString(),
+                    City = row["City"].ToString(),
+                    State = new State
+                    {
+                        Id = int.Parse(row["StateId"].ToString()),
+                        Name = row["StateName"].ToString(),
+                    },
+                    Country = new Country
+                    {
+                        Id = int.Parse(row["CountryId"].ToString()),
+                        Name = row["CountryName"].ToString(),
+                    },
+                    Longitude = double.Parse(row["Longitude"].ToString()),
+                    Latitude = double.Parse(row["Latitude"].ToString()),
+
                 },
                 CreatedAt = DateTime.Parse(row["CreationDate"].ToString()),
                 Cars = new List<Car>(),
             };
+
             if (!string.IsNullOrEmpty(row["CarId"].ToString()))
             {
                 var hasDate = DateTime.TryParse(row["LastDetailingDate"].ToString(), out var lastTimeDetailed);
@@ -40,6 +57,7 @@ namespace Detailing.Mappers
                 car.LastDetailed = hasDate ? lastTimeDetailed : null;
                 (customer.Cars as List<Car>).Add(car);
             }
+            
             return customer;
         }
     }

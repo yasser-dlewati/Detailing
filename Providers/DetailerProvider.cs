@@ -51,8 +51,8 @@ public class DetailerProvider : BaseProvider<Detailer>
         new DatabaseParameter("Line2", data.Address.Line2),
         new DatabaseParameter("City", data.Address.City),
         new DatabaseParameter("ZipCode", data.Address.ZipCode),
-        new DatabaseParameter("StateId", data.Address.StateId),
-        new DatabaseParameter("CountryId", data.Address.CountryId),
+        new DatabaseParameter("StateId", data.Address.State.Id),
+        new DatabaseParameter("CountryId", data.Address.Country.Id),
        };
 
         return dbParamerters;

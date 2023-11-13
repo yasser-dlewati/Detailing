@@ -44,8 +44,8 @@ namespace Detailing.Providers
                 new DatabaseParameter("Line2", business.Address.Line2),
                 new DatabaseParameter("ZipCode", business.Address.ZipCode),
                 new DatabaseParameter("City", business.Address.City),
-                new DatabaseParameter("StateId", business.Address.StateId),
-                new DatabaseParameter("CountryId", business.Address.CountryId),
+                new DatabaseParameter("StateId", business.Address.State.Id),
+                new DatabaseParameter("CountryId", business.Address.Country.Id),
                 new DatabaseParameter("Longitude", business.Address.Longitude),
                 new DatabaseParameter("Latitude", business.Address.Latitude),
                 };
