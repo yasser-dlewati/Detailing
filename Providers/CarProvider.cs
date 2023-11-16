@@ -23,7 +23,7 @@ public class CarProvider : BaseProvider<Car>
 
     public override string UpdateStoredProcedureName => "sp_Car_update";
 
-    public override string DeleteByIdStoredProcedureName => "sp_Car_delete_by_Id";
+    public override string DeleteByIdStoredProcedureName => "sp_Car_delete";
 
     public string SelectByCustomerIdStoredProcedureName = "sp_Car_select_by_UserId";
 

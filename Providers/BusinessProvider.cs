@@ -22,7 +22,7 @@ namespace Detailing.Providers
 
         public override string UpdateStoredProcedureName => "sp_Business_update";
 
-        public override string DeleteByIdStoredProcedureName => "sp_Business_delete_by_Id";
+        public override string DeleteByIdStoredProcedureName => "sp_Business_delete";
 
         public string SelectByJobIdStoredProcedureName => "sp_Business_select_by_JobId";
 

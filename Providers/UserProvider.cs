@@ -24,7 +24,7 @@ namespace Detailing.Providers
 
         public override string UpdateStoredProcedureName => "sp_User_update";
 
-        public override string DeleteByIdStoredProcedureName => "sp_User_delete_by_Id";
+        public override string DeleteByIdStoredProcedureName => "sp_User_delete";
 
         public override IDbDataParameter[] GetDbParameters(User user)
         {

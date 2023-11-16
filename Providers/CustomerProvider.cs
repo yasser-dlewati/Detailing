@@ -23,7 +23,7 @@ public class CustomerProvider : BaseProvider<Customer>
 
     public override string UpdateStoredProcedureName => "sp_User_update_Customer";
 
-    public override string DeleteByIdStoredProcedureName => "sp_User_delete_Customer_by_Id";
+    public override string DeleteByIdStoredProcedureName => "sp_User_delete_Customer";
 
     public override async Task<IEnumerable<Customer>> GetAllAsync()
     {

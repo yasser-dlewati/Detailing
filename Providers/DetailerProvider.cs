@@ -23,7 +23,7 @@ public class DetailerProvider : BaseProvider<Detailer>
 
     public override string UpdateStoredProcedureName => "sp_User_update_Detailer";
 
-    public override string DeleteByIdStoredProcedureName => "sp_User_delete_Detailer_by_Id";
+    public override string DeleteByIdStoredProcedureName => "sp_User_delete_Detailer";
 
     public string SelectBusinessCrewStoredProcedureName => "sp_User_select_by_BusinessId";
 

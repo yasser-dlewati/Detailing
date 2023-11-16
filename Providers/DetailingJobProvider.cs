@@ -18,7 +18,7 @@ public class DetailingJobProvider : BaseProvider<DetailingJob>
 
     public override string UpdateStoredProcedureName => "sp_Job_update";
 
-    public override string DeleteByIdStoredProcedureName => "sp_Job_delete_by_Id";
+    public override string DeleteByIdStoredProcedureName => "sp_Job_delete";
 
     public override IDbDataParameter[] GetIdDataParameter(int id)
     {
