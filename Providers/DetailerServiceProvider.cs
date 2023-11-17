@@ -15,7 +15,7 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
         _mapper = dataMapper;
     }
 
-    public override string SelectAllStoredProcedureName => throw new NotImplementedException();
+    public override string SelectAllStoredProcedureName => "sp_Service_select_by_DetailerId";
 
     public override string SelectByIdStoredProcedureName => "sp_Service_select_by_Id_DetailerId";
 
@@ -24,8 +24,6 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
     public override string UpdateStoredProcedureName => "sp_Service_update";
 
     public override string DeleteByIdStoredProcedureName => "sp_Service_delete";
-
-    public string SelectByDetailerIdStoredProcedureName => "sp_Service_select_by_DetailerId";
 
     public override IDbDataParameter[] GetIdDataParameter(int id)
     {
@@ -46,7 +44,7 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
             new DatabaseParameter("UserId", detailerId)
             };
 
-            var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByDetailerIdStoredProcedureName, spParameter);
+            var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectAllStoredProcedureName, spParameter);
             if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
             {
                 var services = new List<DetailerService>();
