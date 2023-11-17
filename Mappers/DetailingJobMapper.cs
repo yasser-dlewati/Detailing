@@ -8,26 +8,18 @@ public class DetailingJobMapper : IDataMapper<DetailingJob>
 {
     public DetailingJob MapToModel(DataRow row)
     {
+        var carMapper = new CarMapper();
+        var detailerMapper = new DetailerMapper();
+        var businessMapper = new BusinessMapper();
         var isDetailedByBusiness = int.TryParse(row["BusinessId"].ToString(), out var businessId);
          var job = new DetailingJob
             {
                 Id = int.Parse(row["JobId"].ToString()),
-                DetailedCar = new Car
-                {
-                    Id = int.Parse( row["CarId"].ToString()),
-                },
-                Detailer = new Detailer
-                {
-                    Id = int.Parse(row["DetailerId"].ToString()),
-                },
+                DetailedCar = carMapper.MapToModel(row),
+                Detailer = detailerMapper.MapToModel(row),
                 Business = isDetailedByBusiness 
-                ? new Business
-                {
-                    Id = businessId,
-                }
-                :null,
-                DetailsExterior = bool.Parse(row["IsExteriorDetailed"].ToString()),
-                DetailsInterior = bool.Parse(row["IsInteriorDetailed"].ToString()),
+                ? businessMapper.MapToModel(row)
+                : null,
                 DetailingTime = DateTime.Parse(row["DetailingDate"].ToString()),
             };
 

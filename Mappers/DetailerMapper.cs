@@ -8,6 +8,8 @@ namespace Detailing.Mappers
     {
         public Detailer MapToModel(DataRow row)
         {
+            var detailerServiceMapper = new DetailerServiceMapper();
+            var addressMapper = new AddressMapper();
             var detailer = new Detailer
             {
                 Id = int.Parse(row["UserId"].ToString()),
@@ -17,16 +19,12 @@ namespace Detailing.Mappers
                 PreferredName = row["PreferredName"].ToString(),
                 DOB = DateTime.Parse(row["DOB"].ToString()),
                 MobileNumber = row["MobileNumber"].ToString(),
-                Address = new Address
-                {
-                    Id = int.Parse(row["AddressId"].ToString()),
-                },
+                Address = addressMapper.MapToModel(row),
                 CreatedAt = DateTime.Parse(row["CreationDate"].ToString()),
-                DetailerId = int.Parse(row["DetailerId"].ToString()),
-                DetailsExterior = bool.Parse(row["DetailsExterior"].ToString()),
-                DetailsInterior = bool.Parse(row["DetailsInterior"].ToString()),
-                HasBusiness = bool.Parse(row["HasBusiness"].ToString()),
-                IsMobile = bool.Parse(row["IsMobile"].ToString()),
+                Services = new List<DetailerService>()
+                {
+                    detailerServiceMapper.MapToModel(row),
+                }
             };
 
             return detailer;
