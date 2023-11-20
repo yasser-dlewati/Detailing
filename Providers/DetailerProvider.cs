@@ -27,6 +27,14 @@ public class DetailerProvider : BaseProvider<Detailer>
 
     public string SelectBusinessCrewStoredProcedureName => "sp_User_select_by_BusinessId";
 
+    public string SelectBusinessCrewByIdStoredProcedureName => "sp_User_select_by_BusinessId_UserId";
+
+    public string InsertBusinessCrewStoredPRocedureName => "sp_User_insert_BusinessDetailer";
+
+    public string UpdateBusinessCrewStoredPRocedureName => "sp_User_update_BusinessDetailer";
+
+    public string DeleteBusinessCrewStoredPRocedureName => "sp_User_delete_BusinessDetailer";
+
     public string SelectJobDetailerStoredProcedureName => "sp_User_select_by_JobId";
 
     public override IDbDataParameter[] GetDbParameters(Detailer data)
@@ -97,5 +105,65 @@ public class DetailerProvider : BaseProvider<Detailer>
         }
 
         return null;
+    }
+
+    public async Task<Detailer> GetCrewAsync(int businessId, int detailerId)
+    {
+        var spParameters = new IDbDataParameter[]
+        {
+                new DatabaseParameter("BusinessId", businessId),
+                new DatabaseParameter("UserId", detailerId),
+        };
+
+        var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectBusinessCrewByIdStoredProcedureName, spParameters);
+        if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
+        {
+            var detailer = _dataMapper.MapToModel(dt.Rows[0]);
+            return detailer;
+        }
+
+        return null;
+    }
+
+    public bool AddCrew(int businessId, ref Detailer detailer)
+    {
+        var spParameters = GetDbParameters(detailer);
+        spParameters = (IDbDataParameter[])spParameters.Append
+        (
+            new DatabaseParameter("BusinessId", businessId)
+        );
+
+        var dt = _dbService.ExecuteQueryStoredProcedureAsync(InsertBusinessCrewStoredPRocedureName, spParameters).Result;
+        if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
+        {
+            detailer = _dataMapper.MapToModel(dt.Rows[0]);
+            return true;
+        }
+
+        return false;
+    }
+
+    public async Task<bool> UpdateCrewAsync(int businessId, Detailer detailer)
+    {
+        var spParameters = GetDbParameters(detailer);
+        spParameters = (IDbDataParameter[])spParameters.Append
+        (
+            new DatabaseParameter("BusinessId", businessId)
+        );
+
+        var rowsAffected = await _dbService.ExecuteNonQueryStoredProcedureAsync(UpdateBusinessCrewStoredPRocedureName, spParameters);
+        return rowsAffected == 1;
+    }
+
+    public async Task<bool> DeleteCrewAsync(int businessId, int detailerId)
+    {
+        var spParameters = new IDbDataParameter[]
+        {
+                new DatabaseParameter("BusinessId", businessId),
+                new DatabaseParameter("UserId", detailerId),
+        };
+
+        var rowsAffected = await _dbService.ExecuteNonQueryStoredProcedureAsync(DeleteBusinessCrewStoredPRocedureName, spParameters);
+        return rowsAffected == 1;
     }
 }

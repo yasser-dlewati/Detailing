@@ -18,6 +18,38 @@ public class BusinessController : DetailingControllerBase<Business>
     public async Task<IActionResult> GetCrewAsync(int businessId)
     {
         var crew = await (_detailerManager as DetailerManager).GetCrewAsync(businessId);
-        return Ok(crew);
+        return crew.Count() == 0 ? NotFound() : Ok(crew);
+    }
+
+    [HttpGet]
+    [Route("{businessId}/crew/{detailerId:int}")]
+    public async Task<IActionResult> GetCrewAsync(int businessId, int detailerId)
+    {
+        var crew = await (_detailerManager as DetailerManager).GetCrewAsync(businessId, detailerId);
+        return crew == null ? NotFound() : Ok(crew);
+    }
+
+    [HttpPost]
+    [Route("{businessId}/crew")]
+    public async Task<IActionResult> AddCrewAsync(int businessId, Detailer detailer)
+    {
+        var isAdded = (_detailerManager as DetailerManager).AddCrew(businessId, ref detailer);
+        return isAdded ? Ok(detailer) : BadRequest();
+    }
+
+    [HttpPut]
+    [Route("{businessId}/crew")]
+    public async Task<IActionResult> UpdateCrewAsync(int businessId, Detailer detailer)
+    {
+        var isAdded = await (_detailerManager as DetailerManager).UpdateCrewAsync(businessId, detailer);
+        return isAdded ? Ok(detailer) : BadRequest();
+    }
+
+    [HttpDelete]
+    [Route("{businessId}/crew")]
+    public async Task<IActionResult> DeleteCrewAsync(int businessId, int detailerId)
+    {
+        var isAdded = await (_detailerManager as DetailerManager).DeleteCrewAsync(businessId, detailerId);
+        return isAdded ? NoContent() : BadRequest();
     }
 }
