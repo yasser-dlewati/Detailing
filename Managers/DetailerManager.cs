@@ -24,25 +24,13 @@ public class DetailerManager : BaseManager<Detailer>
         return detailer;
     }
 
-    public async Task<Detailer> GetCrewAsync(int businessId, int detailerId)
-    {
-        var crew = await (_provider as DetailerProvider).GetCrewAsync(businessId, detailerId);
-        return crew;
-    }
-
     public bool AddCrew(int businessId, ref Detailer detailer)
     {
        var isAdded = (_provider as DetailerProvider).AddCrew(businessId, ref detailer);
         return isAdded;
     }
 
-    public async Task<bool> UpdateCrewAsync(int businessId, Detailer detailer)
-    {
-        var isUpdated = await (_provider as DetailerProvider).UpdateCrewAsync(businessId, detailer);
-        return isUpdated;
-    }
-
-     public async Task<bool> DeleteCrewAsync(int businessId, int detailerId)
+    public async Task<bool> DeleteCrewAsync(int businessId, int detailerId)
     {
         var isUpdated = await (_provider as DetailerProvider).DeleteCrewAsync(businessId, detailerId);
         return isUpdated;
