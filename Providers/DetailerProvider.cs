@@ -1,5 +1,6 @@
 using System.Data;
 using Detailing.Interfaces;
+using Detailing.Mappers;
 using Detailing.Models;
 
 namespace Detailing.Providers;
@@ -57,6 +58,8 @@ public class DetailerProvider : BaseProvider<Detailer>
         new DatabaseParameter("ZipCode", data.Address.ZipCode),
         new DatabaseParameter("StateId", data.Address.State.Id),
         new DatabaseParameter("CountryId", data.Address.Country.Id),
+        new DatabaseParameter("Longitude", data.Address.Longitude),
+        new DatabaseParameter("Latitude", data.Address.Latitude),
        };
 
         return dbParamerters;
@@ -128,10 +131,10 @@ public class DetailerProvider : BaseProvider<Detailer>
     public bool AddCrew(int businessId, ref Detailer detailer)
     {
         var spParameters = GetDbParameters(detailer);
-        spParameters = (IDbDataParameter[])spParameters.Append
+        spParameters = spParameters.Append
         (
             new DatabaseParameter("BusinessId", businessId)
-        );
+        ).ToArray();
 
         var dt = _dbService.ExecuteQueryStoredProcedureAsync(InsertBusinessCrewStoredPRocedureName, spParameters).Result;
         if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
