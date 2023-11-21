@@ -8,7 +8,9 @@ public class DetailerServiceMapper : IDataMapper<DetailerService>
 {
     public DetailerService MapToModel(DataRow row)
     {
-        var service = new DetailerService
+        try
+        {
+            var service = new DetailerService
             {
                 Id = int.Parse(row["ServiceId"].ToString()),
                 DetailerId = int.Parse(row["UserId"].ToString()),
@@ -20,5 +22,12 @@ public class DetailerServiceMapper : IDataMapper<DetailerService>
             };
 
             return service;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception was thrown while trying to map data at {nameof(DetailerService)}\n{ex.Message}");
+        }
+
+        return null;
     }
 }

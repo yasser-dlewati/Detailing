@@ -23,4 +23,16 @@ public class DetailerManager : BaseManager<Detailer>
         var detailer = await (_provider as DetailerProvider).GetJobDetailerAsync(jobId);
         return detailer;
     }
+
+    public bool AddCrew(int businessId, ref Detailer detailer)
+    {
+       var isAdded = (_provider as DetailerProvider).AddCrew(businessId, ref detailer);
+        return isAdded;
+    }
+
+    public async Task<bool> DeleteCrewAsync(int businessId, int detailerId)
+    {
+        var isUpdated = await (_provider as DetailerProvider).DeleteCrewAsync(businessId, detailerId);
+        return isUpdated;
+    }
 }

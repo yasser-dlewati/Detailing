@@ -27,6 +27,10 @@ public class DetailerProvider : BaseProvider<Detailer>
 
     public string SelectBusinessCrewStoredProcedureName => "sp_User_select_by_BusinessId";
 
+    public string InsertBusinessCrewStoredPRocedureName => "sp_User_insert_BusinessDetailer";
+
+    public string DeleteBusinessCrewStoredPRocedureName => "sp_User_delete_BusinessDetailer";
+
     public string SelectJobDetailerStoredProcedureName => "sp_User_select_by_JobId";
 
     public override IDbDataParameter[] GetDbParameters(Detailer data)
@@ -49,6 +53,8 @@ public class DetailerProvider : BaseProvider<Detailer>
         new DatabaseParameter("ZipCode", data.Address.ZipCode),
         new DatabaseParameter("StateId", data.Address.State.Id),
         new DatabaseParameter("CountryId", data.Address.Country.Id),
+        new DatabaseParameter("Longitude", data.Address.Longitude),
+        new DatabaseParameter("Latitude", data.Address.Latitude),
        };
 
         return dbParamerters;
@@ -97,5 +103,35 @@ public class DetailerProvider : BaseProvider<Detailer>
         }
 
         return null;
+    }
+
+    public bool AddCrew(int businessId, ref Detailer detailer)
+    {
+        var spParameters = GetDbParameters(detailer);
+        spParameters = spParameters.Append
+        (
+            new DatabaseParameter("BusinessId", businessId)
+        ).ToArray();
+
+        var dt = _dbService.ExecuteQueryStoredProcedureAsync(InsertBusinessCrewStoredPRocedureName, spParameters).Result;
+        if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
+        {
+            detailer = _dataMapper.MapToModel(dt.Rows[0]);
+            return true;
+        }
+
+        return false;
+    }
+
+    public async Task<bool> DeleteCrewAsync(int businessId, int detailerId)
+    {
+        var spParameters = new IDbDataParameter[]
+        {
+                new DatabaseParameter("BusinessId", businessId),
+                new DatabaseParameter("UserId", detailerId),
+        };
+
+        var rowsAffected = await _dbService.ExecuteNonQueryStoredProcedureAsync(DeleteBusinessCrewStoredPRocedureName, spParameters);
+        return rowsAffected == 1;
     }
 }

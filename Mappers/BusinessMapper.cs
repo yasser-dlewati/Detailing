@@ -17,7 +17,7 @@ public class BusinessMapper : IDataMapper<Business>
             Description = row["Description"].ToString(),
             Established = DateTime.Parse(row["Established"].ToString()),
             Phone = row["Phone"].ToString(),
-            OwnerId = Convert.ToInt32(row["DetailerId"]),
+            OwnerId = Convert.ToInt32(row["UserId"]),
             SocialMedia = row["SocialMedia"].ToString(),
             Website = row["Website"].ToString(),
             Email = row["Email"].ToString(),

@@ -29,9 +29,9 @@ namespace Detailing.Providers
         public override IDbDataParameter[] GetDbParameters(Business business)
         {
             var dbParamerters = new IDbDataParameter[]
-                {
+            {
                 new DatabaseParameter("BusinessId", business.Id),
-                new DatabaseParameter("DetailerId", business.OwnerId),
+                new DatabaseParameter("UserId", business.OwnerId),
                 new DatabaseParameter("AddressId", business.Address.Id),
                 new DatabaseParameter("BusinessName", business.BusinessName),
                 new DatabaseParameter("Description", business.Description),
@@ -48,7 +48,7 @@ namespace Detailing.Providers
                 new DatabaseParameter("CountryId", business.Address.Country.Id),
                 new DatabaseParameter("Longitude", business.Address.Longitude),
                 new DatabaseParameter("Latitude", business.Address.Latitude),
-                };
+            };
 
             return dbParamerters;
         }
