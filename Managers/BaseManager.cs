@@ -13,7 +13,7 @@ namespace Detailing.Managers
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _provider.GetAllAsync();
+            return await _provider.GetAllCachedAsync();
         }
 
         public async Task<T> GetByIdAsync(int id)

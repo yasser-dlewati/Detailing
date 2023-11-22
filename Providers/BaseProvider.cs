@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Detailing.Providers
 {
@@ -9,6 +10,8 @@ namespace Detailing.Providers
     {
         private readonly IDatabaseService _dbService;
         private readonly IDataMapper<T> _dataMapper;
+        private readonly IMemoryCache _cache;
+        private readonly string _cacheKey;
 
         public abstract string SelectAllStoredProcedureName { get; }
 
@@ -20,10 +23,12 @@ namespace Detailing.Providers
 
         public abstract string DeleteByIdStoredProcedureName { get; }
 
-        public BaseProvider(IDatabaseService dbService, IDataMapper<T> dataMapper)
+        public BaseProvider(IDatabaseService dbService, IDataMapper<T> dataMapper, IMemoryCache cache)
         {
             _dbService = dbService;
             _dataMapper = dataMapper;
+            _cache = cache;
+            _cacheKey = typeof(T).ToString();
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
@@ -121,6 +126,19 @@ namespace Detailing.Providers
             }
 
             return false;
+        }
+
+        public async Task<IEnumerable<T>> GetAllCachedAsync()
+        {
+            if(_cache.TryGetValue(_cacheKey, out IEnumerable<T> cachedData))
+            {
+                Console.WriteLine($"retrieving data form cache {_cacheKey}");
+                return cachedData;
+            }
+
+            var data = await GetAllAsync();
+            _cache.Set(_cacheKey, data);
+            return data;
         }
     }
 }

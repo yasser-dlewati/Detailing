@@ -3,6 +3,7 @@ using Detailing.Models;
 using Detailing.Interfaces;
 using Detailing.Providers;
 using Detailing.Mappers;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace detailing.Controllers
 {
@@ -13,6 +14,7 @@ namespace detailing.Controllers
         private readonly IDatabaseService _dbService;
         private readonly IAuthenticationService _authService;
         private readonly UserProvider UserProvider;
+        private readonly IMemoryCache _cache; 
 
         public AuthenticationController(IServiceProvider serviceProvider)
         {
@@ -20,7 +22,9 @@ namespace detailing.Controllers
             _dbService = serviceProvider.GetService<IDatabaseService>() ?? throw new ArgumentNullException(nameof(serviceProvider));
             _dbService.ConnectionString = config.GetConnectionString("localMysqlConnectionstring");
             _authService = serviceProvider.GetService<IAuthenticationService>() ?? throw new ArgumentNullException(nameof(serviceProvider));
-            UserProvider = new UserProvider(_dbService, new UserMapper());
+            _cache = serviceProvider.GetService<IMemoryCache>() ?? throw new ArgumentNullException(nameof(serviceProvider));
+
+            UserProvider = new UserProvider(_dbService, new UserMapper(), _cache);
         }
 
         [HttpPost]

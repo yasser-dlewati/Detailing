@@ -1,12 +1,13 @@
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Detailing.Providers;
 
 public class DetailingJobProvider : BaseProvider<DetailingJob>
 {
-    public DetailingJobProvider(IDatabaseService dbService, IDataMapper<DetailingJob> dataMapper) : base(dbService, dataMapper)
+    public DetailingJobProvider(IDatabaseService dbService, IDataMapper<DetailingJob> dataMapper, IMemoryCache cache) : base(dbService, dataMapper, cache)
     {
     }
 
