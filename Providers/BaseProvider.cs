@@ -11,7 +11,7 @@ namespace Detailing.Providers
         private readonly IDatabaseService _dbService;
         private readonly IDataMapper<T> _dataMapper;
         private readonly IMemoryCache _cache;
-        private readonly string _cacheKey;
+        public readonly string _cacheKey;
 
         public abstract string SelectAllStoredProcedureName { get; }
 
@@ -47,19 +47,12 @@ namespace Detailing.Providers
 
         public virtual async Task<T> GetByIdAsync(int id)
         {
-            try
+            var idParameter = GetIdDataParameter(id);
+            var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByIdStoredProcedureName,idParameter);
+            if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
             {
-                var idParameter = GetIdDataParameter(id);
-                var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByIdStoredProcedureName, idParameter);
-                if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
-                {
-                    var model = _dataMapper.MapToModel(dt.Rows[0]);
-                    return model;
-                }
-            }
-            catch (Exception)
-            {
-
+                var model = _dataMapper.MapToModel(dt.Rows[0]);
+                return model;
             }
 
             return default(T);
@@ -71,6 +64,7 @@ namespace Detailing.Providers
             {
                 var idParameter = GetIdDataParameter(id);
                 var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(DeleteByIdStoredProcedureName, idParameter);
+                _cache.Remove(_cacheKey);
                 return rowsAffectd == 1;
             }
             catch (Exception)
@@ -103,6 +97,7 @@ namespace Detailing.Providers
                 if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
                 {
                     model = _dataMapper.MapToModel(dt.Rows[0]);
+                    _cache.Remove(_cacheKey);
                     return true;
                 }
             }
@@ -119,6 +114,7 @@ namespace Detailing.Providers
             {
                 var spParameters = GetDbParameters(model);
                 var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(UpdateStoredProcedureName, spParameters);
+                _cache.Remove(_cacheKey);
                 return rowsAffectd == 1;
             }
             catch (Exception ex)
@@ -132,7 +128,7 @@ namespace Detailing.Providers
         {
             if(_cache.TryGetValue(_cacheKey, out IEnumerable<T> cachedData))
             {
-                Console.WriteLine($"retrieving data form cache {_cacheKey}");
+                Console.WriteLine($"Retrieving {_cacheKey} data form cache.");
                 return cachedData;
             }
 
