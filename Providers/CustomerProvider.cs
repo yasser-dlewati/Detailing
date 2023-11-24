@@ -1,6 +1,7 @@
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
+using Detailing.Mappers;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Detailing.Providers;
@@ -41,14 +42,16 @@ public class CustomerProvider : BaseProvider<Customer>
         for (var i = 0; i < dt.Rows.Count; i++)
         {
             var id = int.Parse(dt.Rows[i]["UserId"].ToString());
-            var model = _mapper.MapToModel(dt.Rows[i]);
             if (models.Any(x => x.Id == id))
             {
-                var existingModel = models.Where(x => x.Id == id).First();
-                model.Cars = model.Cars.Append(existingModel.Cars.ElementAt(0));
+                var existingModel = models.First(x => x.Id == id);
+                var carMapper = new CarMapper();
+                var car = carMapper.MapToModel(dt.Rows[i]);
+                existingModel.Cars = existingModel.Cars.Append(car);
             }
             else
             {
+                var model = _mapper.MapToModel(dt.Rows[i]);
                 models.Add(model);
             }
         }
