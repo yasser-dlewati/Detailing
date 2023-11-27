@@ -46,7 +46,6 @@ public class DetailerProvider : BaseProvider<Detailer>
         new DatabaseParameter("DOB", data.DOB),
         new DatabaseParameter("MobileNumber", data.MobileNumber),
         new DatabaseParameter("Email", data.Email),
-        new DatabaseParameter("Password", data.Password),
         new DatabaseParameter("AddressId", data.Address.Id),
         new DatabaseParameter("Line1", data.Address.Line1),
         new DatabaseParameter("Line2", data.Address.Line2),

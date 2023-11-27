@@ -1,7 +1,6 @@
 using System.Data;
 using Detailing.Extensions;
 using Detailing.Interfaces;
-using Detailing.Models;
 using MySql.Data.MySqlClient;
 
 namespace Detailing.Services
@@ -46,7 +45,6 @@ namespace Detailing.Services
             var dtResult = new DataTable();
             using (var connection = new MySqlConnection(ConnectionString))
             {
-
                 using (var command = new MySqlCommand(storedProcedureName, connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;

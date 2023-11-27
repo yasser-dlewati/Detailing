@@ -23,7 +23,6 @@ namespace Detailing.Mappers
                 },
                 CreatedAt = DateTime.Parse(row["CreationDate"].ToString()),
                 Email = row["Email"].ToString(),
-                Password = row["Password"].ToString(),
                 Role = (UserType)int.Parse(row["Type"].ToString()),
             };
             

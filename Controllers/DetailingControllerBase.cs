@@ -34,7 +34,6 @@ namespace Detailing.Controllers
             return model != null ? Ok(model) : NotFound();
         }
 
-
         [HttpPost]
         public virtual async Task<IActionResult> PostAsync([FromBody] T newModel)
         {

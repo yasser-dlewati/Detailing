@@ -31,13 +31,14 @@ namespace Detailing.Providers
         {
             var dbParamerters = new IDbDataParameter[]
                 {
-                new DatabaseParameter("Id", user.Id),
                 new DatabaseParameter("FirstName", user.FirstName),
                 new DatabaseParameter("MiddleName", user.MiddleName),
                 new DatabaseParameter("LastName", user.LastName),
                 new DatabaseParameter("PreferredName", user.PreferredName),
                 new DatabaseParameter("DOB", user.DOB),
                 new DatabaseParameter("MobileNumber", user.MobileNumber),
+                new DatabaseParameter("Email", user.Email),
+                new DatabaseParameter("Type", user.Role),
                 new DatabaseParameter("AddressId", user.Address.Id),
                 new DatabaseParameter("Line1", user.Address.Line1),
                 new DatabaseParameter("Line2", user.Address.Line2),
@@ -45,22 +46,23 @@ namespace Detailing.Providers
                 new DatabaseParameter("ZipCode", user.Address.ZipCode),
                 new DatabaseParameter("StateId", user.Address.State.Id),
                 new DatabaseParameter("CountryId", user.Address.Country.Id),
+                new DatabaseParameter("Longitude", user.Address.Longitude),
+                new DatabaseParameter("Latitude", user.Address.Latitude),
                 };
 
             return dbParamerters;
         }
 
-        public async Task<User> GetByLoginCredentialsAsync(UserLogin userLogin)
+        public async Task<User> GetByLoginCredentialsAsync(LoginUser LoginUser)
         {
-
             try
             {
-                if (userLogin is not null)
+                if (LoginUser is not null)
                 {
                     var spParameters = new IDbDataParameter[]
                     {
-                        new DatabaseParameter("email", userLogin.Email),
-                        new DatabaseParameter("password", userLogin.Password),
+                        new DatabaseParameter("email", LoginUser.Email),
+                        new DatabaseParameter("password", LoginUser.Password),
                     };
 
                     var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByEmaillPasswordStoredProcedureName, spParameters);
@@ -85,6 +87,28 @@ namespace Detailing.Providers
             };
 
             return parameters;
+        }
+
+        public new bool TryInsert(ref SignupUser user)
+        {
+            try
+            {
+                var dbParams = GetDbParameters(user).Append(new DatabaseParameter("Password", user.Password)).ToArray();
+                var dt = _dbService.ExecuteQueryStoredProcedureAsync(InsertStoredProcedureName, dbParams).Result;
+                if(dt.Rows.Count > 0)
+                {
+                    user.Id = int.Parse(dt.Rows[0]["UserId"].ToString());
+                    user.Address.Id = int.Parse(dt.Rows[0]["AddressId"].ToString());
+                }
+
+                return dt.Rows.Count == 1;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Exception thrown at {GetType()}.{nameof(TryInsert)}.\n{ex.Message}.");
+            }
+
+            return false;
         }
     }
 }
