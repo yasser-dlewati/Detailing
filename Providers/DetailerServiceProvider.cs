@@ -1,6 +1,5 @@
 using System.Data;
 using Detailing.Interfaces;
-using Detailing.Mappers;
 using Detailing.Models;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -45,7 +44,7 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
         {
             if(_cache.TryGetValue(_cacheKey, out IEnumerable<DetailerService> services))
             {
-                System.Console.WriteLine($"Retreiving {GetType()} data from cache.");
+                Console.WriteLine($"Retreiving {GetType()} data from cache.");
                 return services;
             }
 
@@ -53,11 +52,11 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
             var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectAllStoredProcedureName, spParameter);
             if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
             {
-                var services = new List<DetailerService>();
+                services = new List<DetailerService>();
                 foreach (DataRow dtRow in dt.Rows)
                 {
                     var service = _mapper.MapToModel(dtRow);
-                    services.Add(service);
+                    services = services.Append(service);
                 }
 
                 _cache.Set(_cacheKey, services);
