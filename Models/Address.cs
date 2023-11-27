@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using Detailing.Interfaces;
 
 namespace Detailing.Models
@@ -30,6 +29,5 @@ namespace Detailing.Models
 
         [Column("Latitude")]
         public double Latitude { get; set; }
-
     }
 }
