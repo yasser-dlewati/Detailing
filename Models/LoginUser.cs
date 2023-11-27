@@ -1,6 +1,8 @@
+using Detailing.Interfaces;
+
 namespace Detailing.Models
 {
-    public class UserLogin
+    public class LoginUser : IPassword
     {
         public string Email { get; set; }
 
