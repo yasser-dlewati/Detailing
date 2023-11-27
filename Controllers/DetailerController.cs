@@ -9,10 +9,26 @@ namespace Detailing.Controllers;
 [Route("api/v{version:apiVersion}/user/[controller]")]
 public class DetailerController : DetailingControllerBase<Detailer>
 {
+    private readonly IModelManager<User> _userManager;
     private readonly IModelManager<DetailerService> _serviceManager;
     public DetailerController(IServiceProvider provider) : base(provider)
     {
+        _userManager = provider.GetRequiredService<IModelManager<User>>();
         _serviceManager = provider.GetRequiredService<IModelManager<DetailerService>>();
+    }
+
+    [HttpPost("")]
+    public new async Task<IActionResult> PostAsync([FromBody]SignupUser user)
+    {
+        var isInserted = (_userManager as UserManager).TryInsert(ref user);
+        var detailer = user.ToDetailer();
+        return isInserted ? CreatedAtAction(nameof(GetAsync), detailer) : BadRequest();
+    }
+
+    [NonAction]
+    public override async Task<IActionResult> PostAsync(Detailer customer) 
+    {
+        return null;
     }
 
     [HttpGet("/{detailerId:int}/services")]

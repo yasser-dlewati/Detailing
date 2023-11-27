@@ -11,10 +11,26 @@ namespace Detailing.Controllers;
 public class CustomerController : DetailingControllerBase<Customer>
 {
     private readonly IModelManager<Car> _carManager;
+    private readonly IModelManager<User> _userManager;
 
     public CustomerController(IServiceProvider provider) : base(provider)
     {
+        _userManager = provider.GetRequiredService<IModelManager<User>>();
         _carManager = provider.GetRequiredService<IModelManager<Car>>();
+    }
+
+    [HttpPost]
+    public new async Task<IActionResult> PostAsync([FromBody]SignupUser user)
+    {
+        var isInserted = (_userManager as UserManager).TryInsert(ref user);
+        var customer = user.ToCustomer();
+        return isInserted ? CreatedAtAction(nameof(GetAsync), customer) : BadRequest();
+    }
+    
+    [NonAction]
+    public override async Task<IActionResult> PostAsync(Customer customer) 
+    {
+        return null;
     }
 
     [HttpGet("{customerId:int}/car")]
