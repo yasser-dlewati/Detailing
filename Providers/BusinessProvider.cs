@@ -1,6 +1,7 @@
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Detailing.Providers
 {
@@ -8,7 +9,7 @@ namespace Detailing.Providers
     {
         private readonly IDatabaseService _dbService;
         private readonly IDataMapper<Business> _businessMapper;
-        public BusinessProvider(IDatabaseService dbService, IDataMapper<Business> businessMapper) : base(dbService, businessMapper)
+        public BusinessProvider(IDatabaseService dbService, IDataMapper<Business> businessMapper, IMemoryCache cache) : base(dbService, businessMapper, cache)
         {
             _dbService = dbService;
             _businessMapper = businessMapper;

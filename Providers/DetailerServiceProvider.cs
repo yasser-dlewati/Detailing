@@ -1,7 +1,7 @@
 using System.Data;
 using Detailing.Interfaces;
-using Detailing.Mappers;
 using Detailing.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Detailing.Providers;
 
@@ -9,10 +9,13 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
 {
     private readonly IDatabaseService _dbService;
     private readonly IDataMapper<DetailerService> _mapper;
-    public DetailerServiceProvider(IDatabaseService dbService, IDataMapper<DetailerService> dataMapper) : base(dbService, dataMapper)
+    private readonly IMemoryCache _cache;
+
+    public DetailerServiceProvider(IDatabaseService dbService, IDataMapper<DetailerService> dataMapper, IMemoryCache cache) : base(dbService, dataMapper, cache)
     {
         _dbService = dbService;
         _mapper = dataMapper;
+        _cache = cache;
     }
 
     public override string SelectAllStoredProcedureName => "sp_Service_select_by_DetailerId";
@@ -39,21 +42,23 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
     {
         try
         {
-            var spParameter = new IDbDataParameter[]
+            if(_cache.TryGetValue(_cacheKey, out IEnumerable<DetailerService> services))
             {
-            new DatabaseParameter("UserId", detailerId)
-            };
+                Console.WriteLine($"Retreiving {GetType()} data from cache.");
+                return services;
+            }
 
+            var spParameter = GetIdDataParameter(detailerId);
             var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectAllStoredProcedureName, spParameter);
             if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
             {
-                var services = new List<DetailerService>();
                 foreach (DataRow dtRow in dt.Rows)
                 {
                     var service = _mapper.MapToModel(dtRow);
-                    services.Add(service);
+                    (services as List<DetailerService>)!.Add(service);
                 }
 
+                _cache.Set(_cacheKey, services);
                 return services;
             }
         }
@@ -69,16 +74,23 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
     {
         try
         {
+            if(_cache.TryGetValue(_cacheKey[serviceId], out DetailerService service))
+            {
+                Console.WriteLine($"Retreiving {_cacheKey[serviceId]} data from cache");
+                return service;
+            }
+
             var spParameter = new IDbDataParameter[]
-{
-            new DatabaseParameter("UserId", detailerId),
-            new DatabaseParameter("ServiceId", serviceId),
-};
+            {
+                new DatabaseParameter("UserId", detailerId),
+                new DatabaseParameter("ServiceId", serviceId),
+            };
 
             var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByIdStoredProcedureName, spParameter);
             if (dt != null && dt.Rows != null && dt.Rows.Count == 0)
             {
-                var service = _mapper.MapToModel(dt.Rows[0]);
+                service = _mapper.MapToModel(dt.Rows[0]);
+                _cache.Set(_cacheKey[serviceId], service);
                 return service;
             }
         }
@@ -96,11 +108,12 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
         {
             var spParameter = new IDbDataParameter[]
             {
-            new DatabaseParameter("UserId", detailerId),
-            new DatabaseParameter("ServiceId", serviceId),
+                new DatabaseParameter("UserId", detailerId),
+                new DatabaseParameter("ServiceId", serviceId),
             };
 
             var rowsAffected = await _dbService.ExecuteNonQueryStoredProcedureAsync(SelectByIdStoredProcedureName, spParameter);
+            _cache.Remove(_cacheKey);
             return rowsAffected == 1;
         }
         catch (Exception ex)

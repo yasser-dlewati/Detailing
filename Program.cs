@@ -103,6 +103,7 @@ builder.Services.AddScoped<IModelManager<Business>, BusinessManager>();
 builder.Services.AddScoped<IModelManager<DetailingJob>, DetailingJobManager>();
 builder.Services.AddScoped<IModelManager<DetailerService>, DetailerServiceManager>();
 builder.Services.AddScoped<IAuthenticationService, JwtAuthenticationService>();
+builder.Services.AddMemoryCache();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,6 +1,7 @@
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Detailing.Providers;
 
@@ -9,7 +10,7 @@ public class CarProvider : BaseProvider<Car>
     private readonly IDatabaseService _dbService;
     private readonly IDataMapper<Car> _carMapper;
 
-    public CarProvider(IDatabaseService dbService, IDataMapper<Car> carMapper) : base(dbService, carMapper)
+    public CarProvider(IDatabaseService dbService, IDataMapper<Car> carMapper, IMemoryCache cache) : base(dbService, carMapper, cache)
     {
         _dbService = dbService;
         _carMapper = carMapper;

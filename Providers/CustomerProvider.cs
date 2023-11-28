@@ -1,18 +1,22 @@
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
+using Detailing.Mappers;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Detailing.Providers;
 
 public class CustomerProvider : BaseProvider<Customer>
 {
-
     private readonly IDatabaseService _dbService;
     private readonly IDataMapper<Customer> _mapper;
-    public CustomerProvider(IDatabaseService dbService, IDataMapper<Customer> mapper) : base(dbService, mapper)
+    private readonly IMemoryCache _cache;
+
+    public CustomerProvider(IDatabaseService dbService, IDataMapper<Customer> mapper, IMemoryCache cache) : base(dbService, mapper, cache)
     {
         _dbService = dbService;
         _mapper = mapper;
+        _cache = cache;
     }
 
     public override string SelectAllStoredProcedureName => "sp_User_select_by_Type_Customer";
@@ -27,44 +31,56 @@ public class CustomerProvider : BaseProvider<Customer>
 
     public override async Task<IEnumerable<Customer>> GetAllAsync()
     {
+        if (_cache.TryGetValue(_cacheKey, out IEnumerable<Customer> cachedData))
+        {
+            Console.WriteLine($"Retreiving {_cacheKey} data from cache.");
+            return cachedData;
+        }
+
         var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectAllStoredProcedureName);
         var models = new List<Customer>();
         for (var i = 0; i < dt.Rows.Count; i++)
         {
             var id = int.Parse(dt.Rows[i]["UserId"].ToString());
-            var model = _mapper.MapToModel(dt.Rows[i]);
             if (models.Any(x => x.Id == id))
             {
-                var existingModel = models.Where(x => x.Id == id).First();
-                (existingModel.Cars as List<Car>).Add(model.Cars.ElementAt(0));
+                var existingModel = models.First(x => x.Id == id);
+                var carMapper = new CarMapper();
+                var car = carMapper.MapToModel(dt.Rows[i]);
+                existingModel.Cars = existingModel.Cars.Append(car);
             }
             else
             {
+                var model = _mapper.MapToModel(dt.Rows[i]);
                 models.Add(model);
             }
         }
 
+        _cache.Set(_cacheKey, models);
         return models;
     }
 
     public override async Task<Customer> GetByIdAsync(int id)
     {
-        var spParameters = new IDbDataParameter[]
+        if(_cache.TryGetValue(_cacheKey[id], out Customer customer))
         {
-            new DatabaseParameter("Id", id),
-        };
+            Console.WriteLine($"Retreiving {_cacheKey[id]} data from cache.");
+            return customer;
+        }
 
+        var spParameters = GetIdDataParameter(id);
         var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByIdStoredProcedureName, spParameters);
         if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
         {
-            var model = _mapper.MapToModel(dt.Rows[0]);
+            customer = _mapper.MapToModel(dt.Rows[0]);
             for (var i = 1; i < dt.Rows.Count; i++)
             {
                 var currentRecord = _mapper.MapToModel(dt.Rows[i]);
-                (model.Cars as List<Car>).Add(currentRecord.Cars.ElementAt(0));
+                customer.Cars = customer.Cars.Append(currentRecord.Cars.ElementAt(0));
             }
 
-            return model;
+            _cache.Set(_cacheKey[id], customer);
+            return customer;
         }
 
         return null;
@@ -74,23 +90,23 @@ public class CustomerProvider : BaseProvider<Customer>
     {
         var dbParamerters = new IDbDataParameter[]
         {
-        new DatabaseParameter("UserId", data.Id),
-        new DatabaseParameter("FirstName", data.FirstName),
-        new DatabaseParameter("MiddleName", data.MiddleName),
-        new DatabaseParameter("LastName", data.LastName),
-        new DatabaseParameter("PreferredName", data.PreferredName),
-        new DatabaseParameter("DOB", data.DOB),
-        new DatabaseParameter("MobileNumber", data.MobileNumber),
-        new DatabaseParameter("AddressId", data.Address.Id),
-        new DatabaseParameter("Line1", data.Address.Line1),
-        new DatabaseParameter("Line2", data.Address.Line2),
-        new DatabaseParameter("City", data.Address.City),
-        new DatabaseParameter("ZipCode", data.Address.ZipCode),
-        new DatabaseParameter("StateId", data.Address.State.Id),
-        new DatabaseParameter("CountryId", data.Address.Country.Id),
-        new DatabaseParameter("Longitude", data.Address.Longitude),
-        new DatabaseParameter("Latitude", data.Address.Latitude),
-        new DatabaseParameter("Email", data.Email),
+            new DatabaseParameter("UserId", data.Id),
+            new DatabaseParameter("FirstName", data.FirstName),
+            new DatabaseParameter("MiddleName", data.MiddleName),
+            new DatabaseParameter("LastName", data.LastName),
+            new DatabaseParameter("PreferredName", data.PreferredName),
+            new DatabaseParameter("DOB", data.DOB),
+            new DatabaseParameter("MobileNumber", data.MobileNumber),
+            new DatabaseParameter("AddressId", data.Address.Id),
+            new DatabaseParameter("Line1", data.Address.Line1),
+            new DatabaseParameter("Line2", data.Address.Line2),
+            new DatabaseParameter("City", data.Address.City),
+            new DatabaseParameter("ZipCode", data.Address.ZipCode),
+            new DatabaseParameter("StateId", data.Address.State.Id),
+            new DatabaseParameter("CountryId", data.Address.Country.Id),
+            new DatabaseParameter("Longitude", data.Address.Longitude),
+            new DatabaseParameter("Latitude", data.Address.Latitude),
+            new DatabaseParameter("Email", data.Email),
         };
 
         return dbParamerters;
@@ -112,16 +128,15 @@ public class CustomerProvider : BaseProvider<Customer>
         {
             if (id > 0)
             {
-                var spParameters = new IDbDataParameter[]
-                {
-                        new DatabaseParameter("Id", id),
-                };
+                var spParameters = GetIdDataParameter(id);
                 var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(DeleteByIdStoredProcedureName, spParameters);
+                _cache.Remove(_cacheKey);
                 return rowsAffectd > 1;
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine($"Exception thrown while {GetType()}.{nameof(TryDeleteAsync)}. \n{ex.Message}");
         }
 
         return false;
@@ -136,12 +151,13 @@ public class CustomerProvider : BaseProvider<Customer>
             if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
             {
                 data = _mapper.MapToModel(dt.Rows[0]);
+                _cache.Remove(_cacheKey);
                 return true;
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine($"Exception thrown while {GetType()}.{nameof(TryInsert)}. \n{ex.Message}");
         }
 
         return false;
@@ -154,10 +170,12 @@ public class CustomerProvider : BaseProvider<Customer>
         {
             var spParameters = GetDbParameters(data);
             var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(UpdateStoredProcedureName, spParameters);
+            _cache.Remove(_cacheKey);
             return rowsAffectd == 1;
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"Exception thrown while {GetType()}.{nameof(TryUpdateAsync)}. \n{ex.Message}");
         }
 
         return false;

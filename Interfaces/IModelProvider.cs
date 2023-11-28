@@ -24,4 +24,6 @@ public interface IModelProvider<T>
     Task<bool> TryUpdateAsync(T data);
 
     Task<bool> TryDeleteAsync(int id);
+
+    Task<IEnumerable<T>> GetAllCachedAsync();
 }

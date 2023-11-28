@@ -1,6 +1,7 @@
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Detailing.Providers;
 
@@ -9,7 +10,7 @@ public class DetailerProvider : BaseProvider<Detailer>
     private readonly IDatabaseService _dbService;
     private readonly IDataMapper<Detailer> _dataMapper;
 
-    public DetailerProvider(IDatabaseService dbService, IDataMapper<Detailer> dataMapper) : base(dbService, dataMapper)
+    public DetailerProvider(IDatabaseService dbService, IDataMapper<Detailer> dataMapper, IMemoryCache cache) : base(dbService, dataMapper, cache)
     {
         _dbService = dbService;
         _dataMapper = dataMapper;
@@ -37,23 +38,23 @@ public class DetailerProvider : BaseProvider<Detailer>
     {
         var dbParamerters = new IDbDataParameter[]
        {
-        new DatabaseParameter("UserId", data.Id),
-        new DatabaseParameter("FirstName", data.FirstName),
-        new DatabaseParameter("MiddleName", data.MiddleName),
-        new DatabaseParameter("LastName", data.LastName),
-        new DatabaseParameter("PreferredName", data.PreferredName),
-        new DatabaseParameter("DOB", data.DOB),
-        new DatabaseParameter("MobileNumber", data.MobileNumber),
-        new DatabaseParameter("Email", data.Email),
-        new DatabaseParameter("AddressId", data.Address.Id),
-        new DatabaseParameter("Line1", data.Address.Line1),
-        new DatabaseParameter("Line2", data.Address.Line2),
-        new DatabaseParameter("City", data.Address.City),
-        new DatabaseParameter("ZipCode", data.Address.ZipCode),
-        new DatabaseParameter("StateId", data.Address.State.Id),
-        new DatabaseParameter("CountryId", data.Address.Country.Id),
-        new DatabaseParameter("Longitude", data.Address.Longitude),
-        new DatabaseParameter("Latitude", data.Address.Latitude),
+            new DatabaseParameter("UserId", data.Id),
+            new DatabaseParameter("FirstName", data.FirstName),
+            new DatabaseParameter("MiddleName", data.MiddleName),
+            new DatabaseParameter("LastName", data.LastName),
+            new DatabaseParameter("PreferredName", data.PreferredName),
+            new DatabaseParameter("DOB", data.DOB),
+            new DatabaseParameter("MobileNumber", data.MobileNumber),
+            new DatabaseParameter("Email", data.Email),
+            new DatabaseParameter("AddressId", data.Address.Id),
+            new DatabaseParameter("Line1", data.Address.Line1),
+            new DatabaseParameter("Line2", data.Address.Line2),
+            new DatabaseParameter("City", data.Address.City),
+            new DatabaseParameter("ZipCode", data.Address.ZipCode),
+            new DatabaseParameter("StateId", data.Address.State.Id),
+            new DatabaseParameter("CountryId", data.Address.Country.Id),
+            new DatabaseParameter("Longitude", data.Address.Longitude),
+            new DatabaseParameter("Latitude", data.Address.Latitude),
        };
 
         return dbParamerters;

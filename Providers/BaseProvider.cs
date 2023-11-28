@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Detailing.Providers
 {
@@ -9,6 +10,8 @@ namespace Detailing.Providers
     {
         private readonly IDatabaseService _dbService;
         private readonly IDataMapper<T> _dataMapper;
+        private readonly IMemoryCache _cache;
+        public readonly string _cacheKey;
 
         public abstract string SelectAllStoredProcedureName { get; }
 
@@ -20,10 +23,12 @@ namespace Detailing.Providers
 
         public abstract string DeleteByIdStoredProcedureName { get; }
 
-        public BaseProvider(IDatabaseService dbService, IDataMapper<T> dataMapper)
+        public BaseProvider(IDatabaseService dbService, IDataMapper<T> dataMapper, IMemoryCache cache)
         {
             _dbService = dbService;
             _dataMapper = dataMapper;
+            _cache = cache;
+            _cacheKey = typeof(T).ToString();
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
@@ -42,19 +47,19 @@ namespace Detailing.Providers
 
         public virtual async Task<T> GetByIdAsync(int id)
         {
-            try
+            if(_cache.TryGetValue(_cacheKey[id], out T model))
             {
-                var idParameter = GetIdDataParameter(id);
-                var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByIdStoredProcedureName, idParameter);
-                if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
-                {
-                    var model = _dataMapper.MapToModel(dt.Rows[0]);
-                    return model;
-                }
+                Console.WriteLine($"Retreiving {_cacheKey[id]} data from cache.");
+                return model;
             }
-            catch (Exception)
-            {
 
+            var idParameter = GetIdDataParameter(id);
+            var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByIdStoredProcedureName,idParameter);
+            if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
+            {
+                model = _dataMapper.MapToModel(dt.Rows[0]);
+                _cache.Set(_cacheKey[id], model);
+                return model;
             }
 
             return default(T);
@@ -66,6 +71,7 @@ namespace Detailing.Providers
             {
                 var idParameter = GetIdDataParameter(id);
                 var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(DeleteByIdStoredProcedureName, idParameter);
+                _cache.Remove(_cacheKey);
                 return rowsAffectd == 1;
             }
             catch (Exception)
@@ -98,6 +104,7 @@ namespace Detailing.Providers
                 if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
                 {
                     model = _dataMapper.MapToModel(dt.Rows[0]);
+                    _cache.Remove(_cacheKey);
                     return true;
                 }
             }
@@ -114,6 +121,7 @@ namespace Detailing.Providers
             {
                 var spParameters = GetDbParameters(model);
                 var rowsAffectd = await _dbService.ExecuteNonQueryStoredProcedureAsync(UpdateStoredProcedureName, spParameters);
+                _cache.Remove(_cacheKey);
                 return rowsAffectd == 1;
             }
             catch (Exception ex)
@@ -121,6 +129,19 @@ namespace Detailing.Providers
             }
 
             return false;
+        }
+
+        public async Task<IEnumerable<T>> GetAllCachedAsync()
+        {
+            if(_cache.TryGetValue(_cacheKey, out IEnumerable<T> cachedData))
+            {
+                Console.WriteLine($"Retrieving {_cacheKey} data form cache.");
+                return cachedData;
+            }
+
+            var data = await GetAllAsync();
+            _cache.Set(_cacheKey, data);
+            return data;
         }
     }
 }
