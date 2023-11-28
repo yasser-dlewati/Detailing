@@ -47,11 +47,18 @@ namespace Detailing.Providers
 
         public virtual async Task<T> GetByIdAsync(int id)
         {
+            if(_cache.TryGetValue(_cacheKey[id], out T model))
+            {
+                Console.WriteLine($"Retreiving {_cacheKey[id]} data from cache.");
+                return model;
+            }
+
             var idParameter = GetIdDataParameter(id);
             var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByIdStoredProcedureName,idParameter);
             if (dt != null && dt.Rows != null && dt.Rows.Count == 1)
             {
-                var model = _dataMapper.MapToModel(dt.Rows[0]);
+                model = _dataMapper.MapToModel(dt.Rows[0]);
+                _cache.Set(_cacheKey[id], model);
                 return model;
             }
 
