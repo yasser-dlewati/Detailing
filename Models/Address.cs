@@ -29,5 +29,10 @@ namespace Detailing.Models
 
         [Column("Latitude")]
         public double Latitude { get; set; }
+
+        public string ToString()
+        {
+            return $"{Line1} {Line2} {ZipCode} {City} {State.Name} {Country.Name}".Replace(" ", "%20");
+        }
     }
 }
