@@ -62,18 +62,25 @@ public class CustomerProvider : BaseProvider<Customer>
 
     public override async Task<Customer> GetByIdAsync(int id)
     {
+        if(_cache.TryGetValue(_cacheKey[id], out Customer customer))
+        {
+            Console.WriteLine($"Retreiving {_cacheKey[id]} data from cache.");
+            return customer;
+        }
+
         var spParameters = GetIdDataParameter(id);
         var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectByIdStoredProcedureName, spParameters);
         if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
         {
-            var model = _mapper.MapToModel(dt.Rows[0]);
+            customer = _mapper.MapToModel(dt.Rows[0]);
             for (var i = 1; i < dt.Rows.Count; i++)
             {
                 var currentRecord = _mapper.MapToModel(dt.Rows[i]);
-                model.Cars = model.Cars.Append(currentRecord.Cars.ElementAt(0));
+                customer.Cars = customer.Cars.Append(currentRecord.Cars.ElementAt(0));
             }
 
-            return model;
+            _cache.Set(_cacheKey[id], customer);
+            return customer;
         }
 
         return null;
@@ -83,23 +90,23 @@ public class CustomerProvider : BaseProvider<Customer>
     {
         var dbParamerters = new IDbDataParameter[]
         {
-        new DatabaseParameter("UserId", data.Id),
-        new DatabaseParameter("FirstName", data.FirstName),
-        new DatabaseParameter("MiddleName", data.MiddleName),
-        new DatabaseParameter("LastName", data.LastName),
-        new DatabaseParameter("PreferredName", data.PreferredName),
-        new DatabaseParameter("DOB", data.DOB),
-        new DatabaseParameter("MobileNumber", data.MobileNumber),
-        new DatabaseParameter("AddressId", data.Address.Id),
-        new DatabaseParameter("Line1", data.Address.Line1),
-        new DatabaseParameter("Line2", data.Address.Line2),
-        new DatabaseParameter("City", data.Address.City),
-        new DatabaseParameter("ZipCode", data.Address.ZipCode),
-        new DatabaseParameter("StateId", data.Address.State.Id),
-        new DatabaseParameter("CountryId", data.Address.Country.Id),
-        new DatabaseParameter("Longitude", data.Address.Longitude),
-        new DatabaseParameter("Latitude", data.Address.Latitude),
-        new DatabaseParameter("Email", data.Email),
+            new DatabaseParameter("UserId", data.Id),
+            new DatabaseParameter("FirstName", data.FirstName),
+            new DatabaseParameter("MiddleName", data.MiddleName),
+            new DatabaseParameter("LastName", data.LastName),
+            new DatabaseParameter("PreferredName", data.PreferredName),
+            new DatabaseParameter("DOB", data.DOB),
+            new DatabaseParameter("MobileNumber", data.MobileNumber),
+            new DatabaseParameter("AddressId", data.Address.Id),
+            new DatabaseParameter("Line1", data.Address.Line1),
+            new DatabaseParameter("Line2", data.Address.Line2),
+            new DatabaseParameter("City", data.Address.City),
+            new DatabaseParameter("ZipCode", data.Address.ZipCode),
+            new DatabaseParameter("StateId", data.Address.State.Id),
+            new DatabaseParameter("CountryId", data.Address.Country.Id),
+            new DatabaseParameter("Longitude", data.Address.Longitude),
+            new DatabaseParameter("Latitude", data.Address.Latitude),
+            new DatabaseParameter("Email", data.Email),
         };
 
         return dbParamerters;
