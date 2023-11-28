@@ -1,6 +1,7 @@
 using Detailing.Interfaces;
 using Detailing.Managers;
 using Detailing.Models;
+using Detailing.Providers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Detailing.Controllers;
@@ -11,24 +12,31 @@ public class DetailerController : DetailingControllerBase<Detailer>
 {
     private readonly IModelManager<User> _userManager;
     private readonly IModelManager<DetailerService> _serviceManager;
+    private readonly IConfiguration _config;
+
     public DetailerController(IServiceProvider provider) : base(provider)
     {
         _userManager = provider.GetRequiredService<IModelManager<User>>();
         _serviceManager = provider.GetRequiredService<IModelManager<DetailerService>>();
+        _config = provider.GetRequiredService<IConfiguration>();
     }
 
     [HttpPost("")]
     public new async Task<IActionResult> PostAsync([FromBody]SignupUser user)
     {
+         var addressProvider  = new AddressProvider(_config);
+        var coordinates = await addressProvider.GetCoordinatesAsync(user.Address);
+        user.Address.Longitude = coordinates.Longitude;
+        user.Address.Latitude = coordinates.Latitude;
         var isInserted = (_userManager as UserManager).TryInsert(ref user);
         var detailer = user.ToDetailer();
         return isInserted ? CreatedAtAction(nameof(GetAsync), detailer) : BadRequest();
     }
 
     [NonAction]
-    public override async Task<IActionResult> PostAsync(Detailer customer) 
+    public override async Task<IActionResult> PostAsync(Detailer detailer) 
     {
-        return null;
+        return await base.PostAsync(detailer);
     }
 
     [HttpGet("/{detailerId:int}/services")]
