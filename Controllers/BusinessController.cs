@@ -1,6 +1,7 @@
 using Detailing.Interfaces;
 using Detailing.Managers;
 using Detailing.Models;
+using Detailing.Providers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Detailing.Controllers;
@@ -8,9 +9,22 @@ namespace Detailing.Controllers;
 public class BusinessController : DetailingControllerBase<Business>
 {
     private readonly IModelManager<Detailer> _detailerManager;
+    private readonly IConfiguration _config;
+
     public BusinessController(IServiceProvider provider) : base(provider)
     {
         _detailerManager = provider.GetRequiredService<IModelManager<Detailer>>();
+        _config = provider.GetRequiredService<IConfiguration>();
+    }
+
+    [HttpPost]
+    public override async Task<IActionResult> PostAsync(Business business)
+    {
+        var addressProvider  = new AddressProvider(_config);
+        var coordinates = await addressProvider.GetCoordinatesAsync(business.Address);
+        business.Address.Longitude = coordinates.Longitude;
+        business.Address.Latitude = coordinates.Latitude;
+        return await base.PostAsync(business);
     }
 
     [HttpGet]
