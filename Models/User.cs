@@ -22,8 +22,6 @@ namespace Detailing.Models
 
         public string Email { get; set; }
 
-        public string Password { get; set; }
-
         public Address Address { get; set; }
         
         public DateTime CreatedAt { get; internal set; }

@@ -100,7 +100,6 @@ public class CustomerProvider : BaseProvider<Customer>
         new DatabaseParameter("Longitude", data.Address.Longitude),
         new DatabaseParameter("Latitude", data.Address.Latitude),
         new DatabaseParameter("Email", data.Email),
-        new DatabaseParameter("Password", data.Password),
         };
 
         return dbParamerters;
