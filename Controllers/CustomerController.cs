@@ -1,6 +1,7 @@
 using Detailing.Interfaces;
 using Detailing.Managers;
 using Detailing.Models;
+using Detailing.Providers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,15 +14,22 @@ public class CustomerController : DetailingControllerBase<Customer>
     private readonly IModelManager<Car> _carManager;
     private readonly IModelManager<User> _userManager;
 
+    private readonly IConfiguration _config;
+
     public CustomerController(IServiceProvider provider) : base(provider)
     {
         _userManager = provider.GetRequiredService<IModelManager<User>>();
         _carManager = provider.GetRequiredService<IModelManager<Car>>();
+        _config = provider.GetRequiredService<IConfiguration>();
     }
 
     [HttpPost]
     public new async Task<IActionResult> PostAsync([FromBody]SignupUser user)
     {
+        var addressProvider  = new AddressProvider(_config);
+        var coordinates = await addressProvider.GetCoordinatesAsync(user.Address);
+        user.Address.Longitude = coordinates.Longitude;
+        user.Address.Latitude = coordinates.Latitude;
         var isInserted = (_userManager as UserManager).TryInsert(ref user);
         var customer = user.ToCustomer();
         return isInserted ? CreatedAtAction(nameof(GetAsync), customer) : BadRequest();
@@ -30,7 +38,7 @@ public class CustomerController : DetailingControllerBase<Customer>
     [NonAction]
     public override async Task<IActionResult> PostAsync(Customer customer) 
     {
-        return null;
+        return await base.PostAsync(customer);
     }
 
     [HttpGet("{customerId:int}/car")]
