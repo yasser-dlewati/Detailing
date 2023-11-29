@@ -45,6 +45,7 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
             if(_cache.TryGetValue(_cacheKey, out IEnumerable<DetailerService> services))
             {
                 Console.WriteLine($"Retreiving {GetType()} data from cache.");
+                Console.WriteLine($"Retreiving {GetType()} data from cache.");
                 return services;
             }
 
@@ -52,10 +53,11 @@ public class DetailerServiceProvider : BaseProvider<DetailerService>
             var dt = await _dbService.ExecuteQueryStoredProcedureAsync(SelectAllStoredProcedureName, spParameter);
             if (dt != null && dt.Rows != null && dt.Rows.Count > 0)
             {
+                services = new List<DetailerService>();
                 foreach (DataRow dtRow in dt.Rows)
                 {
                     var service = _mapper.MapToModel(dtRow);
-                    (services as List<DetailerService>)!.Add(service);
+                    services = services.Append(service);
                 }
 
                 _cache.Set(_cacheKey, services);

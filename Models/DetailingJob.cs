@@ -1,3 +1,4 @@
+using Detailing.Consts;
 using Detailing.Interfaces;
 
 namespace Detailing.Models
@@ -18,5 +19,8 @@ namespace Detailing.Models
 
         public IEnumerable<DetailerService> ConsumedServices { get; set; }
 
+        public string? Notes { get; set; }
+
+        public DetailingJobStatus Status { get; set; }
     }
 }

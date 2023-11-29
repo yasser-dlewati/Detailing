@@ -1,6 +1,7 @@
 using System.Data;
 using Detailing.Interfaces;
 using Detailing.Models;
+using Detailing.Consts;
 
 namespace Detailing.Mappers;
 
@@ -20,6 +21,8 @@ public class DetailingJobMapper : IDataMapper<DetailingJob>
                 Business = isDetailedByBusiness 
                 ? businessMapper.MapToModel(row)
                 : null,
+                Notes = row["Notes"].ToString(),
+                Status = (DetailingJobStatus) int.Parse(row["status"].ToString()),
                 DetailingTime = DateTime.Parse(row["DetailingDate"].ToString()),
             };
 
