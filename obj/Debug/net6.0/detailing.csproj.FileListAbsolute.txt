@@ -63,3 +63,10 @@
 /home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.IdentityModel.Tokens.dll
 /home/yasdle/myCode/detailing/bin/Debug/net6.0/System.IdentityModel.Tokens.Jwt.dll
 /home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.AspNetCore.Mvc.Versioning.dll
+/home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer.dll
+/home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.Extensions.Caching.Abstractions.dll
+/home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.Extensions.Caching.Memory.dll
+/home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.Extensions.Logging.Abstractions.dll
+/home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.Extensions.Options.dll
+/home/yasdle/myCode/detailing/bin/Debug/net6.0/Microsoft.Extensions.Primitives.dll

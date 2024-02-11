@@ -42,5 +42,11 @@ namespace detailing.Controllers
 
             return BadRequest();
         }
+
+        [HttpPatch]
+        public async Task<IActionResult> ResetPasswordAsync(int id, string password)
+        {
+            return BadRequest();
+        }
     }
 }

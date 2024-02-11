@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "L0uZteRhfzibLfx1S/9KIl40u23CFOmdzCRD4l5wIyLVhUmaQ3bnnyYzZHyveDfvnn9GPrs8xoUI55+mTY6NTg==",
+  "dgSpecHash": "SQd+AWuO9piAe6IRFOh3h0seserEyUdOPvRYH/2CbJrYIv+JCTdohL0YAh3p0giR/95QRZWsopVFhBpHFQXvuA==",
   "success": true,
   "projectFilePath": "/home/yasdle/myCode/detailing/detailing.csproj",
   "expectedPackageFiles": [
@@ -10,8 +10,15 @@
     "/home/yasdle/.nuget/packages/k4os.hash.xxhash/1.0.8/k4os.hash.xxhash.1.0.8.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/6.0.4/microsoft.aspnetcore.authentication.jwtbearer.6.0.4.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.aspnetcore.mvc.versioning/5.1.0/microsoft.aspnetcore.mvc.versioning.5.1.0.nupkg.sha512",
+    "/home/yasdle/.nuget/packages/microsoft.aspnetcore.mvc.versioning.apiexplorer/5.1.0/microsoft.aspnetcore.mvc.versioning.apiexplorer.5.1.0.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "/home/yasdle/.nuget/packages/microsoft.extensions.caching.abstractions/8.0.0/microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
+    "/home/yasdle/.nuget/packages/microsoft.extensions.caching.memory/8.0.0/microsoft.extensions.caching.memory.8.0.0.nupkg.sha512",
+    "/home/yasdle/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/home/yasdle/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "/home/yasdle/.nuget/packages/microsoft.extensions.options/8.0.0/microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "/home/yasdle/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.identitymodel/7.0.0/microsoft.identitymodel.7.0.0.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.identitymodel.abstractions/6.32.1/microsoft.identitymodel.abstractions.6.32.1.nupkg.sha512",
     "/home/yasdle/.nuget/packages/microsoft.identitymodel.jsonwebtokens/6.32.1/microsoft.identitymodel.jsonwebtokens.6.32.1.nupkg.sha512",
